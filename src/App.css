@@ -1,0 +1,18 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Red Rose';
+}
+
+div,
+span,
+p,
+a,
+li,
+ol,
+link {
+  font-family: 'Open Sans';
+}

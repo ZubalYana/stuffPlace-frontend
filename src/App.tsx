@@ -1,9 +1,10 @@
 import './App.css'
-
+import { MainPage } from './components/pages/MainPage'
 function App() {
 
   return (
     <>
+      <MainPage />
     </>
   )
 }
