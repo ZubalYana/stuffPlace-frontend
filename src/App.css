@@ -15,3 +15,8 @@ ol,
 link {
   font-family: 'Open Sans';
 }
+
+::selection {
+  background-color: #AE7461;
+  color: #fff;
+}
