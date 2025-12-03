@@ -2,23 +2,29 @@ import { Logo } from "./Logo";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 export function Header() {
     return (
-        <div className="w-full h-20 rounded-2xl flex justify-between items-center bg-[rgba(255, 255, 255, 0.5)] backdrop-blur-xl px-6">
+        <div className="w-full h-15 lg:h-20 rounded-2xl flex justify-between items-center bg-[rgba(255, 255, 255, 0.5)] backdrop-blur-md px-4 lg:px-6">
             <div className="absolute inset-0 bg-white/30 rounded-2xl pointer-events-none z-0"></div>
             <div className="z-9999 w-full h-full rounded-2xl flex justify-between items-center">
-                <div className="w-[18%]">
+                <div className="md:w-[15%] lg:w-[18%]">
                     <Logo />
                 </div>
 
-                <div className="w-[430px] flex justify-between items-center text-[14px] font-semibold text-[#1E1E1E]">
+                <div className="md:hidden w-[25px] gap-[5px] flex flex-col  items-center">
+                    <div className="w-full h-0.5 bg-[#1E1E1E] rounded-2xl"></div>
+                    <div className="w-full h-0.5 bg-[#1E1E1E] rounded-2xl"></div>
+                    <div className="w-full h-0.5 bg-[#1E1E1E] rounded-2xl"></div>
+                </div>
+
+                <div className="md:w-[310px] lg:w-[430px] hidden md:flex justify-between items-center text-[14px] md:text-[12px] lg:text-[14px] font-semibold text-[#1E1E1E]">
                     <p className="cursor-pointer">About Us</p>
                     <p className="cursor-pointer">Our Units</p>
                     <p className="cursor-pointer">On-Site Facilities</p>
                     <p className="cursor-pointer">Location</p>
                 </div>
 
-                <div className="flex w-[18%] justify-between items-center">
-                    <div className="w-[140px] h-[50px] border-[#1E1E1E] border rounded-2xl flex justify-center items-center cursor-pointer">
-                        <p className="text-[14px] font-semibold">Contact Us</p>
+                <div className="hidden md:flex md:w-[26%] lg:w-[25%] xl:w-[18%] justify-between items-center">
+                    <div className="md:w-[90px] md:h-[35px] lg:w-[140px] lg:h-[50px] border-[#1E1E1E] border rounded-2xl flex justify-center items-center cursor-pointer">
+                        <p className="text-[14px] md:text-[12px] lg:text-[14px] font-semibold">Contact Us</p>
                     </div>
                     <LanguageSwitcher />
                 </div>

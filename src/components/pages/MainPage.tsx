@@ -1,12 +1,12 @@
 import { Header } from "../elements/Header"
-import { Handshake, Eye } from "lucide-react"
+import { Handshake, Eye, ArrowDown } from "lucide-react"
 export function MainPage() {
     return (
-        <div className="w-full h-screen p-10">
+        <div className="w-full h-screen p-4 xl:p-10">
             <div className="z-20 relative">
                 <div className="absolute inset-0 bg-white/30 rounded-2xl pointer-events-none z-0"></div>
                 <Header />
-                <div className="w-full h-[450px] rounded-2xl flex flex-col items-center bg-[rgba(255, 255, 255, 0.5)] backdrop-blur-xl px-6 py-6 mt-5">
+                <div className="w-full h-[450px] rounded-2xl flex flex-col items-center bg-[rgba(255, 255, 255, 0.5)] backdrop-blur-md px-6 py-6 mt-6">
                     <h1 className="w-[60%] text-[64px] text-center font-bold text-[#1E1E1E] leading-[1.2]">Strategic Location and Modern Living in <span className="text-[#AE7461]">Budapest</span></h1>
                     <div className="w-full flex flex-col items-center mt-3">
                         <p className="text-[16px] font-light w-[65%] text-center"><span className="font-semibold">StaffPlace</span> offers contemporary accommodation for individual residents and corporate teams in the heart of Budapest.</p>
@@ -32,8 +32,11 @@ export function MainPage() {
 
                 </div>
             </div>
+
+            <div className="uppercase text-white text-[16px] font-normal relative z-20 w-full flex justify-center items-center mt-10 gap-2 cursor-pointer"><h4>Feel free to learn more</h4> <ArrowDown /></div>
+
             <div>
-                <img src="/main page bg.webp" alt="main page background" className="w-full max-h-screen absolute top-0 left-0 z-0" />
+                <img src="/main page bg.webp" alt="main page background" className="h-screen w-full bg-center object-cover xl:w-full xl:max-h-screen absolute top-0 left-0 z-0" />
             </div>
         </div>
     )
