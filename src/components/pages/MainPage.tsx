@@ -5,7 +5,7 @@ export function MainPage() {
         <div className="w-full h-screen p-4 lg:p-10">
             <div className="z-20 relative">
                 <Header />
-                <div className="w-full h-[435px] xs:max-sm:h-[415px] md:max-lg:h-[570px] lg:max-xl:h-[600px] xl:h-[450px] rounded-2xl flex flex-col items-center bg-[rgba(255, 255, 255, 0.5)] backdrop-blur-md p-4 md:p-6 mt-6">
+                <div className="w-full h-[425px] xs:max-sm:h-[415px] md:max-lg:h-[570px] lg:max-xl:h-[600px] xl:h-[450px] rounded-2xl flex flex-col items-center bg-[rgba(255, 255, 255, 0.5)] backdrop-blur-md p-4 md:p-6 mt-6">
                     <div className="absolute inset-0 bg-white/30 rounded-2xl pointer-events-none z-0"></div>
 
                     <h1 className="w-full text-[24px] xs:text-[27px] md:text-[64px] md:w-[90%] lg:max-xl:w-[70%] xl:w-[60%] xl:text-[64px] text-center font-bold text-[#1E1E1E] leading-[1.2] relative z-20">Strategic Location and Modern Living in <span className="text-[#AE7461]">Budapest</span></h1>
@@ -19,14 +19,14 @@ export function MainPage() {
 
                     <div className="w-full md:w-auto flex flex-col md:flex-row items-center gap-4 mt-5 md:gap-8 md:mt-12 relative z-20">
 
-                        <div className="w-full h-14 md:w-[280px] md:h-18 flex justify-center items-center rounded-2xl bg-[#AE7461] gap-3 cursor-pointer">
+                        <div className="w-full h-13 md:w-[280px] md:h-18 flex justify-center items-center rounded-2xl bg-[#AE7461] gap-3 cursor-pointer">
                             <Handshake color="white" size={28} strokeWidth={2.5} />
-                            <h3 className="uppercase text-white font-bold text-[20px] md:text-[24px]">Partnership</h3>
+                            <h3 className="uppercase text-white font-bold text-[18px] md:text-[24px]">Partnership</h3>
                         </div>
 
-                        <div className="w-full h-14 md:w-[300px] md:h-18 flex justify-center items-center rounded-2xl border-[#1E1E1E] border-2 gap-3 cursor-pointer">
+                        <div className="w-full h-13 md:w-[300px] md:h-18 flex justify-center items-center rounded-2xl border-[#1E1E1E] border-2 gap-3 cursor-pointer">
                             <Eye color="#1E1E1E" size={28} strokeWidth={2.5} />
-                            <h3 className="uppercase text-[#1E1E1E] font-bold text-[20px] md:text-[24px]">Explore Units</h3>
+                            <h3 className="uppercase text-[#1E1E1E] font-bold text-[18px] md:text-[24px]">Explore Units</h3>
                         </div>
 
                     </div>
