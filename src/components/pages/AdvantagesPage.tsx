@@ -1,0 +1,79 @@
+import { AdvantagesCard } from "../elements/AdvantagesCard";
+import { Building2, CircleDollarSignIcon, BedDouble, BusFront, Cctv, ShoppingBasketIcon, LampDesk } from "lucide-react";
+export function AdvantagesPage() {
+    const iconsSize = 28;
+    const iconsStrokeWidth = 2;
+    const iconsColor = '#AE7461';
+    const companiesAdvantages = [
+        {
+            icon: <Building2 size={iconsSize} strokeWidth={iconsStrokeWidth} color={iconsColor} />,
+            text: "Reliable, well-managed accommodation for staff and corporate teams",
+        },
+        {
+            icon: <CircleDollarSignIcon size={iconsSize} strokeWidth={iconsStrokeWidth} color={iconsColor} />,
+            text: "Cost-effective housing compared to traditional rentals or hotels",
+        },
+        {
+            icon: <BedDouble size={iconsSize} strokeWidth={iconsStrokeWidth} color={iconsColor} />,
+            text: "Units for 2, 4, 6, or 8 people — ideal for team arrangements",
+        },
+        {
+            icon: <BusFront size={iconsSize} strokeWidth={iconsStrokeWidth} color={iconsColor} />,
+            text: "Central Budapest location with easy access to transport",
+        },
+        {
+            icon: <Cctv size={iconsSize} strokeWidth={iconsStrokeWidth} color={iconsColor} />,
+            text: "Secure and controlled environment for your employees",
+        },
+        {
+            icon: <ShoppingBasketIcon size={iconsSize} strokeWidth={iconsStrokeWidth} color={iconsColor} />,
+            text: "On-site facilities (shop, laundry, TV rooms, relax zones) reduce time spent on daily logistics",
+        },
+    ]
+    const individualsAdvantages = [
+        {
+            icon: <BedDouble size={iconsSize} strokeWidth={iconsStrokeWidth} color={iconsColor} />,
+            text: "Modern, comfortable living units with room options to fit your lifestyle",
+        },
+        {
+            icon: <Cctv size={iconsSize} strokeWidth={iconsStrokeWidth} color={iconsColor} />,
+            text: "Safe, secure environment with controlled access to the living zones",
+        },
+        {
+            icon: <ShoppingBasketIcon size={iconsSize} strokeWidth={iconsStrokeWidth} color={iconsColor} />,
+            text: "Convenient on-site amenities including laundry rooms, relax zones, TV rooms, and a shop",
+        },
+        {
+            icon: <LampDesk size={iconsSize} strokeWidth={iconsStrokeWidth} color={iconsColor} />,
+            text: "Study and training rooms available in the basement",
+        },
+        {
+            icon: <BusFront size={iconsSize} strokeWidth={iconsStrokeWidth} color={iconsColor} />,
+            text: "Great location close to public transport, shops, and city life",
+        },
+        {
+            icon: <CircleDollarSignIcon size={iconsSize} strokeWidth={iconsStrokeWidth} color={iconsColor} />,
+            text: "Affordable living compared to private rentals in Budapest",
+        },
+    ]
+    return (
+        <div className="w-full h-screen p-4 lg:p-10 flex flex-col items-center relative">
+            <h2 className="text-[24px] md:text-[32px] lg:text-[42px] text-[#1E1E1E] font-bold">Why Choose StaffPlace?</h2>
+            <p className="text-[12px] xs:text-[13px] w-full md:text-[16px] lg:max-xl:text-[20px] font-light md:w-[85%] xl:w-full text-center">An environment designed to benefit both companies and individual residents — a place where everyone truly wins.</p>
+
+            <div className="flex flex-col mt-5 lg:flex-row lg:gap-13 lg:mt-10">
+                <AdvantagesCard
+                    bg="/advantages-bg-1.webp"
+                    title="Companies Get:"
+                    advantages={companiesAdvantages}
+                />
+                <AdvantagesCard
+                    bg="/advantages-bg-2.webp"
+                    title="Individuals Get:"
+                    advantages={individualsAdvantages}
+                />
+            </div>
+
+        </div>
+    );
+}
