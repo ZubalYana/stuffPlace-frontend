@@ -4,6 +4,7 @@ import { AboutUs } from './components/pages/AboutUsPage'
 import { AdvantagesPage } from './components/pages/AdvantagesPage'
 import { OurUnitsPage } from './components/pages/OurUnitsPage'
 import { OnSiteFacilities } from './components/pages/OnSiteFacilities'
+import { Footer } from './components/pages/Footer'
 function App() {
 
   return (
@@ -13,6 +14,7 @@ function App() {
       <AdvantagesPage />
       <OurUnitsPage />
       <OnSiteFacilities />
+      <Footer />
     </>
   )
 }

@@ -57,7 +57,7 @@ export function AdvantagesPage() {
         },
     ]
     return (
-        <div className="w-full min-h-screen p-4 lg:p-10 flex flex-col items-center relative mt-6 lg:mt-0">
+        <div className="w-full p-4 lg:p-10 flex flex-col items-center relative mt-6 lg:mt-0">
             <h2 className="text-[24px] md:text-[32px] lg:text-[42px] text-[#1E1E1E] font-bold text-center">Why Choose StaffPlace?</h2>
             <p className="text-[12px] xs:text-[13px] w-full md:text-[16px] lg:max-xl:text-[20px] font-light md:w-[85%] xl:w-full text-center">An environment designed to benefit both companies and individual residents — a place where everyone truly wins.</p>
 
