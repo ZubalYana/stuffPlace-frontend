@@ -5,6 +5,7 @@ import { AdvantagesPage } from './components/pages/AdvantagesPage'
 import { OurUnitsPage } from './components/pages/OurUnitsPage'
 import { OnSiteFacilities } from './components/pages/OnSiteFacilities'
 import { Footer } from './components/pages/Footer'
+import { WhatsUpIcon } from './components/elements/WhatsUpIcon'
 function App() {
 
   return (
@@ -15,6 +16,7 @@ function App() {
       <OurUnitsPage />
       <OnSiteFacilities />
       <Footer />
+      <WhatsUpIcon />
     </>
   )
 }
