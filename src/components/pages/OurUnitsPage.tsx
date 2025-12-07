@@ -25,7 +25,7 @@ export function OurUnitsPage() {
                 />
             </div>
 
-            <div className="w-full h-13 md:w-[240px] md:h-15 flex justify-center items-center rounded-2xl bg-[#AE7461] gap-3 cursor-pointer mt-8">
+            <div className="w-full h-13 md:w-60 md:h-15 flex justify-center items-center rounded-2xl bg-[#AE7461] gap-3 cursor-pointer mt-8">
                 <Search color="white" size={24} strokeWidth={2.5} />
                 <h3 className="uppercase text-white font-bold text-[18px] md:text-[20px]">See All Units</h3>
             </div>
