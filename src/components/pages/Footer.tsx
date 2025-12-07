@@ -1,22 +1,22 @@
 import { Phone, MailIcon } from "lucide-react";
 export function Footer() {
     return (
-        <div className="w-full h-[48vh] relative">
-            <div className="p-4 lg:p-10 relative z-20 text-[#F5F5F5] w-full flex">
+        <div className="w-full min-h-[48vh] relative mt-8">
+            <div className="p-4 lg:p-10 relative z-20 text-[#F5F5F5] w-full flex flex-col md:flex-row md:justify-between">
                 <div className="md:w-[40%] md:h-full">
-                    <h3 className="uppercase text-[32px] font-bold">StuffPlace</h3>
-                    <p className="text-[12px] xs:text-[13px] md:text-[16px] font-light">Contemporary accommodation for individual residents and corporate teams in the heart of Budapest.</p>
+                    <h3 className="uppercase text-[24px] md:text-[28px] lg:text-[32px] font-bold">StuffPlace</h3>
+                    <p className="text-[12px] xs:text-[13px] md:text-[14px] lg:text-[16px] font-light">Contemporary accommodation for individual residents and corporate teams in the heart of Budapest.</p>
                     <div className="flex gap-2 items-center mt-4">
                         <div>
                             <Phone size={20} strokeWidth={2.5} />
                         </div>
-                        <p className="font-semibold">+36 30 742 8619</p>
+                        <p className="font-semibold text-[14px] md:text-[16px]">+36 30 742 8619</p>
                     </div>
                     <div className="flex gap-2 items-center mt-2">
                         <div>
                             <MailIcon size={20} strokeWidth={2.5} />
                         </div>
-                        <p className="font-semibold">staffPlace_official@gmail.com</p>
+                        <p className="font-semibold text-[14px] md:text-[16px]">staffPlace_official@gmail.com</p>
                     </div>
                     <div className="flex gap-4 mt-6">
                         <div className="w-4 h-6 flex justify-center items-center cursor-pointer">
@@ -33,10 +33,10 @@ export function Footer() {
                         </div>
                     </div>
                 </div>
-                <div className="md:w-[60%] md:h-full md:flex md:justify-end md:items-center">
+                <div className="md:w-[50%] md:h-full md:flex md:justify-end md:items-center mt-8 md:mt-0">
                     <iframe
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2693.3767058046706!2d19.083405775881904!3d47.540996592506204!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4741dbb972d42c51%3A0x5b231660d387055c!2zQnVkYXBlc3QsIELDqWtlIHUuLCDQo9Cz0L7RgNGJ0LjQvdCw!5e0!3m2!1suk!2sua!4v1765110250576!5m2!1suk!2sua"
-                        width={600}
+                        width={'100%'}
                         height={240}
                         style={{ border: 0 }}
                         allowFullScreen
