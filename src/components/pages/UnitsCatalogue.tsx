@@ -1,9 +1,26 @@
+import { useEffect } from "react";
 import { ArrowLeft } from "lucide-react";
 import { UnitCard } from "../elements/UnitCard";
 import { useNavigate } from 'react-router-dom'
 
-export function UnitsCatalogue() {
+interface UnitsCatalogueProps {
+    unitsRef: React.RefObject<HTMLDivElement | null>;
+}
+
+export function UnitsCatalogue({ unitsRef }: UnitsCatalogueProps) {
     const navigate = useNavigate();
+
+    const handleBack = () => {
+        navigate('/');
+        setTimeout(() => {
+            unitsRef.current?.scrollIntoView({ behavior: 'smooth' });
+        }, 50);
+    };
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     const placeholderUnits = [
         {
             img: './placeholder_unit1.webp',
@@ -53,7 +70,7 @@ export function UnitsCatalogue() {
             <h2 className="text-[24px] md:text-[32px] lg:text-[42px] text-[#1E1E1E] font-bold">Units Catalogue</h2>
             <div
                 className="w-10 h-10 absolute top-4 left-4 lg:top-10 lg:left-10 md:w-[50px] md:h-[50px] bg-white rounded-full shadow-xl flex justify-center items-center cursor-pointer"
-                onClick={() => navigate('/')}
+                onClick={handleBack}
             >
                 <ArrowLeft />
             </div>

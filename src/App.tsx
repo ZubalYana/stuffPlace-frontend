@@ -19,6 +19,7 @@ function App() {
   return (
     <Router>
       <Routes>
+
         <Route
           path='/'
           element={
@@ -36,7 +37,7 @@ function App() {
 
         <Route
           path='/units'
-          element={<UnitsCatalogue />}
+          element={<UnitsCatalogue unitsRef={unitsRef} />}
         />
 
       </Routes>
