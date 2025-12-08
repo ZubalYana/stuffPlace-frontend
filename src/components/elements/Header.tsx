@@ -32,11 +32,32 @@ export function Header({ refs }: HeaderProps) {
                 </div>
 
                 <div className="md:w-[310px] lg:w-[430px] hidden md:flex justify-between items-center text-[14px] md:text-[12px] lg:text-[14px] font-semibold text-[#1E1E1E]">
-                    <p className="cursor-pointer" onClick={() => scrollTo(refs.aboutRef)}>About Us</p>
-                    <p className="cursor-pointer" onClick={() => scrollTo(refs.unitsRef)}>Our Units</p>
-                    <p className="cursor-pointer" onClick={() => scrollTo(refs.facilitiesRef)}>On-Site Facilities</p>
-                    <p className="cursor-pointer" onClick={() => scrollTo(refs.locationRef)}>Location</p>
+                    <p
+                        className="cursor-pointer transition duration-300 hover:text-[#AE7461] hover:scale-105"
+                        onClick={() => scrollTo(refs.aboutRef)}
+                    >
+                        About Us
+                    </p>
+                    <p
+                        className="cursor-pointer transition duration-300 hover:text-[#AE7461] hover:scale-105"
+                        onClick={() => scrollTo(refs.unitsRef)}
+                    >
+                        Our Units
+                    </p>
+                    <p
+                        className="cursor-pointer transition duration-300 hover:text-[#AE7461] hover:scale-105"
+                        onClick={() => scrollTo(refs.facilitiesRef)}
+                    >
+                        On-Site Facilities
+                    </p>
+                    <p
+                        className="cursor-pointer transition duration-300 hover:text-[#AE7461] hover:scale-105"
+                        onClick={() => scrollTo(refs.locationRef)}
+                    >
+                        Location
+                    </p>
                 </div>
+
 
                 <div className="hidden md:flex md:w-[26%] lg:w-[25%] xl:w-[18%] justify-between items-center">
                     <div className="relative md:w-[90px] md:h-[35px] lg:w-[140px] lg:h-[50px] rounded-2xl border border-[#1E1E1E] flex justify-center items-center cursor-pointer overflow-hidden 
