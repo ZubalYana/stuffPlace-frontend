@@ -1,6 +1,22 @@
 import { Logo } from "./Logo";
 import { LanguageSwitcher } from "./LanguageSwitcher";
-export function Header() {
+
+type HeaderProps = {
+    refs: {
+        aboutRef: React.RefObject<HTMLDivElement | null>,
+        unitsRef: React.RefObject<HTMLDivElement | null>,
+        facilitiesRef: React.RefObject<HTMLDivElement | null>,
+        locationRef: React.RefObject<HTMLDivElement | null>,
+    }
+}
+export function Header({ refs }: HeaderProps) {
+
+    const scrollTo = (ref: React.RefObject<HTMLDivElement | null>) => {
+        if (!ref.current) return;
+        const yOffset = 0;
+        const y = ref.current.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        window.scrollTo({ top: y, behavior: "smooth" });
+    }
     return (
         <div className="w-full h-15 lg:h-20 rounded-2xl flex justify-between items-center bg-[rgba(255, 255, 255, 0.5)] backdrop-blur-md px-4 lg:px-6">
             <div className="absolute inset-0 bg-white/30 rounded-2xl pointer-events-none z-0"></div>
@@ -16,10 +32,10 @@ export function Header() {
                 </div>
 
                 <div className="md:w-[310px] lg:w-[430px] hidden md:flex justify-between items-center text-[14px] md:text-[12px] lg:text-[14px] font-semibold text-[#1E1E1E]">
-                    <p className="cursor-pointer">About Us</p>
-                    <p className="cursor-pointer">Our Units</p>
-                    <p className="cursor-pointer">On-Site Facilities</p>
-                    <p className="cursor-pointer">Location</p>
+                    <p className="cursor-pointer" onClick={() => scrollTo(refs.aboutRef)}>About Us</p>
+                    <p className="cursor-pointer" onClick={() => scrollTo(refs.unitsRef)}>Our Units</p>
+                    <p className="cursor-pointer" onClick={() => scrollTo(refs.facilitiesRef)}>On-Site Facilities</p>
+                    <p className="cursor-pointer" onClick={() => scrollTo(refs.locationRef)}>Location</p>
                 </div>
 
                 <div className="hidden md:flex md:w-[26%] lg:w-[25%] xl:w-[18%] justify-between items-center">
