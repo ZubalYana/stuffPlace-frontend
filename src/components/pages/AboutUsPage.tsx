@@ -7,15 +7,36 @@ export function AboutUs() {
 
             <div className="w-full md:w-auto flex flex-col md:flex-row items-center gap-4 mt-5 md:gap-8 md:mt-8 relative z-20">
 
-                <div className="w-full h-12 md:w-[250px] md:h-17 flex justify-center items-center rounded-2xl bg-[#AE7461] gap-3 cursor-pointer">
-                    <Phone color="white" size={24} strokeWidth={2.5} />
-                    <h3 className="uppercase text-white font-bold text-[16px] md:text-[22px]">Contact Us</h3>
+                <div className="relative w-full h-12 md:w-[250px] md:h-17 flex justify-center items-center rounded-2xl bg-[#AE7461] gap-3 cursor-pointer overflow-hidden
+    group transition duration-300 border-2 border-transparent hover:border-[#AE7461]">
+                    <span className="absolute inset-0 bg-white scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300"></span>
+                    <Phone
+                        strokeWidth={2.5}
+                        size={24}
+                        stroke="currentColor"
+                        className="relative z-10 transition duration-300 text-white group-hover:text-[#AE7461]"
+                    />
+                    <h3 className="relative z-10 uppercase font-bold text-[16px] md:text-[22px]
+        text-white transition duration-300 group-hover:text-[#AE7461]">
+                        Contact Us
+                    </h3>
                 </div>
 
-                <div className="w-full h-12 md:w-[270px] md:h-17 flex justify-center items-center rounded-2xl border-[#1E1E1E] border-2 gap-3 cursor-pointer">
-                    <Search color="#1E1E1E" size={24} strokeWidth={2.5} />
-                    <h3 className="uppercase text-[#1E1E1E] font-bold text-[16px] md:text-[22px]">Learn More</h3>
+                <div className="relative w-full h-12 md:w-[270px] md:h-17 flex justify-center items-center rounded-2xl border-2 border-[#1E1E1E] gap-3 cursor-pointer overflow-hidden
+    group transition duration-300 bg-transparent">
+                    <span className="absolute inset-0 bg-[#1E1E1E] scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300"></span>
+                    <Search
+                        strokeWidth={2.5}
+                        size={24}
+                        stroke="currentColor"
+                        className="relative z-10 transition duration-300 text-[#1E1E1E] group-hover:text-white"
+                    />
+                    <h3 className="relative z-10 uppercase font-bold text-[16px] md:text-[22px]
+        text-[#1E1E1E] transition duration-300 group-hover:text-white">
+                        Learn More
+                    </h3>
                 </div>
+
 
             </div>
 

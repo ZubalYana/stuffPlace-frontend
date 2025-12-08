@@ -24,6 +24,7 @@ export function LanguageSwitcher() {
                 disableUnderline
                 value={language}
                 onChange={handleChange}
+                MenuProps={{ disableScrollLock: true }}
                 sx={{
                     color: "#1E1E1E",
                     "& .MuiSvgIcon-root": {

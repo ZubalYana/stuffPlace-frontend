@@ -25,10 +25,21 @@ export function OurUnitsPage() {
                 />
             </div>
 
-            <div className="w-full h-13 md:w-60 md:h-15 flex justify-center items-center rounded-2xl bg-[#AE7461] gap-3 cursor-pointer mt-8">
-                <Search color="white" size={24} strokeWidth={2.5} />
-                <h3 className="uppercase text-white font-bold text-[18px] md:text-[20px]">See All Units</h3>
+            <div className="relative w-full h-13 md:w-60 md:h-15 flex justify-center items-center rounded-2xl bg-[#AE7461] gap-3 cursor-pointer mt-8 overflow-hidden
+    group transition duration-300 border-2 border-transparent hover:border-[#AE7461]">
+                <span className="absolute inset-0 bg-white scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300"></span>
+                <Search
+                    strokeWidth={2.5}
+                    size={24}
+                    stroke="currentColor"
+                    className="relative z-10 transition duration-300 text-white group-hover:text-[#AE7461]"
+                />
+                <h3 className="relative z-10 uppercase font-bold text-[18px] md:text-[20px]
+        text-white transition duration-300 group-hover:text-[#AE7461]">
+                    See All Units
+                </h3>
             </div>
+
         </div>
     );
 }

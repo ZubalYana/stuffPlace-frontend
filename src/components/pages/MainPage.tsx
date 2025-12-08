@@ -19,15 +19,39 @@ export function MainPage() {
 
                     <div className="w-full md:w-auto flex flex-col md:flex-row items-center gap-4 mt-5 md:gap-8 md:mt-12 relative z-20">
 
-                        <div className="w-full h-13 md:w-[280px] md:h-18 flex justify-center items-center rounded-2xl bg-[#AE7461] gap-3 cursor-pointer">
-                            <Handshake color="white" size={28} strokeWidth={2.5} />
-                            <h3 className="uppercase text-white font-bold text-[18px] md:text-[24px]">Partnership</h3>
+                        <div className="relative w-full h-13 md:w-[280px] md:h-18 flex justify-center items-center rounded-2xl bg-[#AE7461] gap-3 cursor-pointer overflow-hidden
+    group transition duration-300">
+                            <span className="absolute inset-0 bg-white scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300"></span>
+                            <Handshake
+                                strokeWidth={2.5}
+                                size={28}
+                                stroke="currentColor"
+                                className="relative z-10 transition duration-300 text-white group-hover:text-[#AE7461]"
+                            />
+                            <h3 className="relative z-10 uppercase text-white font-bold text-[18px] md:text-[24px]
+        transition duration-300 group-hover:text-[#AE7461]">
+                                Partnership
+                            </h3>
                         </div>
 
-                        <div className="w-full h-13 md:w-[300px] md:h-18 flex justify-center items-center rounded-2xl border-[#1E1E1E] border-2 gap-3 cursor-pointer">
-                            <Eye color="#1E1E1E" size={28} strokeWidth={2.5} />
-                            <h3 className="uppercase text-[#1E1E1E] font-bold text-[18px] md:text-[24px]">Explore Units</h3>
+
+
+                        <div className="relative w-full h-13 md:w-[300px] md:h-18 flex justify-center items-center rounded-2xl border-2 border-[#1E1E1E] gap-3 cursor-pointer overflow-hidden
+    group transition duration-300 bg-transparent">
+                            <span className="absolute inset-0 bg-[#1E1E1E] scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300"></span>
+                            <Eye
+                                strokeWidth={2.5}
+                                size={28}
+                                stroke="currentColor"
+                                className="relative z-10 transition duration-300 text-[#1E1E1E] group-hover:text-white"
+                            />
+                            <h3 className="relative z-10 uppercase font-bold text-[18px] md:text-[24px]
+        transition duration-300 text-[#1E1E1E] group-hover:text-white">
+                                Explore Units
+                            </h3>
                         </div>
+
+
 
                     </div>
 

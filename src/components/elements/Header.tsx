@@ -23,8 +23,12 @@ export function Header() {
                 </div>
 
                 <div className="hidden md:flex md:w-[26%] lg:w-[25%] xl:w-[18%] justify-between items-center">
-                    <div className="md:w-[90px] md:h-[35px] lg:w-[140px] lg:h-[50px] border-[#1E1E1E] border rounded-2xl flex justify-center items-center cursor-pointer">
-                        <p className="text-[14px] md:text-[12px] lg:text-[14px] font-semibold">Contact Us</p>
+                    <div className="relative md:w-[90px] md:h-[35px] lg:w-[140px] lg:h-[50px] rounded-2xl border border-[#1E1E1E] flex justify-center items-center cursor-pointer overflow-hidden 
+    transition duration-300 group">
+                        <span className="absolute inset-0 bg-[#1E1E1E] scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300"></span>
+                        <p className="text-[14px] md:text-[12px] lg:text-[14px] font-semibold text-[#1E1E1E] group-hover:text-[#F5F5F5] transition duration-300 relative z-10">
+                            Contact Us
+                        </p>
                     </div>
                     <LanguageSwitcher />
                 </div>
