@@ -1,7 +1,9 @@
 import { SectionUnitCard } from "../elements/SectionUnitCard";
 import { Search } from "lucide-react";
-export function OurUnitsPage() {
+import { useNavigate } from 'react-router-dom'
 
+export function OurUnitsPage() {
+    const navigate = useNavigate()
     return (
         <div className="w-full min-h-screen p-4 lg:p-10 flex flex-col items-center relative mt-6 lg:mt-0">
             <h2 className="text-[24px] md:text-[32px] lg:text-[42px] text-[#1E1E1E] font-bold text-center">Explore Our Units</h2>
@@ -25,8 +27,11 @@ export function OurUnitsPage() {
                 />
             </div>
 
-            <div className="relative w-full h-13 md:w-60 md:h-15 flex justify-center items-center rounded-2xl bg-[#AE7461] gap-3 cursor-pointer mt-8 overflow-hidden
-    group transition duration-300 border-2 border-transparent hover:border-[#AE7461]">
+            <div
+                className="relative w-full h-13 md:w-60 md:h-15 flex justify-center items-center rounded-2xl bg-[#AE7461] gap-3 cursor-pointer mt-8 overflow-hidden
+    group transition duration-300 border-2 border-transparent hover:border-[#AE7461]"
+                onClick={() => navigate('/units')}
+            >
                 <span className="absolute inset-0 bg-white scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300"></span>
                 <Search
                     strokeWidth={2.5}
