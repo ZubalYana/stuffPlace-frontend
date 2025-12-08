@@ -37,8 +37,15 @@ export function OnSiteFacilities() {
             <p className="text-[12px] xs:text-[13px] w-full md:text-[16px] lg:max-xl:text-[20px] font-light md:w-[85%] xl:w-full text-center">Our residence provides many shared amenities and services that ensure a comfortable living experience.</p>
             <div className="w-full flex justify-between flex-col gap-4 md:max-lg:flex-wrap md:max-lg:justify-center md:flex-row md:max-lg:gap-6 lg:gap-0 mt-6">
                 {facilities.map((facility, index) => (
-                    <FacilityCard icon={facility.icon} title={facility.title} description={facility.description} index={index} />
+                    <FacilityCard
+                        key={index}
+                        icon={facility.icon}
+                        title={facility.title}
+                        description={facility.description}
+                        index={index}
+                    />
                 ))}
+
             </div>
             <div className="w-full flex justify-center">
                 <img src="./facilities-illustration-widened.webp" alt="facilities-illustration-widened" className="w-[95%] hidden md:block md:max-lg:mt-6" />
