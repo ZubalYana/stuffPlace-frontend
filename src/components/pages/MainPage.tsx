@@ -13,6 +13,10 @@ export function MainPage({ refs }: MainPageProps) {
     const scrollToUnits = () => {
         refs.unitsRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
+
+    const scrollToAbout = () => {
+        refs.aboutRef.current?.scrollIntoView({ behavior: 'smooth' });
+    };
     return (
         <div className="w-full h-screen p-4 lg:p-10">
             <div className="z-20 relative">
@@ -72,7 +76,13 @@ export function MainPage({ refs }: MainPageProps) {
                 </div>
             </div>
 
-            <div className="uppercase text-white text-[14px] md:text-[16px] font-normal relative z-20 w-full flex justify-center items-center mt-4 xs:max-sm:mt-6 md:mt-6 lg:mt-10 gap-1 md:gap-2 cursor-pointer"><h4>Feel free to learn more</h4> <ArrowDown /></div>
+            <div
+                className="uppercase text-white text-[14px] md:text-[16px] font-normal relative z-20 w-full flex justify-center items-center mt-4 xs:max-sm:mt-6 md:mt-6 lg:mt-10 gap-1 md:gap-2 cursor-pointer animate-bounce"
+                onClick={scrollToAbout}
+            >
+                <h4>Feel free to learn more</h4>
+                <ArrowDown size={24} />
+            </div>
 
             <div>
                 <img src="/main page bg.webp" alt="main page background" className="h-screen w-full bg-center object-cover xl:w-full xl:max-h-screen absolute top-0 left-0 z-0" />
