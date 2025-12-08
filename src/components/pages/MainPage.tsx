@@ -10,7 +10,9 @@ type MainPageProps = {
     }
 }
 export function MainPage({ refs }: MainPageProps) {
-
+    const scrollToUnits = () => {
+        refs.unitsRef.current?.scrollIntoView({ behavior: 'smooth' });
+    };
     return (
         <div className="w-full h-screen p-4 lg:p-10">
             <div className="z-20 relative">
@@ -47,7 +49,9 @@ export function MainPage({ refs }: MainPageProps) {
 
 
                         <div className="relative w-full h-13 md:w-[300px] md:h-18 flex justify-center items-center rounded-2xl border-2 border-[#1E1E1E] gap-3 cursor-pointer overflow-hidden
-    group transition duration-300 bg-transparent">
+    group transition duration-300 bg-transparent"
+                            onClick={scrollToUnits}
+                        >
                             <span className="absolute inset-0 bg-[#1E1E1E] scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300"></span>
                             <Eye
                                 strokeWidth={2.5}
