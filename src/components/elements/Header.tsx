@@ -7,9 +7,11 @@ type HeaderProps = {
         unitsRef: React.RefObject<HTMLDivElement | null>,
         facilitiesRef: React.RefObject<HTMLDivElement | null>,
         locationRef: React.RefObject<HTMLDivElement | null>,
-    }
+    },
+    toggleMenu: () => void
+    isMenuOpen: boolean
 }
-export function Header({ refs }: HeaderProps) {
+export function Header({ refs, toggleMenu, isMenuOpen }: HeaderProps) {
 
     const scrollTo = (ref: React.RefObject<HTMLDivElement | null>) => {
         if (!ref.current) return;
@@ -25,7 +27,10 @@ export function Header({ refs }: HeaderProps) {
                     <Logo />
                 </div>
 
-                <div className="md:hidden w-[25px] gap-[5px] flex flex-col  items-center">
+                <div
+                    className="md:hidden w-[25px] gap-[5px] flex flex-col  items-center"
+                    onClick={toggleMenu}
+                >
                     <div className="w-full h-0.5 bg-[#1E1E1E] rounded-2xl"></div>
                     <div className="w-full h-0.5 bg-[#1E1E1E] rounded-2xl"></div>
                     <div className="w-full h-0.5 bg-[#1E1E1E] rounded-2xl"></div>

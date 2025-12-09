@@ -8,8 +8,10 @@ type MainPageProps = {
         facilitiesRef: React.RefObject<HTMLDivElement | null>,
         locationRef: React.RefObject<HTMLDivElement | null>,
     }
+    toggleMenu: () => void
+    isMenuOpen: boolean
 }
-export function MainPage({ refs }: MainPageProps) {
+export function MainPage({ refs, toggleMenu, isMenuOpen }: MainPageProps) {
     const scrollToUnits = () => {
         refs.unitsRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
@@ -20,7 +22,7 @@ export function MainPage({ refs }: MainPageProps) {
     return (
         <div className="w-full h-screen p-4 lg:p-10">
             <div className="z-20 relative">
-                <Header refs={refs} />
+                <Header refs={refs} toggleMenu={toggleMenu} isMenuOpen={isMenuOpen} />
                 <div className="w-full h-[425px] xs:max-sm:h-[415px] md:max-lg:h-[410px] lg:max-xl:h-[600px] xl:h-[450px] rounded-2xl flex flex-col items-center bg-[rgba(255, 255, 255, 0.5)] backdrop-blur-md p-4 md:p-6 mt-6">
                     <div className="absolute inset-0 bg-white/30 rounded-2xl pointer-events-none z-0"></div>
 
