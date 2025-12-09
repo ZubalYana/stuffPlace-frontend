@@ -7,7 +7,7 @@ import { AdvantagesPage } from './components/pages/AdvantagesPage'
 import { OurUnitsPage } from './components/pages/OurUnitsPage'
 import { OnSiteFacilities } from './components/pages/OnSiteFacilities'
 import { Footer } from './components/pages/Footer'
-import { WhatsUpIcon } from './components/elements/WhatsUpIcon'
+import { WhatsAppIcon } from './components/elements/WhatsAppIcon'
 import { UnitsCatalogue } from './components/pages/UnitsCatalogue'
 
 function App() {
@@ -30,7 +30,7 @@ function App() {
               <div ref={facilitiesRef}><OnSiteFacilities /></div>
               <AdvantagesPage />
               <div ref={locationRef}><Footer /></div>
-              <WhatsUpIcon />
+              <WhatsAppIcon />
             </>
           }
         />
