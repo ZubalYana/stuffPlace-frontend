@@ -26,9 +26,9 @@ function App() {
             <>
               <MainPage refs={{ aboutRef, unitsRef, facilitiesRef, locationRef }} />
               <div ref={aboutRef}><AboutUs /></div>
+              <AdvantagesPage />
               <div ref={unitsRef}><OurUnitsPage /></div>
               <div ref={facilitiesRef}><OnSiteFacilities /></div>
-              <AdvantagesPage />
               <div ref={locationRef}><Footer /></div>
               <WhatsAppIcon />
             </>
