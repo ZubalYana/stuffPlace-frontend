@@ -74,7 +74,7 @@ export function UnitsCatalogue({ unitsRef }: UnitsCatalogueProps) {
             >
                 <ArrowLeft />
             </div>
-            <div className="w-full flex flex-wrap justify-between gap-y-8 mt-6">
+            <div className="w-full flex flex-wrap justify-between gap-y-8 mt-6 pb-10">
                 {placeholderUnits.map((unit, index) => (
                     <UnitCard
                         key={index}
