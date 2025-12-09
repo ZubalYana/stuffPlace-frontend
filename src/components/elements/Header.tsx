@@ -11,7 +11,7 @@ type HeaderProps = {
     toggleMenu: () => void
     isMenuOpen: boolean
 }
-export function Header({ refs, toggleMenu, isMenuOpen }: HeaderProps) {
+export function Header({ refs, toggleMenu }: HeaderProps) {
 
     const scrollTo = (ref: React.RefObject<HTMLDivElement | null>) => {
         if (!ref.current) return;
