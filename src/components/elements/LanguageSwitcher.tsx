@@ -1,6 +1,7 @@
 import { FormControl, Select, MenuItem } from "@mui/material";
 import type { SelectChangeEvent } from "@mui/material";
 import { useState } from "react";
+import ReactCountryFlag from "react-country-flag";
 
 export function LanguageSwitcher() {
     const [language, setLanguage] = useState<string>("en");
@@ -38,8 +39,14 @@ export function LanguageSwitcher() {
                 }}
 
             >
-                <MenuItem value="en">English</MenuItem>
-                <MenuItem value="hu">Magyar</MenuItem>
+                <MenuItem value="en">
+                    <ReactCountryFlag countryCode="GB" svg style={{ width: 18, height: 18, marginRight: 6 }} />
+                    <span className="text-[14px]">ENG</span>
+                </MenuItem>
+                <MenuItem value="hu">
+                    <ReactCountryFlag countryCode="HU" svg style={{ width: 18, height: 18, marginRight: 6 }} />
+                    <span className="text-[14px]">HU</span>
+                </MenuItem>
             </Select>
         </FormControl>
     );
