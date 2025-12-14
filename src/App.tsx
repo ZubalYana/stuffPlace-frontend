@@ -10,7 +10,9 @@ import { Footer } from './components/pages/Footer'
 import { WhatsAppIcon } from './components/elements/WhatsAppIcon'
 import { UnitsCatalogue } from './components/pages/UnitsCatalogue'
 import { ResponsiveNavigation } from './components/elements/ResponsiveNavigation'
-
+import { AdminLogin } from './components/pages/AdminLogin'
+import { AdminPanel } from './components/pages/AdminPanel'
+import { ProtectedRoute } from './components/elements/ProtectedRoute'
 function App() {
   const aboutRef = useRef<HTMLDivElement | null>(null)
   const unitsRef = useRef<HTMLDivElement | null>(null)
@@ -51,6 +53,16 @@ function App() {
         <Route
           path='/units'
           element={<UnitsCatalogue unitsRef={unitsRef} />}
+        />
+
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute>
+              <AdminPanel />
+            </ProtectedRoute>
+          }
         />
 
       </Routes>
