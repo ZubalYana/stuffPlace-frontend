@@ -1,3 +1,11 @@
+import {
+    TextField,
+    Button,
+    IconButton,
+    InputAdornment,
+    CircularProgress,
+} from "@mui/material";
+import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -6,6 +14,7 @@ export const AdminLogin = () => {
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
 
     const handleLogin = async () => {
@@ -43,49 +52,67 @@ export const AdminLogin = () => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
             <form
                 onSubmit={handleSubmit}
-                className="bg-white p-8 rounded shadow-md w-full max-w-sm"
+                className="bg-white p-8 rounded-xl shadow-md w-full max-w-sm space-y-5"
             >
-                <h1 className="text-2xl font-bold mb-6 text-center">Admin Login</h1>
+                <h1 className="text-2xl font-bold text-center">Admin Login</h1>
 
                 {error && (
-                    <div className="bg-red-100 text-red-700 p-2 mb-4 rounded">
+                    <div className="bg-red-100 text-red-700 p-2 rounded text-sm">
                         {error}
                     </div>
                 )}
 
-                <div className="mb-4">
-                    <label className="block mb-1 font-semibold">Username</label>
-                    <input
-                        type="text"
-                        className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        required
-                    />
-                </div>
-
-                <div className="mb-6">
-                    <label className="block mb-1 font-semibold">Password</label>
-                    <input
-                        type="password"
-                        className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                </div>
-
-                <button
-                    type="submit"
+                <TextField
+                    label="Username"
+                    variant="outlined"
+                    fullWidth
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
                     disabled={loading}
-                    className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded transition"
+                />
+
+                <TextField
+                    label="Password"
+                    variant="outlined"
+                    fullWidth
+                    sx={{ margin: '20px 0' }}
+                    type={showPassword ? "text" : "password"}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    disabled={loading}
+                    InputProps={{
+                        endAdornment: (
+                            <InputAdornment position="end" className="mr-1">
+                                <IconButton
+                                    onClick={() => setShowPassword((prev) => !prev)}
+                                    edge="end"
+                                    aria-label="toggle password visibility"
+                                >
+                                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                                </IconButton>
+                            </InputAdornment>
+                        ),
+                    }}
+                />
+
+                <Button
+                    type="submit"
+                    variant="contained"
+                    fullWidth
+                    disabled={loading}
+                    sx={{
+                        py: 1.2,
+                        fontWeight: 600,
+                        marginTop: '15px',
+                    }}
                 >
-                    {loading ? "Logging in..." : "Login"}
-                </button>
+                    {loading ? <CircularProgress size={22} color="inherit" /> : "Login"}
+                </Button>
             </form>
         </div>
     );
+
 };
