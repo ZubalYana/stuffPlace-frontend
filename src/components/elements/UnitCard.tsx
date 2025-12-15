@@ -6,6 +6,7 @@ type UnitCardProps = {
     type: string,
     comfortLevel: string,
 }
+
 export function UnitCard({ img, description, occupancy, type, comfortLevel }: UnitCardProps) {
     return (
         <div className="w-full h-fit md:h-[460px] lg:w-[460px] bg-white shadow-xl text-[#1E1E1E] rounded-xl">
