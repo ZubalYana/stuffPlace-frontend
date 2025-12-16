@@ -191,9 +191,19 @@ export const UnitsControlBlock = () => {
                 </div>
                 <Button
                     variant="contained"
-                    style={{ marginTop: "30px" }}
-                    className="w-full"
+                    sx={{
+                        mt: 4,
+                        width: "100%",
+                        height: 48,
+                        backgroundColor: "#AE7461",
+                        fontWeight: "bold",
+                        fontSize: "16px",
+                        "&:hover": {
+                            backgroundColor: "#966554",
+                        },
+                    }}
                     onClick={handleCreateUnit}
+                    disabled={!image || !occupancy || !roomType || !comfort || !descriptionEn || !descriptionHu}
                 >
                     Create Unit
                 </Button>
