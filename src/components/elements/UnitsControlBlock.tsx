@@ -46,39 +46,30 @@ export const UnitsControlBlock = () => {
     };
 
     const handleCreateUnit = async () => {
-        if (!roomType || !comfort || !occupancy) return;
+        if (!roomType || !comfort || !occupancy || !image) return;
 
-        const payload = {
-            occupancy: Number(occupancy),
+        const formData = new FormData();
+        formData.append("occupancy", occupancy);
+        formData.append("type", JSON.stringify({
+            en: roomType,
+            hu: ROOM_TYPE_MAP[roomType],
+        }));
+        formData.append("comfortLevel", JSON.stringify({
+            en: comfort,
+            hu: COMFORT_MAP[comfort],
+        }));
+        formData.append("description", JSON.stringify({
+            en: descriptionEn,
+            hu: descriptionHu,
+        }));
+        formData.append("image", (document.getElementById("unit-image") as HTMLInputElement).files![0]);
 
-            type: {
-                en: roomType,
-                hu: ROOM_TYPE_MAP[roomType],
-            },
-
-            comfortLevel: {
-                en: comfort,
-                hu: COMFORT_MAP[comfort],
-            },
-
-            description: {
-                en: descriptionEn,
-                hu: descriptionHu,
-            },
-
-            img: image,
-        };
-
-        console.log(payload);
-
-        fetch("http://localhost:5000/units", {
+        await fetch("http://localhost:5000/units", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(payload),
-        })
+            body: formData,
+        });
     };
+
 
     return (
         <div className="w-full h-[550px] bg-[#f9f9f9] shadow-md text-[#1E1E1E] rounded-xl mt-4 p-4 lg:p-6">
