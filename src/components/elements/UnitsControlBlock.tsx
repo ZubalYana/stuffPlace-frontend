@@ -7,21 +7,77 @@ import {
     Select,
     MenuItem,
     TextField,
+    Button,
 } from "@mui/material";
 export const UnitsControlBlock = () => {
     const [image, setImage] = useState<string | null>(null);
 
     const [occupancy, setOccupancy] = useState("");
-    const [roomType, setRoomType] = useState("");
-    const [comfort, setComfort] = useState("");
+    const [roomType, setRoomType] = useState<RoomType | "">("");
+    const [comfort, setComfort] = useState<ComfortType | "">("");
+    const [descriptionEn, setDescriptionEn] = useState("");
+    const [descriptionHu, setDescriptionHu] = useState("");
 
     const OCCUPANCY_OPTIONS = ["1", "2", "4", "6", "8"];
     const ROOM_TYPE_OPTIONS = ["Single", "Double", "Twin", "Suite"];
     const COMFORT_OPTIONS = ["Economy", "Standard", "Comfort", "Luxury"];
 
+    const ROOM_TYPE_MAP = {
+        Single: "Egyágyas",
+        Double: "Kétágyas",
+        Twin: "Két külön ágyas",
+        Suite: "Lakosztály",
+    } as const;
+
+    const COMFORT_MAP = {
+        Economy: "Gazdaságos",
+        Standard: "Standard",
+        Comfort: "Komfort",
+        Luxury: "Luxus",
+    } as const;
+
+    type RoomType = keyof typeof ROOM_TYPE_MAP;
+    type ComfortType = keyof typeof COMFORT_MAP;
+
+
     const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
         if (!e.target.files?.[0]) return;
         setImage(URL.createObjectURL(e.target.files[0]));
+    };
+
+    const handleCreateUnit = async () => {
+        if (!roomType || !comfort || !occupancy) return;
+
+        const payload = {
+            occupancy: Number(occupancy),
+
+            type: {
+                en: roomType,
+                hu: ROOM_TYPE_MAP[roomType],
+            },
+
+            comfortLevel: {
+                en: comfort,
+                hu: COMFORT_MAP[comfort],
+            },
+
+            description: {
+                en: descriptionEn,
+                hu: descriptionHu,
+            },
+
+            img: image,
+        };
+
+        console.log(payload);
+
+        fetch("http://localhost:5000/units", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+        })
     };
 
     return (
@@ -122,10 +178,35 @@ export const UnitsControlBlock = () => {
 
                     </div>
                     <div className="w-full lg:w-[50%] lg:ml-5">
-                        <TextField label="Room description ( English )" className="w-full" multiline rows={6} />
-                        <TextField label="Room description ( Hungarian )" style={{ marginTop: '15px' }} className="w-full" multiline rows={6} />
+                        <TextField
+                            label="Room description ( English )"
+                            className="w-full"
+                            multiline
+                            rows={6}
+                            value={descriptionEn}
+                            onChange={(e) => setDescriptionEn(e.target.value)}
+                        />
+
+                        <TextField
+                            label="Room description ( Hungarian )"
+                            style={{ marginTop: "15px" }}
+                            className="w-full"
+                            multiline
+                            rows={6}
+                            value={descriptionHu}
+                            onChange={(e) => setDescriptionHu(e.target.value)}
+                        />
                     </div>
                 </div>
+                <Button
+                    variant="contained"
+                    style={{ marginTop: "30px" }}
+                    className="w-full"
+                    onClick={handleCreateUnit}
+                >
+                    Create Unit
+                </Button>
+
             </div>
         </div>
     );
