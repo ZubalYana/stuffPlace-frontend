@@ -9,8 +9,13 @@ import {
     TextField,
     Button,
 } from "@mui/material";
+import { Dialog, IconButton } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+
 export const UnitsControlBlock = () => {
-    const [image, setImage] = useState<string | null>(null);
+    const [images, setImages] = useState<File[]>([]);
+    const [previews, setPreviews] = useState<string[]>([]);
+    const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
     const [occupancy, setOccupancy] = useState("");
     const [roomType, setRoomType] = useState<RoomType | "">("");
@@ -40,15 +45,34 @@ export const UnitsControlBlock = () => {
     type ComfortType = keyof typeof COMFORT_MAP;
 
 
-    const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-        if (!e.target.files?.[0]) return;
-        setImage(URL.createObjectURL(e.target.files[0]));
+    const handleImagesChange = (e: ChangeEvent<HTMLInputElement>) => {
+        if (!e.target.files) return;
+
+        const incoming = Array.from(e.target.files);
+
+        const merged = [...images, ...incoming].slice(0, 8);
+
+        setImages(merged);
+        setPreviews(merged.map(file => URL.createObjectURL(file)));
+
+        e.target.value = "";
+    };
+
+    const handleRemoveImage = (index: number) => {
+        const newImages = images.filter((_, i) => i !== index);
+        const newPreviews = previews.filter((_, i) => i !== index);
+
+        setImages(newImages);
+        setPreviews(newPreviews);
+
+        setActiveIndex(null);
     };
 
     const handleCreateUnit = async () => {
-        if (!roomType || !comfort || !occupancy || !image) return;
+        if (!roomType || !comfort || !occupancy || images.length === 0) return;
 
         const formData = new FormData();
+
         formData.append("occupancy", occupancy);
         formData.append("type", JSON.stringify({
             en: roomType,
@@ -62,7 +86,10 @@ export const UnitsControlBlock = () => {
             en: descriptionEn,
             hu: descriptionHu,
         }));
-        formData.append("image", (document.getElementById("unit-image") as HTMLInputElement).files![0]);
+
+        images.forEach((img) => {
+            formData.append("images", img);
+        });
 
         await fetch("http://localhost:5000/units", {
             method: "POST",
@@ -71,57 +98,88 @@ export const UnitsControlBlock = () => {
     };
 
 
+
     return (
         <div className="w-full h-[550px] bg-[#f9f9f9] shadow-md text-[#1E1E1E] rounded-xl mt-4 p-4 lg:p-6">
-            <div className="w-full lg:w-[55%]">
+            <div className="w-full lg:w-[62%]">
                 <h3 className="font-bold text-[24px] mb-3">Units Creation</h3>
 
                 <div className="w-full flex flex-col lg:flex-row">
-                    <div className="w-full lg:w-[50%]">
+                    <div className="w-full">
 
-                        <label
-                            htmlFor="unit-image"
-                            className="
-                    relative
-                    w-full h-50
-                    border-2 border-dashed border-gray-300
-                    rounded-xl
-                    flex items-center justify-center
-                    cursor-pointer
-                    bg-white
-                    hover:border-blue-500
-                    transition
-                    overflow-hidden
-                "
-                        >
-                            {image ? (
-                                <>
-                                    <img
-                                        src={image}
-                                        alt="Unit preview"
-                                        className="absolute inset-0 w-full h-full object-cover"
-                                    />
-                                    <div className="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition flex items-center justify-center text-white font-medium">
-                                        Change image
+                        <div className="flex items-center gap-3">
+                            <Button
+                                variant="outlined"
+                                startIcon={<PhotoCamera />}
+                                onClick={() =>
+                                    document.getElementById("unit-images")?.click()
+                                }
+                            >
+                                Add images ({images.length}/8)
+                            </Button>
+
+                            <input
+                                id="unit-images"
+                                type="file"
+                                accept="image/*"
+                                multiple
+                                className="hidden"
+                                onChange={handleImagesChange}
+                            />
+                        </div>
+
+                        {previews.length > 0 && (
+                            <div className="mt-4 flex gap-3 flex-wrap">
+                                {previews.map((src, idx) => (
+                                    <div
+                                        key={idx}
+                                        className="
+            relative
+            w-24 h-24
+            rounded-lg
+            overflow-hidden
+            shadow
+            group
+        "
+                                    >
+                                        <button
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                handleRemoveImage(idx);
+                                            }}
+                                            className="
+                absolute top-1 right-1
+                w-6 h-6
+                rounded-full
+                bg-black/60
+                text-white
+                text-sm
+                flex items-center justify-center
+                opacity-0
+                group-hover:opacity-100
+                transition
+                hover:bg-red-600
+                z-10
+            "
+                                            title="Remove image"
+                                        >
+                                            ×
+                                        </button>
+                                        <img
+                                            src={src}
+                                            alt={`preview-${idx}`}
+                                            className="w-full h-full object-cover cursor-pointer"
+                                            onClick={() => setActiveIndex(idx)}
+                                        />
                                     </div>
-                                </>
-                            ) : (
-                                <div className="flex flex-col items-center gap-2 text-gray-500">
-                                    <PhotoCamera fontSize="large" />
-                                    <span className="text-sm">Click to upload image</span>
-                                </div>
-                            )}
-                        </label>
-                        <input
-                            id="unit-image"
-                            type="file"
-                            accept="image/*"
-                            className="hidden"
-                            onChange={handleImageChange}
-                        />
+                                ))}
 
-                        <div className="w-full flex justify-between mt-4">
-                            <FormControl fullWidth variant="standard" style={{ width: '70px' }}>
+                            </div>
+                        )}
+
+
+                        <div className="w-[450px] flex justify-between mt-1">
+                            <FormControl fullWidth variant="standard" style={{ maxWidth: '120px' }}>
                                 <InputLabel id="occupancy-label">Occupancy</InputLabel>
                                 <Select
                                     labelId="occupancy-label"
@@ -136,7 +194,7 @@ export const UnitsControlBlock = () => {
                                 </Select>
                             </FormControl>
 
-                            <FormControl fullWidth variant="standard" style={{ width: '100px' }}>
+                            <FormControl fullWidth variant="standard" style={{ maxWidth: '130px' }}>
                                 <InputLabel id="room-type-label">Room type</InputLabel>
                                 <Select
                                     labelId="room-type-label"
@@ -151,7 +209,7 @@ export const UnitsControlBlock = () => {
                                 </Select>
                             </FormControl>
 
-                            <FormControl fullWidth variant="standard" style={{ width: '150px' }}>
+                            <FormControl fullWidth variant="standard" style={{ maxWidth: '150px' }}>
                                 <InputLabel id="comfort-label">Comfort level</InputLabel>
                                 <Select
                                     labelId="comfort-label"
@@ -166,33 +224,32 @@ export const UnitsControlBlock = () => {
                                 </Select>
                             </FormControl>
                         </div>
+                        <div className="w-full flex flex-col lg:flex-row gap-4 mt-4">
+                            <TextField
+                                label="Room description ( English )"
+                                className="w-full"
+                                multiline
+                                rows={5}
+                                value={descriptionEn}
+                                onChange={(e) => setDescriptionEn(e.target.value)}
+                            />
 
+                            <TextField
+                                label="Room description ( Hungarian )"
+                                className="w-full"
+                                multiline
+                                rows={5}
+                                value={descriptionHu}
+                                onChange={(e) => setDescriptionHu(e.target.value)}
+                            />
+                        </div>
                     </div>
-                    <div className="w-full lg:w-[50%] lg:ml-5">
-                        <TextField
-                            label="Room description ( English )"
-                            className="w-full"
-                            multiline
-                            rows={6}
-                            value={descriptionEn}
-                            onChange={(e) => setDescriptionEn(e.target.value)}
-                        />
 
-                        <TextField
-                            label="Room description ( Hungarian )"
-                            style={{ marginTop: "15px" }}
-                            className="w-full"
-                            multiline
-                            rows={6}
-                            value={descriptionHu}
-                            onChange={(e) => setDescriptionHu(e.target.value)}
-                        />
-                    </div>
                 </div>
                 <Button
                     variant="contained"
                     sx={{
-                        mt: 4,
+                        mt: 3,
                         width: "100%",
                         height: 48,
                         backgroundColor: "#AE7461",
@@ -203,12 +260,46 @@ export const UnitsControlBlock = () => {
                         },
                     }}
                     onClick={handleCreateUnit}
-                    disabled={!image || !occupancy || !roomType || !comfort || !descriptionEn || !descriptionHu}
+                    disabled={
+                        images.length === 0 ||
+                        !occupancy ||
+                        !roomType ||
+                        !comfort ||
+                        !descriptionEn ||
+                        !descriptionHu
+                    }
+
                 >
                     Create Unit
                 </Button>
 
             </div>
+
+            <Dialog
+                fullScreen
+                open={activeIndex !== null}
+                onClose={() => setActiveIndex(null)}
+            >
+                {activeIndex !== null && (
+                    <div className="relative w-full h-full bg-black flex items-center justify-center">
+                        {/* Close button */}
+                        <IconButton
+                            onClick={() => setActiveIndex(null)}
+                            className="!absolute top-4 right-4 !text-white z-10"
+                        >
+                            <CloseIcon />
+                        </IconButton>
+
+                        <img
+                            src={previews[activeIndex]}
+                            alt="Fullscreen preview"
+                            className="max-w-full max-h-full object-contain"
+                        />
+                    </div>
+                )}
+            </Dialog>
+
+
         </div>
     );
 };
