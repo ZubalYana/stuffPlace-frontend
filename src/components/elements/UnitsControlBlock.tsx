@@ -11,12 +11,22 @@ import {
 } from "@mui/material";
 import { Dialog, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-
+import { CircularProgress } from "@mui/material";
+import { FeedbackAlert } from "./FeedbackAlert";
 export const UnitsControlBlock = () => {
     const [images, setImages] = useState<File[]>([]);
     const [previews, setPreviews] = useState<string[]>([]);
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
-
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [feedback, setFeedback] = useState<{
+        open: boolean;
+        message: string;
+        severity: "success" | "error";
+    }>({
+        open: false,
+        message: "",
+        severity: "success",
+    });
     const [occupancy, setOccupancy] = useState("");
     const [roomType, setRoomType] = useState<RoomType | "">("");
     const [comfort, setComfort] = useState<ComfortType | "">("");
@@ -57,7 +67,6 @@ export const UnitsControlBlock = () => {
 
         e.target.value = "";
     };
-
     const handleRemoveImage = (index: number) => {
         const newImages = images.filter((_, i) => i !== index);
         const newPreviews = previews.filter((_, i) => i !== index);
@@ -67,35 +76,81 @@ export const UnitsControlBlock = () => {
 
         setActiveIndex(null);
     };
-
     const handleCreateUnit = async () => {
-        if (!roomType || !comfort || !occupancy || images.length === 0) return;
+        if (
+            isSubmitting ||
+            !roomType ||
+            !comfort ||
+            !occupancy ||
+            images.length === 0
+        )
+            return;
 
-        const formData = new FormData();
+        try {
+            setIsSubmitting(true);
 
-        formData.append("occupancy", occupancy);
-        formData.append("type", JSON.stringify({
-            en: roomType,
-            hu: ROOM_TYPE_MAP[roomType],
-        }));
-        formData.append("comfortLevel", JSON.stringify({
-            en: comfort,
-            hu: COMFORT_MAP[comfort],
-        }));
-        formData.append("description", JSON.stringify({
-            en: descriptionEn,
-            hu: descriptionHu,
-        }));
+            const formData = new FormData();
 
-        images.forEach((img) => {
-            formData.append("images", img);
-        });
+            formData.append("occupancy", occupancy);
+            formData.append(
+                "type",
+                JSON.stringify({
+                    en: roomType,
+                    hu: ROOM_TYPE_MAP[roomType],
+                })
+            );
+            formData.append(
+                "comfortLevel",
+                JSON.stringify({
+                    en: comfort,
+                    hu: COMFORT_MAP[comfort],
+                })
+            );
+            formData.append(
+                "description",
+                JSON.stringify({
+                    en: descriptionEn,
+                    hu: descriptionHu,
+                })
+            );
 
-        await fetch("http://localhost:5000/units", {
-            method: "POST",
-            body: formData,
-        });
+            images.forEach((img) => {
+                formData.append("images", img);
+            });
+
+            const res = await fetch("http://localhost:5000/units", {
+                method: "POST",
+                body: formData,
+            });
+
+            if (!res.ok) {
+                throw new Error("Failed to create unit");
+            }
+
+            setFeedback({
+                open: true,
+                severity: "success",
+                message: "Unit successfully created",
+            });
+
+            setImages([]);
+            setPreviews([]);
+            setOccupancy("");
+            setRoomType("");
+            setComfort("");
+            setDescriptionEn("");
+            setDescriptionHu("");
+        } catch (err) {
+            setFeedback({
+                open: true,
+                severity: "error",
+                message: "Something went wrong. Please try again.",
+            });
+        } finally {
+            setIsSubmitting(false);
+        }
     };
+
 
 
 
@@ -178,7 +233,7 @@ export const UnitsControlBlock = () => {
                         )}
 
 
-                        <div className="w-[450px] flex justify-between mt-1">
+                        <div className="w-[450px] flex justify-between mt-4">
                             <FormControl fullWidth variant="standard" style={{ maxWidth: '120px' }}>
                                 <InputLabel id="occupancy-label">Occupancy</InputLabel>
                                 <Select
@@ -261,6 +316,7 @@ export const UnitsControlBlock = () => {
                     }}
                     onClick={handleCreateUnit}
                     disabled={
+                        isSubmitting ||
                         images.length === 0 ||
                         !occupancy ||
                         !roomType ||
@@ -268,10 +324,14 @@ export const UnitsControlBlock = () => {
                         !descriptionEn ||
                         !descriptionHu
                     }
-
                 >
-                    Create Unit
+                    {isSubmitting ? (
+                        <CircularProgress size={24} sx={{ color: "white" }} />
+                    ) : (
+                        "Create Unit"
+                    )}
                 </Button>
+
 
             </div>
 
@@ -282,7 +342,6 @@ export const UnitsControlBlock = () => {
             >
                 {activeIndex !== null && (
                     <div className="relative w-full h-full bg-black flex items-center justify-center">
-                        {/* Close button */}
                         <IconButton
                             onClick={() => setActiveIndex(null)}
                             className="!absolute top-4 right-4 !text-white z-10"
@@ -298,6 +357,14 @@ export const UnitsControlBlock = () => {
                     </div>
                 )}
             </Dialog>
+            <FeedbackAlert
+                open={feedback.open}
+                severity={feedback.severity}
+                message={feedback.message}
+                onClose={() =>
+                    setFeedback((prev) => ({ ...prev, open: false }))
+                }
+            />
 
 
         </div>
