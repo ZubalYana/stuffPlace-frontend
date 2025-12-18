@@ -340,7 +340,7 @@ export const UnitsControlBlock = ({ units, setUnits }: { units: any[]; setUnits:
 
             </div>
             <div className="w-full lg:w-[41%]">
-                <UnitsAdminView units={units} />
+                <UnitsAdminView units={units} setUnits={setUnits} />
             </div>
 
             <Dialog
