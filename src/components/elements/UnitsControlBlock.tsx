@@ -14,7 +14,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { CircularProgress } from "@mui/material";
 import { FeedbackAlert } from "./FeedbackAlert";
 import { UnitsAdminView } from "./UnitsAdminView";
-export const UnitsControlBlock = () => {
+export const UnitsControlBlock = ({ units, setUnits }: { units: any[]; setUnits: React.Dispatch<React.SetStateAction<any[]>> }) => {
     const [images, setImages] = useState<File[]>([]);
     const [previews, setPreviews] = useState<string[]>([]);
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
@@ -127,6 +127,10 @@ export const UnitsControlBlock = () => {
             if (!res.ok) {
                 throw new Error("Failed to create unit");
             }
+
+            const createdUnit = await res.json();
+            setUnits(prev => [createdUnit, ...prev]);
+
 
             setFeedback({
                 open: true,
@@ -336,7 +340,7 @@ export const UnitsControlBlock = () => {
 
             </div>
             <div className="w-full lg:w-[41%]">
-                <UnitsAdminView />
+                <UnitsAdminView units={units} />
             </div>
 
             <Dialog

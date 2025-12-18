@@ -1,12 +1,5 @@
 import { useState, useEffect } from "react";
-export const UnitsAdminView = () => {
-    const [units, setUnits] = useState([]);
-
-    useEffect(() => {
-        fetch('http://localhost:5000/units')
-            .then((res) => res.json())
-            .then((data) => setUnits(data))
-    }, []);
+export const UnitsAdminView = ({ units }: { units: any[] }) => {
 
     return (
         <div className="w-full h-full flex flex-col">
