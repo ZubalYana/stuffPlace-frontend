@@ -13,6 +13,7 @@ import { Dialog, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { CircularProgress } from "@mui/material";
 import { FeedbackAlert } from "./FeedbackAlert";
+import { UnitsAdminView } from "./UnitsAdminView";
 export const UnitsControlBlock = () => {
     const [images, setImages] = useState<File[]>([]);
     const [previews, setPreviews] = useState<string[]>([]);
@@ -155,8 +156,8 @@ export const UnitsControlBlock = () => {
 
 
     return (
-        <div className="w-full h-[550px] bg-[#f9f9f9] shadow-md text-[#1E1E1E] rounded-xl mt-4 p-4 lg:p-6">
-            <div className="w-full lg:w-[62%]">
+        <div className="w-full h-[550px] bg-[#f9f9f9] shadow-md text-[#1E1E1E] rounded-xl flex flex-col lg:flex-row lg:gap-8 mt-4 p-4 lg:p-6">
+            <div className="w-full lg:w-[56%]">
                 <h3 className="font-bold text-[24px] mb-3">Units Creation</h3>
 
                 <div className="w-full flex flex-col lg:flex-row">
@@ -190,7 +191,7 @@ export const UnitsControlBlock = () => {
                                         key={idx}
                                         className="
             relative
-            w-24 h-24
+            w-22 h-20
             rounded-lg
             overflow-hidden
             shadow
@@ -334,6 +335,9 @@ export const UnitsControlBlock = () => {
 
 
             </div>
+            <div className="w-full lg:w-[41%]">
+                <UnitsAdminView />
+            </div>
 
             <Dialog
                 fullScreen
@@ -344,7 +348,7 @@ export const UnitsControlBlock = () => {
                     <div className="relative w-full h-full bg-black flex items-center justify-center">
                         <IconButton
                             onClick={() => setActiveIndex(null)}
-                            className="!absolute top-4 right-4 !text-white z-10"
+                            className="absolute! top-4 right-4 text-white! z-10"
                         >
                             <CloseIcon />
                         </IconButton>
@@ -365,7 +369,6 @@ export const UnitsControlBlock = () => {
                     setFeedback((prev) => ({ ...prev, open: false }))
                 }
             />
-
 
         </div>
     );
