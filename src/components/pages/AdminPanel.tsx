@@ -23,8 +23,9 @@ export const AdminPanel = () => {
     useEffect(() => {
         fetch("http://localhost:5000/units")
             .then(res => res.json())
-            .then(setUnits);
+            .then(data => setUnits(data.reverse()));
     }, []);
+
     return (
         <div className="w-full min-h-screen p-4 lg:p-10 flex flex-col relative mt-6 lg:mt-0">
             <Logo />
