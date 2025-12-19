@@ -60,15 +60,18 @@ export const UnitDetailsDialog = ({
         }
     };
 
-
     const handleImageUpload = async (file: File) => {
         const formData = new FormData();
         formData.append("image", file);
 
-        const res = await fetch("http://localhost:5000/upload/unit", {
+        const res = await fetch("http://localhost:5000/upload", {
             method: "POST",
             body: formData,
         });
+
+        if (!res.ok) {
+            throw new Error("Upload failed");
+        }
 
         const data = await res.json();
 
@@ -77,6 +80,7 @@ export const UnitDetailsDialog = ({
             images: [...prev.images, data.url],
         }));
     };
+
 
     const handleDeleteImage = (url: string) => {
         setEditedUnit((prev: any) => ({
