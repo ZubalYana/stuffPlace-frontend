@@ -1,9 +1,27 @@
 import { SectionUnitCard } from "../elements/SectionUnitCard";
 import { Search } from "lucide-react";
+import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom'
 
 export function OurUnitsPage() {
     const navigate = useNavigate()
+    const [units, setUnits] = useState([])
+
+    const loadHighlightedImages = async () => {
+        try {
+            const res = await fetch(`http://localhost:5000/units`)
+            if (!res.ok) throw new Error('Failed to fetch units');
+
+            const data = await res.json();
+            setUnits(data);
+            console.log(data);
+        } catch (err) {
+            console.error(err)
+        }
+    }
+    useEffect(() => {
+        loadHighlightedImages();
+    }, [])
     return (
         <div className="w-full min-h-screen p-4 lg:p-10 flex flex-col items-center relative mt-6 lg:mt-0">
             <h2 className="text-[24px] md:text-[32px] lg:text-[42px] text-[#1E1E1E] font-bold text-center">Explore Our Units</h2>
