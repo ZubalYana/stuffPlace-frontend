@@ -3,8 +3,13 @@ import {
     Dialog,
     TextField,
     Button,
-    IconButton
+    IconButton,
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem,
 } from "@mui/material";
+
 import CloseIcon from "@mui/icons-material/Close";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -27,6 +32,8 @@ export const UnitDetailsDialog = ({
     const [isUploadingImage, setIsUploadingImage] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
 
+    const ROOM_TYPE_OPTIONS = ["Single", "Double", "Twin", "Suite"] as const;
+
     const ROOM_TYPE_MAP: Record<string, string> = {
         Single: "Egyszemélyes",
         Double: "Kétszemélyes",
@@ -34,12 +41,15 @@ export const UnitDetailsDialog = ({
         Suite: "Lakosztály",
     };
 
+    const COMFORT_OPTIONS = ["Economy", "Standard", "Comfort", "Luxury"] as const;
+
     const COMFORT_MAP: Record<string, string> = {
         Economy: "Gazdaságos",
         Standard: "Standard",
         Comfort: "Kényelmi",
         Luxury: "Luxus",
     };
+
 
     const handleSave = async () => {
         setIsSaving(true);
@@ -228,42 +238,61 @@ export const UnitDetailsDialog = ({
                 <div className="w-full flex gap-4 mb-4 mt-6">
                     <TextField
                         label="Occupancy"
+                        sx={{ width: '100px' }}
                         value={editedUnit.occupancy}
                         onChange={e =>
                             setEditedUnit({ ...editedUnit, occupancy: e.target.value })
                         }
                     />
-                    <TextField
-                        label="Type (EN)"
-                        value={editedUnit.type.en}
-                        onChange={e => {
-                            const en = e.target.value;
+                    <FormControl sx={{ width: '100px' }}>
+                        <InputLabel>Room type</InputLabel>
+                        <Select
+                            value={editedUnit.type.en}
+                            label="Room type"
+                            onChange={e => {
+                                const en = e.target.value;
 
-                            setEditedUnit({
-                                ...editedUnit,
-                                type: {
-                                    en,
-                                    hu: ROOM_TYPE_MAP[en] ?? editedUnit.type.hu,
-                                },
-                            });
-                        }}
+                                setEditedUnit({
+                                    ...editedUnit,
+                                    type: {
+                                        en,
+                                        hu: ROOM_TYPE_MAP[en],
+                                    },
+                                });
+                            }}
+                        >
+                            {ROOM_TYPE_OPTIONS.map(option => (
+                                <MenuItem key={option} value={option}>
+                                    {option}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+                    <FormControl sx={{ width: '150px' }}>
+                        <InputLabel>Comfort level</InputLabel>
+                        <Select
+                            value={editedUnit.comfortLevel.en}
+                            label="Comfort level"
+                            onChange={e => {
+                                const en = e.target.value;
 
-                    />
-                    <TextField
-                        label="Comfort Level (EN)"
-                        value={editedUnit.comfortLevel?.en || ""}
-                        onChange={e => {
-                            const en = e.target.value;
+                                setEditedUnit({
+                                    ...editedUnit,
+                                    comfortLevel: {
+                                        en,
+                                        hu: COMFORT_MAP[en],
+                                    },
+                                });
+                            }}
+                        >
+                            {COMFORT_OPTIONS.map(option => (
+                                <MenuItem key={option} value={option}>
+                                    {option}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
 
-                            setEditedUnit({
-                                ...editedUnit,
-                                comfortLevel: {
-                                    en,
-                                    hu: COMFORT_MAP[en] ?? editedUnit.comfortLevel.hu,
-                                },
-                            });
-                        }}
-                    />
 
                 </div>
 
