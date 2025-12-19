@@ -9,6 +9,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { FeedbackAlert, type FeedbackType } from "./FeedbackAlert";
+import { CircularProgress } from "@mui/material";
 export const UnitDetailsDialog = ({
     unit,
     onClose,
@@ -23,6 +24,8 @@ export const UnitDetailsDialog = ({
     const [feedbackOpen, setFeedbackOpen] = useState(false);
     const [feedbackMessage, setFeedbackMessage] = useState("");
     const [feedbackSeverity, setFeedbackSeverity] = useState<FeedbackType>("success");
+    const [isUploadingImage, setIsUploadingImage] = useState(false);
+    const [isSaving, setIsSaving] = useState(false);
 
     const ROOM_TYPE_MAP: Record<string, string> = {
         Single: "Egyszemélyes",
@@ -39,19 +42,30 @@ export const UnitDetailsDialog = ({
     };
 
     const handleSave = async () => {
-        const res = await fetch(`http://localhost:5000/units/${unit._id}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(editedUnit),
-        });
+        setIsSaving(true);
+        try {
+            const res = await fetch(`http://localhost:5000/units/${unit._id}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(editedUnit),
+            });
+            if (!res.ok) throw new Error("Save failed");
+            const updated = await res.json();
+            setUnits(prev =>
+                prev.map(u => (u._id === updated._id ? updated : u))
+            );
+            setFeedbackMessage("Changes saved");
+            setFeedbackSeverity("success");
+            setFeedbackOpen(true);
 
-        const updated = await res.json();
-
-        setUnits(prev =>
-            prev.map(u => (u._id === updated._id ? updated : u))
-        );
-
-        onClose();
+            setTimeout(onClose, 800);
+        } catch (err) {
+            setFeedbackMessage("Failed to save changes");
+            setFeedbackSeverity("error");
+            setFeedbackOpen(true);
+        } finally {
+            setIsSaving(false);
+        }
     };
 
     const handleDelete = async () => {
@@ -75,25 +89,33 @@ export const UnitDetailsDialog = ({
     };
 
     const handleImageUpload = async (file: File) => {
-        const formData = new FormData();
-        formData.append("image", file);
+        setIsUploadingImage(true);
+        try {
+            const formData = new FormData();
+            formData.append("image", file);
 
-        const res = await fetch("http://localhost:5000/upload", {
-            method: "POST",
-            body: formData,
-        });
+            const res = await fetch("http://localhost:5000/upload", {
+                method: "POST",
+                body: formData,
+            });
 
-        if (!res.ok) {
-            throw new Error("Upload failed");
+            if (!res.ok) throw new Error("Upload failed");
+
+            const data = await res.json();
+
+            setEditedUnit((prev: any) => ({
+                ...prev,
+                images: [...prev.images, data.url],
+            }));
+        } catch (err) {
+            setFeedbackMessage("Image upload failed");
+            setFeedbackSeverity("error");
+            setFeedbackOpen(true);
+        } finally {
+            setIsUploadingImage(false);
         }
-
-        const data = await res.json();
-
-        setEditedUnit((prev: any) => ({
-            ...prev,
-            images: [...prev.images, data.url],
-        }));
     };
+
 
 
     const handleDeleteImage = (url: string) => {
@@ -134,11 +156,18 @@ export const UnitDetailsDialog = ({
 
                         <div className="flex gap-2">
                             <Button
-                                startIcon={<AddPhotoAlternateIcon />}
+                                startIcon={
+                                    isUploadingImage ? (
+                                        <CircularProgress size={18} color="inherit" />
+                                    ) : (
+                                        <AddPhotoAlternateIcon />
+                                    )
+                                }
                                 component="label"
                                 size="small"
+                                disabled={isUploadingImage}
                             >
-                                Add
+                                {isUploadingImage ? "Uploading..." : "Add"}
                                 <input
                                     hidden
                                     type="file"
@@ -150,6 +179,7 @@ export const UnitDetailsDialog = ({
                                     }}
                                 />
                             </Button>
+
 
                             {editedUnit.images.length > 0 && (
                                 <Button
@@ -192,6 +222,7 @@ export const UnitDetailsDialog = ({
                             </div>
                         ))}
                     </div>
+
                 </div>
 
                 <div className="w-full flex gap-4 mb-4 mt-6">
@@ -253,7 +284,6 @@ export const UnitDetailsDialog = ({
                             })
                         }
                     />
-
                     <TextField
                         label="Description (HU)"
                         fullWidth
@@ -284,8 +314,10 @@ export const UnitDetailsDialog = ({
                     <Button
                         variant="contained"
                         onClick={handleSave}
+                        disabled={isSaving}
+                        startIcon={isSaving ? <CircularProgress size={18} color="inherit" /> : null}
                     >
-                        Save changes
+                        {isSaving ? "Saving..." : "Save changes"}
                     </Button>
                 </div>
 
