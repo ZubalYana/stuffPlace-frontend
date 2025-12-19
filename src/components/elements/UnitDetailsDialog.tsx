@@ -24,6 +24,20 @@ export const UnitDetailsDialog = ({
     const [feedbackMessage, setFeedbackMessage] = useState("");
     const [feedbackSeverity, setFeedbackSeverity] = useState<FeedbackType>("success");
 
+    const ROOM_TYPE_MAP: Record<string, string> = {
+        Single: "Egyszemélyes",
+        Double: "Kétszemélyes",
+        Twin: "Két külön ágy",
+        Suite: "Lakosztály",
+    };
+
+    const COMFORT_MAP: Record<string, string> = {
+        Economy: "Gazdaságos",
+        Standard: "Standard",
+        Comfort: "Kényelmi",
+        Luxury: "Luxus",
+    };
+
     const handleSave = async () => {
         const res = await fetch(`http://localhost:5000/units/${unit._id}`, {
             method: "PUT",
@@ -191,20 +205,35 @@ export const UnitDetailsDialog = ({
                     <TextField
                         label="Type (EN)"
                         value={editedUnit.type.en}
-                        onChange={e =>
+                        onChange={e => {
+                            const en = e.target.value;
+
                             setEditedUnit({
                                 ...editedUnit,
-                                type: { ...editedUnit.type, en: e.target.value },
-                            })
-                        }
+                                type: {
+                                    en,
+                                    hu: ROOM_TYPE_MAP[en] ?? editedUnit.type.hu,
+                                },
+                            });
+                        }}
+
                     />
                     <TextField
-                        label="Comfort Level"
-                        value={editedUnit.comfortLevel.en || ""}
-                        onChange={e =>
-                            setEditedUnit({ ...editedUnit, comfortLevel: e.target.value })
-                        }
+                        label="Comfort Level (EN)"
+                        value={editedUnit.comfortLevel?.en || ""}
+                        onChange={e => {
+                            const en = e.target.value;
+
+                            setEditedUnit({
+                                ...editedUnit,
+                                comfortLevel: {
+                                    en,
+                                    hu: COMFORT_MAP[en] ?? editedUnit.comfortLevel.hu,
+                                },
+                            });
+                        }}
                     />
+
                 </div>
 
                 <div className="w-full flex gap-4">
