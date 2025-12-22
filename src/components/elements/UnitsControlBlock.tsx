@@ -267,7 +267,7 @@ export const UnitsControlBlock = ({ units, setUnits }: { units: any[]; setUnits:
                                     value={roomType}
                                     onChange={(e) => setRoomType(e.target.value as RoomType)}
                                 >
-                                    {Object.entries(ROOM_TYPES).map(([en, hu]) => (
+                                    {Object.entries(ROOM_TYPES).map(([en]) => (
                                         <MenuItem key={en} value={en}>
                                             {en}
                                         </MenuItem>

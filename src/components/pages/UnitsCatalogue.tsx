@@ -1,8 +1,7 @@
-import { use, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import { UnitCard } from "../elements/UnitCard";
 import { useNavigate } from "react-router-dom";
-import type { SelectChangeEvent } from "@mui/material";
 
 import {
     Box,
@@ -91,6 +90,7 @@ export function UnitsCatalogue({ unitsRef }: UnitsCatalogueProps) {
                 Units Catalogue
             </h2>
 
+
             <div
                 className="w-10 h-10 absolute top-4 left-4 lg:top-10 lg:left-10 bg-white rounded-full shadow-xl flex justify-center items-center cursor-pointer"
                 onClick={handleBack}
@@ -166,9 +166,6 @@ export function UnitsCatalogue({ unitsRef }: UnitsCatalogueProps) {
                 </Stack>
             </Box>
 
-
-            {/* Units */}
-            {/* Units */}
             <div className="w-full flex flex-wrap justify-between gap-y-8 mt-8 pb-10">
                 {sortedUnits.length > 0 ? (
                     sortedUnits.map((unit, index) => (
