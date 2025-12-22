@@ -1,16 +1,8 @@
 import { useState, useMemo } from "react";
 import { UnitDetailsDialog } from "./UnitDetailsDialog";
 import { Heart } from "lucide-react";
-import {
-    Box,
-    TextField,
-    FormControl,
-    InputLabel,
-    Select,
-    MenuItem,
-    Checkbox,
-    FormControlLabel,
-} from "@mui/material";
+import { Box, Stack, FormControl, InputLabel, Select, MenuItem, Checkbox, FormControlLabel } from "@mui/material";
+
 
 export const UnitsAdminView = ({
     units,
@@ -56,58 +48,78 @@ export const UnitsAdminView = ({
 
     return (
         <div className="w-full h-full flex flex-col">
+
             <h3 className="font-bold text-[24px] mb-3">Units View</h3>
 
-            <Box className="flex gap-3 mb-4 flex-wrap items-center">
-                <TextField
-                    label="Occupancy"
-                    type="number"
-                    size="small"
-                    value={capacity}
-                    onChange={(e) => setCapacity(e.target.value ? Number(e.target.value) : "")}
-                    style={{ width: 100 }}
-                />
+            <Box className="w-full flex justify-end">
+                <Stack direction="row" spacing={3} alignItems="center" flexWrap="wrap">
+                    <FormControl variant="standard" size="small" sx={{ minWidth: 60 }}>
+                        <InputLabel shrink>Occupancy</InputLabel>
+                        <Select
+                            value={capacity}
+                            onChange={(e) => setCapacity(Number(e.target.value) || "")}
+                            disableUnderline
+                            displayEmpty
+                            MenuProps={{ disableScrollLock: true }}
+                        >
+                            <MenuItem value="">Any</MenuItem>
+                            {[1, 2, 3, 4, 6, 8].map((n) => (
+                                <MenuItem key={n} value={n}>
+                                    {n}+ people
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
 
-                <FormControl size="small" style={{ minWidth: 120 }}>
-                    <InputLabel shrink>Type</InputLabel>
-                    <Select value={type} onChange={(e) => setType(e.target.value)}>
-                        <MenuItem value="">All</MenuItem>
-                        {types.map((t) => (
-                            <MenuItem key={t} value={t}>
-                                {t}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
+                    <FormControl variant="standard" size="small" sx={{ minWidth: 50 }}>
+                        <InputLabel shrink>Type</InputLabel>
+                        <Select
+                            value={type}
+                            onChange={(e) => setType(e.target.value)}
+                            disableUnderline
+                            displayEmpty
+                            MenuProps={{ disableScrollLock: true }}
+                        >
+                            <MenuItem value="">All</MenuItem>
+                            {types.map((t) => (
+                                <MenuItem key={t} value={t}>
+                                    {t}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
 
-                <FormControl size="small" style={{ minWidth: 140 }}>
-                    <InputLabel shrink>Comfort Level</InputLabel>
-                    <Select
-                        value={comfortLevel}
-                        onChange={(e) => setComfortLevel(e.target.value)}
-                    >
-                        <MenuItem value="">All</MenuItem>
-                        {comfortLevels.map((c) => (
-                            <MenuItem key={c} value={c}>
-                                {c}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
+                    <FormControl variant="standard" size="small" sx={{ minWidth: 70 }}>
+                        <InputLabel shrink>Comfort Level</InputLabel>
+                        <Select
+                            value={comfortLevel}
+                            onChange={(e) => setComfortLevel(e.target.value)}
+                            disableUnderline
+                            displayEmpty
+                            MenuProps={{ disableScrollLock: true }}
+                        >
+                            <MenuItem value="">All</MenuItem>
+                            {comfortLevels.map((c) => (
+                                <MenuItem key={c} value={c}>
+                                    {c}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
 
-                <FormControlLabel
-                    control={
-                        <Checkbox
-                            checked={highlightedFirst}
-                            onChange={(e) => setHighlightedFirst(e.target.checked)}
-                            size="small"
-                        />
-                    }
-                    label="Highlighted First"
-                />
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={highlightedFirst}
+                                onChange={(e) => setHighlightedFirst(e.target.checked)}
+                                size="small"
+                            />
+                        }
+                        label="Highlighted"
+                    />
+                </Stack>
             </Box>
 
-            {/* --- Units List --- */}
             <div className="w-full h-full overflow-y-auto custom-scroll">
                 {sortedUnits.length === 0 ? (
                     <p className="text-gray-500 text-center mt-4">
