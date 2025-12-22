@@ -255,7 +255,7 @@ export const UnitDetailsDialog = ({
                             setEditedUnit({ ...editedUnit, occupancy: e.target.value })
                         }
                     />
-                    <FormControl sx={{ width: '100px' }}>
+                    <FormControl sx={{ width: '140px' }}>
                         <InputLabel>Room type</InputLabel>
                         <Select
                             value={editedUnit.type.en}

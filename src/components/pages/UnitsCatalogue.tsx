@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { use, useEffect, useMemo, useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import { UnitCard } from "../elements/UnitCard";
 import { useNavigate } from "react-router-dom";
@@ -18,19 +18,30 @@ interface UnitsCatalogueProps {
 }
 
 type Unit = {
-    img: string;
-    description: string;
+    description: {
+        en: string;
+        hu: string;
+    };
+    images: string[];
     occupancy: number;
-    type: string;
-    comfortLevel: string;
+    type: {
+        en: string;
+        hu: string;
+    };
+    comfortLevel: {
+        en: string;
+        hu: string;
+    };
+    highlighted: boolean;
 };
 
 export function UnitsCatalogue({ unitsRef }: UnitsCatalogueProps) {
     const navigate = useNavigate();
-
     const [capacity, setCapacity] = useState<number | "">("");
     const [type, setType] = useState<string>("");
     const [comfort, setComfort] = useState<string>("");
+
+    const [units, setUnits] = useState<Unit[]>([]);
 
     const handleBack = () => {
         navigate("/");
@@ -38,71 +49,41 @@ export function UnitsCatalogue({ unitsRef }: UnitsCatalogueProps) {
             unitsRef.current?.scrollIntoView({ behavior: "smooth" });
         }, 50);
     };
-
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
 
-    const placeholderUnits = [
-        {
-            img: './placeholder_unit1.webp',
-            description: 'A clean, modern room filled with natural light from its sunny-side location. It offers two well-built bunk beds, a small but functional furnished kitchenette, and a neat private bathroom with all essentials. A simple, comfortable space tailored for easy living.',
-            occupancy: 2,
-            type: 'Group Room',
-            comfortLevel: 'Superior'
-        },
-        {
-            img: './placeholder_unit2.webp',
-            description: 'A clean, modern room filled with natural light from its sunny-side location. It offers two well-built bunk beds, a small but functional furnished kitchenette, and a neat private bathroom with all essentials. A simple, comfortable space tailored for easy living.',
-            occupancy: 6,
-            type: 'Group Room',
-            comfortLevel: 'Superior'
-        },
-        {
-            img: './placeholder_unit3.webp',
-            description: 'A clean, modern room filled with natural light from its sunny-side location. It offers two well-built bunk beds, a small but functional furnished kitchenette, and a neat private bathroom with all essentials. A simple, comfortable space tailored for easy living.',
-            occupancy: 2,
-            type: 'Suite',
-            comfortLevel: 'Comfort'
-        },
-        {
-            img: './placeholder_unit4.webp',
-            description: 'A clean, modern room filled with natural light from its sunny-side location. It offers two well-built bunk beds, a small but functional furnished kitchenette, and a neat private bathroom with all essentials. A simple, comfortable space tailored for easy living.',
-            occupancy: 4,
-            type: 'Group Room',
-            comfortLevel: 'Normal'
-        },
-        {
-            img: './placeholder_unit5.webp',
-            description: 'A clean, modern room filled with natural light from its sunny-side location. It offers two well-built bunk beds, a small but functional furnished kitchenette, and a neat private bathroom with all essentials. A simple, comfortable space tailored for easy living.',
-            occupancy: 1,
-            type: 'Single Room',
-            comfortLevel: 'Superior'
-        },
-        {
-            img: './placeholder_unit6.webp',
-            description: 'A clean, modern room filled with natural light from its sunny-side location. It offers two well-built bunk beds, a small but functional furnished kitchenette, and a neat private bathroom with all essentials. A simple, comfortable space tailored for easy living.',
-            occupancy: 8,
-            type: 'Group Room',
-            comfortLevel: 'High'
-        },
-    ]
+
+    const fetchUnits = async () => {
+        try {
+            const res = await fetch(`http://localhost:5000/units`);
+            if (!res.ok) throw new Error('Failed to fetch units');
+            const data = await res.json();
+            setUnits(data);
+        } catch (err) {
+            console.error(err);
+        }
+    }
+    useEffect(() => {
+        fetchUnits();
+    }, []);
 
 
     const sortedUnits = useMemo(() => {
-        const matches = (unit: Unit) => {
+        const filtered = units.filter((unit) => {
             if (capacity && unit.occupancy < capacity) return false;
-            if (type && unit.type !== type) return false;
-            if (comfort && unit.comfortLevel !== comfort) return false;
+            if (type && unit.type.en !== type) return false;
+            if (comfort && unit.comfortLevel.en !== comfort) return false;
             return true;
-        };
-
-        return [...placeholderUnits].sort((a, b) => {
-            const aMatch = matches(a);
-            const bMatch = matches(b);
-            return Number(bMatch) - Number(aMatch);
         });
-    }, [capacity, type, comfort]);
+
+        return filtered.sort((a, b) => {
+            if (b.highlighted !== a.highlighted) return Number(b.highlighted) - Number(a.highlighted);
+            return a.occupancy - b.occupancy;
+        });
+
+    }, [units, capacity, type, comfort]);
+
 
     return (
         <div className="w-full h-screen p-4 lg:p-10 flex flex-col items-center relative">
@@ -187,11 +168,31 @@ export function UnitsCatalogue({ unitsRef }: UnitsCatalogueProps) {
 
 
             {/* Units */}
+            {/* Units */}
             <div className="w-full flex flex-wrap justify-between gap-y-8 mt-8 pb-10">
-                {sortedUnits.map((unit, index) => (
-                    <UnitCard key={index} {...unit} />
-                ))}
+                {sortedUnits.length > 0 ? (
+                    sortedUnits.map((unit, index) => (
+                        <UnitCard
+                            key={index}
+                            images={unit.images}
+                            description={unit.description.en}
+                            occupancy={unit.occupancy}
+                            type={unit.type.en}
+                            comfortLevel={unit.comfortLevel.en}
+                        />
+                    ))
+                ) : (
+                    <div className="w-full flex flex-col items-center justify-center py-20 text-center text-gray-500">
+                        <p className="text-lg md:text-xl font-medium">
+                            No rooms match your current filters.
+                        </p>
+                        <p className="mt-2 text-sm md:text-base">
+                            Try adjusting the capacity, type, or comfort options.
+                        </p>
+                    </div>
+                )}
             </div>
+
         </div>
     );
 }

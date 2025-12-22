@@ -46,28 +46,18 @@ export function OurUnitsPage() {
             <p className="text-[12px] xs:text-[13px] w-full md:text-[16px] lg:max-xl:text-[20px] font-light md:w-[85%] xl:w-full text-center">Visit the Units page for more information or get in touch to reserve your room.</p>
 
             <div className="w-full mt-8 flex flex-col gap-4 lg:flex-row lg:justify-between">
-                {units.map((unit: Unit) => (
-                    unit.highlighted ? <SectionUnitCard
-                        img={unit.images[0]}
-                        description={unit.description.en}
-                        occupancy={unit.occupancy}
-                    /> : null
-                ))}
-                {/* <SectionUnitCard
-                    img="/placeholder_unit1.webp"
-                    description="A clean, modern room filled with natural light from its sunny-side location. It offers two well-built bunk beds, a small but functional furnished kitchenette, and a neat private bathroom with all essentials. A simple, comfortable space tailored for easy living."
-                    occupancy={2}
-                />
-                <SectionUnitCard
-                    img="/placeholder_unit2.webp"
-                    description="A cozy, well-organized studio designed for both comfort and efficiency. It features a wide single bed, a compact dining corner, and a fully equipped kitchenette for everyday meals. The large window brightens the space and complements the calm interior."
-                    occupancy={6}
-                />
-                <SectionUnitCard
-                    img="/placeholder_unit3.webp"
-                    description="A bright, spacious unit with a fresh, modern layout and smart storage solutions. It includes a comfy double bed, a stylish kitchenette, and a sleek private bathroom stocked with essentials. Warm lighting and neutral decor make it a relaxing place to stay."
-                    occupancy={4}
-                /> */}
+                {units
+                    .filter((unit: Unit) => unit.highlighted)
+                    .slice(0, 3)
+                    .map((unit: Unit, index: number) => (
+                        <SectionUnitCard
+                            key={index}
+                            img={unit.images[0]}
+                            description={unit.description.en}
+                            occupancy={unit.occupancy}
+                        />
+                    ))}
+
             </div>
 
             <div
