@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import { Logo } from "../elements/Logo admin"
 import { UnitsControlBlock } from "../elements/UnitsControlBlock"
+import { TextControlBlock } from "../elements/TextControlBlock";
 export interface Unit {
     description: {
         en: string;
@@ -30,6 +31,7 @@ export const AdminPanel = () => {
         <div className="w-full min-h-screen p-4 lg:p-10 flex flex-col relative mt-6 lg:mt-0">
             <Logo />
             <UnitsControlBlock units={units} setUnits={setUnits} />
+            <TextControlBlock />
         </div>
     )
 }
