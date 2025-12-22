@@ -34,15 +34,12 @@ export function SectionUnitCard({ img, description, occupancy }: SectionUnitCard
                 </div>
             </div>
 
-
-            {/* Image */}
             <div className="w-full h-[57%] md:h-[62%] relative z-0">
                 <img src={img} alt={img} className="w-full h-full object-cover object-center rounded-t-xl transition-transform duration-300 group-hover:scale-105" />
             </div>
 
-            {/* Text and occupancy */}
             <div className='w-full p-4 h-[43%] md:h-auto relative z-0'>
-                <p className="text-[12px] md:text-[14px] font-light">{description}</p>
+                <p className="text-[12px] md:text-[14px] font-light">{description.length > 270 ? description.slice(0, 270) + "..." : description}</p>
                 <div className='flex gap-1 mt-4'>
                     <User2 size={20} color="#AE7461" fill="#AE7461" />
                     <p className='font-light text-[14px] md:text-[16px]'>
