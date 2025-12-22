@@ -34,16 +34,22 @@ export const UnitsControlBlock = ({ units, setUnits }: { units: any[]; setUnits:
     const [descriptionEn, setDescriptionEn] = useState("");
     const [descriptionHu, setDescriptionHu] = useState("");
 
-    const OCCUPANCY_OPTIONS = ["1", "2", "4", "6", "8"];
-    const ROOM_TYPE_OPTIONS = ["Single", "Double", "Twin", "Suite"];
+    const OCCUPANCY_OPTIONS = ["1", "2", "3", "4", "6", "8"];
+
     const COMFORT_OPTIONS = ["Economy", "Standard", "Comfort", "Luxury"];
 
-    const ROOM_TYPE_MAP = {
-        Single: "Egyágyas",
-        Double: "Kétágyas",
-        Twin: "Két külön ágyas",
+    const ROOM_TYPES = {
+        "Single": "Egyszemélyes",
+        "2-Person": "Kétszemélyes",
+        "3-Person": "Háromágyas",
+        "4-Person": "Négyágyas",
+        "6-Person": "Hatágyas",
+        "8-Person": "Nyolcágyas",
         Suite: "Lakosztály",
     } as const;
+
+    type RoomType = keyof typeof ROOM_TYPES;
+
 
     const COMFORT_MAP = {
         Economy: "Gazdaságos",
@@ -52,7 +58,6 @@ export const UnitsControlBlock = ({ units, setUnits }: { units: any[]; setUnits:
         Luxury: "Luxus",
     } as const;
 
-    type RoomType = keyof typeof ROOM_TYPE_MAP;
     type ComfortType = keyof typeof COMFORT_MAP;
 
 
@@ -97,9 +102,10 @@ export const UnitsControlBlock = ({ units, setUnits }: { units: any[]; setUnits:
                 "type",
                 JSON.stringify({
                     en: roomType,
-                    hu: ROOM_TYPE_MAP[roomType],
+                    hu: ROOM_TYPES[roomType],
                 })
             );
+
             formData.append(
                 "comfortLevel",
                 JSON.stringify({
@@ -254,20 +260,21 @@ export const UnitsControlBlock = ({ units, setUnits }: { units: any[]; setUnits:
                                 </Select>
                             </FormControl>
 
-                            <FormControl fullWidth variant="standard" style={{ maxWidth: '130px' }}>
+                            <FormControl fullWidth variant="standard" style={{ maxWidth: "130px" }}>
                                 <InputLabel id="room-type-label">Room type</InputLabel>
                                 <Select
                                     labelId="room-type-label"
                                     value={roomType}
-                                    onChange={(e) => setRoomType(e.target.value)}
+                                    onChange={(e) => setRoomType(e.target.value as RoomType)}
                                 >
-                                    {ROOM_TYPE_OPTIONS.map((option) => (
-                                        <MenuItem key={option} value={option}>
-                                            {option}
+                                    {Object.entries(ROOM_TYPES).map(([en, hu]) => (
+                                        <MenuItem key={en} value={en}>
+                                            {en}
                                         </MenuItem>
                                     ))}
                                 </Select>
                             </FormControl>
+
 
                             <FormControl fullWidth variant="standard" style={{ maxWidth: '150px' }}>
                                 <InputLabel id="comfort-label">Comfort level</InputLabel>

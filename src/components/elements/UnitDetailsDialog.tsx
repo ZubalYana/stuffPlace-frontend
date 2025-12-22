@@ -32,13 +32,24 @@ export const UnitDetailsDialog = ({
     const [isUploadingImage, setIsUploadingImage] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
 
-    const ROOM_TYPE_OPTIONS = ["Single", "Double", "Twin", "Suite"] as const;
+    const ROOM_TYPE_OPTIONS = [
+        "Single",
+        "2-Person",
+        "3-Person",
+        "4-Person",
+        "6-Person",
+        "8-Person",
+        "Suite",
+    ] as const;
 
     const ROOM_TYPE_MAP: Record<string, string> = {
-        Single: "Egyszemélyes",
-        Double: "Kétszemélyes",
-        Twin: "Két külön ágy",
-        Suite: "Lakosztály",
+        "Single": "Egyszemélyes",
+        "2-Person": "Kétszemélyes",
+        "3-Person": "Háromágyas",
+        "4-Person": "Négyágyas",
+        "6-Person": "Hatágyas",
+        "8-Person": "Nyolcágyas",
+        "Suite": "Lakosztály",
     };
 
     const COMFORT_OPTIONS = ["Economy", "Standard", "Comfort", "Luxury"] as const;
