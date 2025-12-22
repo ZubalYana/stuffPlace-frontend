@@ -139,9 +139,13 @@ export function UnitsCatalogue({ unitsRef }: UnitsCatalogueProps) {
                             }}
                         >
                             <MenuItem value="">Any</MenuItem>
-                            <MenuItem value="Group Room">Group Room</MenuItem>
+                            <MenuItem value="Single">Single</MenuItem>
+                            <MenuItem value="2-Person">2-Person</MenuItem>
+                            <MenuItem value="3-Person">3-Person</MenuItem>
+                            <MenuItem value="4-Person">4-Person</MenuItem>
+                            <MenuItem value="6-Person">6-Person</MenuItem>
+                            <MenuItem value="8-Person">8-Person</MenuItem>
                             <MenuItem value="Suite">Suite</MenuItem>
-                            <MenuItem value="Single Room">Single Room</MenuItem>
                         </Select>
                     </FormControl>
 
@@ -157,10 +161,10 @@ export function UnitsCatalogue({ unitsRef }: UnitsCatalogueProps) {
                             }}
                         >
                             <MenuItem value="">Any</MenuItem>
-                            <MenuItem value="Normal">Normal</MenuItem>
+                            <MenuItem value="Economy">Economy</MenuItem>
+                            <MenuItem value="Standard">Standard</MenuItem>
                             <MenuItem value="Comfort">Comfort</MenuItem>
-                            <MenuItem value="Superior">Superior</MenuItem>
-                            <MenuItem value="High">High</MenuItem>
+                            <MenuItem value="Luxury">Luxury</MenuItem>
                         </Select>
                     </FormControl>
                 </Stack>
