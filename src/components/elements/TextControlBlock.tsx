@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
     TextField,
     Tabs,
     Tab,
+    Button,
 } from "@mui/material";
+import { FeedbackAlert, type FeedbackType } from "./FeedbackAlert";
+import CircularProgress from "@mui/material/CircularProgress";
 
 type Lang = "en" | "hu";
 
@@ -25,6 +28,10 @@ type HighlightedLocalizedText = {
 
 export const TextControlBlock = () => {
     const [lang, setLang] = useState<Lang>("en");
+    const [isSaving, setIsSaving] = useState(false);
+    const [feedbackOpen, setFeedbackOpen] = useState(false);
+    const [feedbackMessage, setFeedbackMessage] = useState("");
+    const [feedbackSeverity, setFeedbackSeverity] = useState<FeedbackType>("success");
 
     const [mainDescription, setMainDescription] =
         useState<HighlightedLocalizedText>({
@@ -51,6 +58,69 @@ export const TextControlBlock = () => {
         useState<LocalizedText>({ en: "", hu: "" });
 
     const isEmpty = (value: string) => value.trim().length === 0;
+
+    const handleSave = async () => {
+        setIsSaving(true);
+
+        try {
+            const res = await fetch("http://localhost:5000/text", {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    mainDescription,
+                    aboutText,
+                    advantagesText,
+                    unitsText,
+                    facilitiesText,
+                    footerSubtext,
+                }),
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                throw new Error(data.message || "Failed to save text");
+            }
+
+            console.log("Saved successfully:", data);
+            setFeedbackMessage('Text modified successfully!');
+            setFeedbackSeverity("success");
+            setFeedbackOpen(true);
+        } catch (err: any) {
+            console.error(err);
+            setFeedbackMessage(`Error: ${err.message}`);
+            setFeedbackSeverity("error");
+            setFeedbackOpen(true);
+        } finally {
+            setIsSaving(false);
+        }
+    };
+
+    const fetchText = async () => {
+        try {
+            const res = await fetch("http://localhost:5000/text");
+            if (!res.ok) throw new Error("Failed to fetch text");
+
+            const data = await res.json();
+            console.log("Fetched text:", data);
+
+            setMainDescription(data.mainDescription);
+            setAboutText(data.aboutUsText);
+            setAdvantagesText(data.advantagesText);
+            setUnitsText(data.unitsText);
+            setFacilitiesText(data.facilitiesText);
+            setFooterSubtext(data.footerSubtext);
+        } catch (err: any) {
+            console.error("Error fetching text:", err);
+        }
+    };
+
+
+    useEffect(() => {
+        fetchText();
+    }, []);
 
     return (
         <div className="w-full text-[#1E1E1E] mt-6 space-y-6">
@@ -206,8 +276,39 @@ export const TextControlBlock = () => {
                             />
                         </div>
                     ))}
+                    <Button
+                        variant="contained"
+                        sx={{
+                            mt: 3,
+                            width: "100%",
+                            height: 48,
+                            backgroundColor: "#AE7461",
+                            fontWeight: "bold",
+                            fontSize: "16px",
+                            textTransform: "none",
+                            "&:hover": {
+                                backgroundColor: "#966554",
+                            },
+                        }}
+                        onClick={handleSave}
+                        disabled={isSaving}
+                    >
+                        {isSaving ? (
+                            <CircularProgress size={24} sx={{ color: "white" }} />
+                        ) : (
+                            "Save Changes"
+                        )}
+                    </Button>
+
+
                 </div>
             </div>
+            <FeedbackAlert
+                open={feedbackOpen}
+                message={feedbackMessage}
+                severity={feedbackSeverity}
+                onClose={() => setFeedbackOpen(false)}
+            />
         </div>
     );
 };
