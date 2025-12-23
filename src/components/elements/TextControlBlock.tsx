@@ -32,28 +32,24 @@ export const TextControlBlock = () => {
     const [feedbackOpen, setFeedbackOpen] = useState(false);
     const [feedbackMessage, setFeedbackMessage] = useState("");
     const [feedbackSeverity, setFeedbackSeverity] = useState<FeedbackType>("success");
+    const [initialData, setInitialData] = useState<string | null>(null);
 
     const [mainDescription, setMainDescription] =
         useState<HighlightedLocalizedText>({
             en: { text: "", highlight: "" },
             hu: { text: "", highlight: "" },
         });
-
     const [aboutText, setAboutText] =
         useState<HighlightedLocalizedText>({
             en: { text: "", highlight: "" },
             hu: { text: "", highlight: "" },
         });
-
     const [advantagesText, setAdvantagesText] =
         useState<LocalizedText>({ en: "", hu: "" });
-
     const [unitsText, setUnitsText] =
         useState<LocalizedText>({ en: "", hu: "" });
-
     const [facilitiesText, setFacilitiesText] =
         useState<LocalizedText>({ en: "", hu: "" });
-
     const [footerSubtext, setFooterSubtext] =
         useState<LocalizedText>({ en: "", hu: "" });
 
@@ -61,7 +57,6 @@ export const TextControlBlock = () => {
 
     const handleSave = async () => {
         setIsSaving(true);
-
         try {
             const res = await fetch("http://localhost:5000/text", {
                 method: "PUT",
@@ -85,6 +80,17 @@ export const TextControlBlock = () => {
             }
 
             console.log("Saved successfully:", data);
+
+            setInitialData(
+                JSON.stringify({
+                    mainDescription,
+                    aboutText,
+                    advantagesText,
+                    unitsText,
+                    facilitiesText,
+                    footerSubtext,
+                })
+            );
             setFeedbackMessage('Text modified successfully!');
             setFeedbackSeverity("success");
             setFeedbackOpen(true);
@@ -104,7 +110,6 @@ export const TextControlBlock = () => {
             if (!res.ok) throw new Error("Failed to fetch text");
 
             const data = await res.json();
-            console.log("Fetched text:", data);
 
             setMainDescription(data.mainDescription);
             setAboutText(data.aboutUsText);
@@ -112,15 +117,37 @@ export const TextControlBlock = () => {
             setUnitsText(data.unitsText);
             setFacilitiesText(data.facilitiesText);
             setFooterSubtext(data.footerSubtext);
+
+            setInitialData(
+                JSON.stringify({
+                    mainDescription: data.mainDescription,
+                    aboutText: data.aboutUsText,
+                    advantagesText: data.advantagesText,
+                    unitsText: data.unitsText,
+                    facilitiesText: data.facilitiesText,
+                    footerSubtext: data.footerSubtext,
+                })
+            );
         } catch (err: any) {
             console.error("Error fetching text:", err);
         }
     };
 
-
     useEffect(() => {
         fetchText();
     }, []);
+
+    const hasChanges =
+        initialData !==
+        JSON.stringify({
+            mainDescription,
+            aboutText,
+            advantagesText,
+            unitsText,
+            facilitiesText,
+            footerSubtext,
+        });
+
 
     return (
         <div className="w-full text-[#1E1E1E] mt-6 space-y-6">
@@ -291,7 +318,7 @@ export const TextControlBlock = () => {
                             },
                         }}
                         onClick={handleSave}
-                        disabled={isSaving}
+                        disabled={isSaving || !hasChanges}
                     >
                         {isSaving ? (
                             <CircularProgress size={24} sx={{ color: "white" }} />
@@ -299,6 +326,7 @@ export const TextControlBlock = () => {
                             "Save Changes"
                         )}
                     </Button>
+
 
 
                 </div>
