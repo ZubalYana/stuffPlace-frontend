@@ -1,9 +1,26 @@
 import { Phone, Search } from "lucide-react";
+import { useState, useEffect } from 'react';
 export function AboutUs() {
+    const [aboutUsText, setAboutText] = useState('');
+    const fetchText = async () => {
+        try {
+            const res = await fetch('http://localhost:5000/text')
+            if (!res.ok) throw new Error("Failed to fetch text");
+            const data = await res.json();
+
+            setAboutText(data.aboutUsText.en.text);
+        } catch (err) {
+            console.log('Error fetching text:', err)
+        }
+    }
+
+    useEffect(() => {
+        fetchText();
+    }, []);
     return (
         <div className="w-full h-screen p-4 lg:p-10 flex flex-col items-center relative">
             <h2 className="text-[24px] md:text-[32px] lg:text-[42px] text-[#1E1E1E] font-bold">About Us</h2>
-            <p className="text-[12px] xs:text-[13px] w-full md:text-[14px] lg:max-xl:text-[20px] font-light md:w-[85%] xl:w-full text-center"><span className="font-semibold">StaffPlace</span> offers modern, secure accommodation for individuals and corporate teams in the heart of Budapest. Located at <span className="font-semibold">Beke utca 22–26</span>, our four-storey complex features <span className="font-semibold">400</span> contemporary <span className="font-semibold">living units</span>, available for 2, 4, 6, or 8 people. Designed for comfort and independence, StaffPlace provides all essential amenities on-site, including relax zones, TV rooms, laundry rooms, an on-site shop, and lecture rooms in the basement. Our mission is to deliver convenient, well-managed housing where residents feel safe, supported, and at home.</p>
+            <p className="text-[12px] xs:text-[13px] w-full md:text-[14px] lg:max-xl:text-[20px] font-light md:w-[85%] xl:w-full text-center" style={{ whiteSpace: "pre-wrap" }}>{aboutUsText}</p>
 
             <div className="w-full md:w-auto flex flex-col md:flex-row items-center gap-4 mt-5 md:gap-8 md:mt-8 relative z-20">
 

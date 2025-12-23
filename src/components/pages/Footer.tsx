@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Phone, MailIcon } from "lucide-react";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
@@ -6,7 +6,7 @@ import MuiAlert from "@mui/material/Alert";
 export function Footer() {
     const [copied, setCopied] = useState<string | null>(null);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
-
+    const [footerSubtext, setFooterSubtext] = useState('');
     const handleCopy = (text: string, type: "phone" | "email") => {
         navigator.clipboard.writeText(text);
         setCopied(type);
@@ -20,12 +20,28 @@ export function Footer() {
         setCopied(null);
     };
 
+    const fetchText = async () => {
+        try {
+            const res = await fetch('http://localhost:5000/text')
+            if (!res.ok) throw new Error("Failed to fetch text");
+            const data = await res.json();
+
+            setFooterSubtext(data.footerSubtext.en);
+        } catch (err) {
+            console.log('Error fetching text:', err)
+        }
+    }
+
+    useEffect(() => {
+        fetchText();
+    }, []);
+
     return (
         <div className="w-full min-h-[48vh] relative mt-8">
             <div className="p-4 lg:p-10 relative z-20 text-[#F5F5F5] w-full flex flex-col md:flex-row md:justify-between">
                 <div className="md:w-[40%] md:h-full">
                     <h3 className="uppercase text-[24px] md:text-[28px] lg:text-[32px] font-bold">StuffPlace</h3>
-                    <p className="text-[12px] xs:text-[13px] md:text-[14px] lg:text-[16px] font-light">Contemporary accommodation for individual residents and corporate teams in the heart of Budapest.</p>
+                    <p className="text-[12px] xs:text-[13px] md:text-[14px] lg:text-[16px] font-light">{footerSubtext}</p>
                     <div
                         onClick={() => handleCopy("+36 30 742 8619", "phone")}
                         className="relative flex gap-2 items-center mt-4 group cursor-pointer w-fit select-none"

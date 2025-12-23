@@ -4,8 +4,9 @@ import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom'
 
 export function OurUnitsPage() {
-    const navigate = useNavigate()
-    const [units, setUnits] = useState([])
+    const navigate = useNavigate();
+    const [units, setUnits] = useState([]);
+    const [unitsText, setUnitsText] = useState('');
 
     type Unit = {
         description: {
@@ -39,11 +40,28 @@ export function OurUnitsPage() {
     }
     useEffect(() => {
         loadHighlightedImages();
-    }, [])
+    }, []);
+
+    const fetchText = async () => {
+        try {
+            const res = await fetch('http://localhost:5000/text')
+            if (!res.ok) throw new Error("Failed to fetch text");
+            const data = await res.json();
+
+            setUnitsText(data.unitsText.en);
+        } catch (err) {
+            console.log('Error fetching text:', err)
+        }
+    }
+
+    useEffect(() => {
+        fetchText();
+    }, []);
+
     return (
         <div className="w-full min-h-screen p-4 lg:p-10 flex flex-col items-center relative mt-6 lg:mt-0">
             <h2 className="text-[24px] md:text-[32px] lg:text-[42px] text-[#1E1E1E] font-bold text-center">Explore Our Units</h2>
-            <p className="text-[12px] xs:text-[13px] w-full md:text-[16px] lg:max-xl:text-[20px] font-light md:w-[85%] xl:w-full text-center">Visit the Units page for more information or get in touch to reserve your room.</p>
+            <p className="text-[12px] xs:text-[13px] w-full md:text-[16px] lg:max-xl:text-[20px] font-light md:w-[85%] xl:w-full text-center">{unitsText}</p>
 
             <div className="w-full mt-8 flex flex-col gap-4 lg:flex-row lg:justify-between">
                 {units

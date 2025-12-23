@@ -1,6 +1,6 @@
 import { Header } from "../elements/Header"
 import { Handshake, Eye, ArrowDown } from "lucide-react"
-
+import { useState, useEffect } from 'react'
 type MainPageProps = {
     refs: {
         aboutRef: React.RefObject<HTMLDivElement | null>,
@@ -12,13 +12,29 @@ type MainPageProps = {
     isMenuOpen: boolean
 }
 export function MainPage({ refs, toggleMenu, isMenuOpen }: MainPageProps) {
+    const [mainDescription, setMainDescription] = useState('')
     const scrollToUnits = () => {
         refs.unitsRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
-
     const scrollToAbout = () => {
         refs.aboutRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
+
+    const fetchText = async () => {
+        try {
+            const res = await fetch('http://localhost:5000/text')
+            if (!res.ok) throw new Error("Failed to fetch text");
+            const data = await res.json();
+
+            setMainDescription(data.mainDescription.en.text);
+        } catch (err) {
+            console.log('Error fetching text:', err)
+        }
+    }
+
+    useEffect(() => {
+        fetchText();
+    }, []);
     return (
         <div className="w-full h-screen p-4 lg:p-10">
             <div className="z-20 relative">
@@ -28,10 +44,8 @@ export function MainPage({ refs, toggleMenu, isMenuOpen }: MainPageProps) {
 
                     <h1 className="w-full text-[24px] xs:text-[27px] md:text-[42px] lg:text-[64px] md:w-[90%] lg:max-xl:w-[70%] xl:w-[60%] xl:text-[64px] text-center font-bold text-[#1E1E1E] leading-[1.2] relative z-20">Strategic Location and Modern Living in <span className="text-[#AE7461]">Budapest</span></h1>
                     <div className="w-full flex flex-col items-center mt-3 relative z-20">
-                        <p className="text-[12px] xs:text-[13px] w-full md:text-[14px] lg:max-xl:text-[20px] font-light md:w-[85%] xl:w-[65%] text-center"><span className="font-semibold">StaffPlace</span> offers contemporary accommodation for individual residents and corporate teams in the heart of Budapest.</p>
-
-                        <p className="text-[12px] xs:text-[13px] w-full md:text-[14px] lg:max-xl:text-[20px] font-light md:w-[85%] xl:w-[65%] text-center mt-2">
-                            Located at <span className="font-semibold">Beke utca 22–26</span>, our four-storey complex features <span className="font-semibold">400</span> modern and secure <span className="font-semibold">living units</span>, designed to provide a convenient, well-managed housing solution where comfort, independence, and safety are the top priorities.
+                        <p className="text-[12px] xs:text-[13px] w-full md:text-[14px] lg:max-xl:text-[20px] font-light md:w-[85%] xl:w-[65%] text-center" style={{ whiteSpace: "pre-wrap" }}>
+                            {mainDescription}
                         </p>
                     </div>
 
