@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react"
-import { Logo } from "../elements/Logo admin"
-import { UnitsControlBlock } from "../elements/UnitsControlBlock"
+import { useState, useEffect } from "react";
+import { Logo } from "../elements/Logo admin";
+import { UnitsControlBlock } from "../elements/UnitsControlBlock";
 import { TextControlBlock } from "../elements/TextControlBlock";
+import { AdvantagesControlBlock } from "../elements/AdvantagesControlBlock";
 export interface Unit {
     description: {
         en: string;
@@ -32,6 +33,7 @@ export const AdminPanel = () => {
             <Logo />
             <UnitsControlBlock units={units} setUnits={setUnits} />
             <TextControlBlock />
+            <AdvantagesControlBlock />
         </div>
     )
 }
