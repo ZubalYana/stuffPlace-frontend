@@ -125,7 +125,17 @@ export const TextControlBlock = () => {
                 },
             });
 
-            setAboutText(data.aboutUsText);
+            setAboutText({
+                en: {
+                    ...data.aboutUsText.en,
+                    highlightsInput: data.aboutUsText.en.highlights.join(", "),
+                },
+                hu: {
+                    ...data.aboutUsText.hu,
+                    highlightsInput: data.aboutUsText.hu.highlights.join(", "),
+                },
+            });
+
             setAdvantagesText(data.advantagesText);
             setUnitsText(data.unitsText);
             setFacilitiesText(data.facilitiesText);
@@ -198,10 +208,10 @@ export const TextControlBlock = () => {
                             }
                             fullWidth
                         />
-
                         <TextField
                             label={`Main Page Highlighted (${lang.toUpperCase()})`}
                             placeholder="Comma-separated phrases"
+                            sx={{ marginTop: '15px' }}
                             value={mainDescription[lang].highlightsInput}
                             onChange={(e) =>
                                 setMainDescription({
@@ -227,9 +237,6 @@ export const TextControlBlock = () => {
                             helperText="Comma-separated phrases, each must exist in the description"
                             fullWidth
                         />
-
-
-
                     </div>
                     <div className="space-y-3 mt-6">
                         <TextField
@@ -252,10 +259,10 @@ export const TextControlBlock = () => {
                             }
                             fullWidth
                         />
-
                         <TextField
                             label={`About Us Highlighted (${lang.toUpperCase()})`}
                             placeholder="Comma-separated phrases"
+                            sx={{ marginTop: '15px' }}
                             value={aboutText[lang].highlightsInput}
                             onChange={(e) =>
                                 setAboutText({
@@ -284,9 +291,6 @@ export const TextControlBlock = () => {
                             helperText="Comma-separated phrases, each must exist in the text"
                             fullWidth
                         />
-
-
-
                     </div>
                 </div>
 
