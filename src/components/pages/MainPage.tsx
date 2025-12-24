@@ -12,7 +12,14 @@ type MainPageProps = {
     isMenuOpen: boolean
 }
 export function MainPage({ refs, toggleMenu, isMenuOpen }: MainPageProps) {
-    const [mainDescription, setMainDescription] = useState('')
+    const [mainDescription, setMainDescription] = useState<{
+        text: string;
+        highlights: string[];
+    }>({
+        text: "",
+        highlights: [],
+    });
+
     const scrollToUnits = () => {
         refs.unitsRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
@@ -26,7 +33,11 @@ export function MainPage({ refs, toggleMenu, isMenuOpen }: MainPageProps) {
             if (!res.ok) throw new Error("Failed to fetch text");
             const data = await res.json();
 
-            setMainDescription(data.mainDescription.en.text);
+            setMainDescription({
+                text: data.mainDescription.en.text,
+                highlights: data.mainDescription.en.highlights,
+            });
+
         } catch (err) {
             console.log('Error fetching text:', err)
         }
@@ -35,6 +46,35 @@ export function MainPage({ refs, toggleMenu, isMenuOpen }: MainPageProps) {
     useEffect(() => {
         fetchText();
     }, []);
+
+    function renderHighlightedText(
+        text: string,
+        highlights: string[]
+    ) {
+        if (!highlights.length) return text;
+
+        const escaped = highlights.map(h =>
+            h.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+        );
+
+        const regex = new RegExp(`(${escaped.join("|")})`, "gi");
+
+        return text.split(regex).map((part, index) =>
+            highlights.some(
+                h => part.toLowerCase() === h.toLowerCase()
+            ) ? (
+                <span
+                    key={index}
+                    className="text-black font-semibold"
+                >
+                    {part}
+                </span>
+            ) : (
+                <span key={index}>{part}</span>
+            )
+        );
+    }
+
     return (
         <div className="w-full h-screen p-4 lg:p-10">
             <div className="z-20 relative">
@@ -44,9 +84,18 @@ export function MainPage({ refs, toggleMenu, isMenuOpen }: MainPageProps) {
 
                     <h1 className="w-full text-[24px] xs:text-[27px] md:text-[42px] lg:text-[64px] md:w-[90%] lg:max-xl:w-[70%] xl:w-[60%] xl:text-[64px] text-center font-bold text-[#1E1E1E] leading-[1.2] relative z-20">Strategic Location and Modern Living in <span className="text-[#AE7461]">Budapest</span></h1>
                     <div className="w-full flex flex-col items-center mt-3 relative z-20">
-                        <p className="text-[12px] xs:text-[13px] w-full md:text-[14px] lg:max-xl:text-[20px] font-light md:w-[85%] xl:w-[65%] text-center" style={{ whiteSpace: "pre-wrap" }}>
-                            {mainDescription}
+                        <p
+                            className="text-[12px] xs:text-[13px] w-full md:text-[14px]
+               lg:max-xl:text-[20px] font-light md:w-[85%]
+               xl:w-[65%] text-center"
+                            style={{ whiteSpace: "pre-wrap" }}
+                        >
+                            {renderHighlightedText(
+                                mainDescription.text,
+                                mainDescription.highlights
+                            )}
                         </p>
+
                     </div>
 
                     <div className="w-full md:w-auto flex flex-col md:flex-row items-center gap-4 mt-5 md:gap-8 md:mt-12 relative z-20">

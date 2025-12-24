@@ -18,13 +18,16 @@ type LocalizedText = {
 type HighlightedLocalizedText = {
     en: {
         text: string;
-        highlight: string;
+        highlights: string[];
+        highlightsInput: string;
     };
     hu: {
         text: string;
-        highlight: string;
+        highlights: string[];
+        highlightsInput: string;
     };
 };
+
 
 export const TextControlBlock = () => {
     const [lang, setLang] = useState<Lang>("en");
@@ -36,13 +39,13 @@ export const TextControlBlock = () => {
 
     const [mainDescription, setMainDescription] =
         useState<HighlightedLocalizedText>({
-            en: { text: "", highlight: "" },
-            hu: { text: "", highlight: "" },
+            en: { text: "", highlights: [], highlightsInput: "" },
+            hu: { text: "", highlights: [], highlightsInput: "" },
         });
     const [aboutText, setAboutText] =
         useState<HighlightedLocalizedText>({
-            en: { text: "", highlight: "" },
-            hu: { text: "", highlight: "" },
+            en: { text: "", highlights: [], highlightsInput: "" },
+            hu: { text: "", highlights: [], highlightsInput: "" },
         });
     const [advantagesText, setAdvantagesText] =
         useState<LocalizedText>({ en: "", hu: "" });
@@ -53,7 +56,7 @@ export const TextControlBlock = () => {
     const [footerSubtext, setFooterSubtext] =
         useState<LocalizedText>({ en: "", hu: "" });
 
-    const isEmpty = (value: string) => value.trim().length === 0;
+    // const isEmpty = (value: string) => value.trim().length === 0;
 
     const handleSave = async () => {
         setIsSaving(true);
@@ -111,7 +114,17 @@ export const TextControlBlock = () => {
 
             const data = await res.json();
 
-            setMainDescription(data.mainDescription);
+            setMainDescription({
+                en: {
+                    ...data.mainDescription.en,
+                    highlightsInput: data.mainDescription.en.highlights.join(", "),
+                },
+                hu: {
+                    ...data.mainDescription.hu,
+                    highlightsInput: data.mainDescription.hu.highlights.join(", "),
+                },
+            });
+
             setAboutText(data.aboutUsText);
             setAdvantagesText(data.advantagesText);
             setUnitsText(data.unitsText);
@@ -187,28 +200,36 @@ export const TextControlBlock = () => {
                         />
 
                         <TextField
-                            label={`Main Page Highligted (${lang.toUpperCase()})`}
-                            value={mainDescription[lang].highlight}
-                            inputProps={{ maxLength: 80 }}
+                            label={`Main Page Highlighted (${lang.toUpperCase()})`}
+                            placeholder="Comma-separated phrases"
+                            value={mainDescription[lang].highlightsInput}
                             onChange={(e) =>
                                 setMainDescription({
                                     ...mainDescription,
                                     [lang]: {
                                         ...mainDescription[lang],
-                                        highlight: e.target.value,
+                                        highlightsInput: e.target.value,
                                     },
                                 })
                             }
-                            error={
-                                !isEmpty(mainDescription[lang].highlight) &&
-                                !mainDescription[lang].text.includes(
-                                    mainDescription[lang].highlight
-                                )
+                            onBlur={() =>
+                                setMainDescription({
+                                    ...mainDescription,
+                                    [lang]: {
+                                        ...mainDescription[lang],
+                                        highlights: mainDescription[lang].highlightsInput
+                                            .split(",")
+                                            .map(h => h.trim())
+                                            .filter(Boolean),
+                                    },
+                                })
                             }
-                            helperText="Must exist inside the description"
+                            helperText="Comma-separated phrases, each must exist in the description"
                             fullWidth
-                            sx={{ marginTop: '10px' }}
                         />
+
+
+
                     </div>
                     <div className="space-y-3 mt-6">
                         <TextField
@@ -234,27 +255,38 @@ export const TextControlBlock = () => {
 
                         <TextField
                             label={`About Us Highlighted (${lang.toUpperCase()})`}
-                            value={aboutText[lang].highlight}
-                            inputProps={{ maxLength: 100 }}
+                            placeholder="Comma-separated phrases"
+                            value={aboutText[lang].highlightsInput}
                             onChange={(e) =>
                                 setAboutText({
                                     ...aboutText,
                                     [lang]: {
                                         ...aboutText[lang],
-                                        highlight: e.target.value,
+                                        highlightsInput: e.target.value,
                                     },
                                 })
                             }
-                            error={
-                                !isEmpty(aboutText[lang].highlight) &&
-                                !aboutText[lang].text.includes(
-                                    aboutText[lang].highlight
-                                )
+                            onBlur={() =>
+                                setAboutText({
+                                    ...aboutText,
+                                    [lang]: {
+                                        ...aboutText[lang],
+                                        highlights: aboutText[lang].highlightsInput
+                                            .split(",")
+                                            .map(h => h.trim())
+                                            .filter(Boolean),
+                                    },
+                                })
                             }
-                            helperText="Must exist inside the text"
+                            error={aboutText[lang].highlights.some(
+                                h => !aboutText[lang].text.includes(h)
+                            )}
+                            helperText="Comma-separated phrases, each must exist in the text"
                             fullWidth
-                            sx={{ marginTop: '10px' }}
                         />
+
+
+
                     </div>
                 </div>
 

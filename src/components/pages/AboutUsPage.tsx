@@ -1,14 +1,25 @@
 import { Phone, Search } from "lucide-react";
 import { useState, useEffect } from 'react';
 export function AboutUs() {
-    const [aboutUsText, setAboutText] = useState('');
+    const [aboutUsText, setAboutText] = useState<{
+        text: string;
+        highlights: string[];
+    }>({
+        text: "",
+        highlights: [],
+    });
+
     const fetchText = async () => {
         try {
             const res = await fetch('http://localhost:5000/text')
             if (!res.ok) throw new Error("Failed to fetch text");
             const data = await res.json();
 
-            setAboutText(data.aboutUsText.en.text);
+            setAboutText({
+                text: data.aboutUsText.en.text,
+                highlights: data.aboutUsText.en.highlights,
+            });
+
         } catch (err) {
             console.log('Error fetching text:', err)
         }
@@ -17,10 +28,30 @@ export function AboutUs() {
     useEffect(() => {
         fetchText();
     }, []);
+
+    const renderText = (text: string, highlights: string[]) => {
+        if (!highlights.length) return text;
+
+        const escaped = highlights.map(h =>
+            h.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+        );
+
+        const regex = new RegExp(`(${escaped.join("|")})`, "gi");
+
+        return text.split(regex).map((part, i) =>
+            highlights.some(h => h.toLowerCase() === part.toLowerCase()) ? (
+                <span key={i} className="text-black font-semibold">
+                    {part}
+                </span>
+            ) : (
+                <span key={i}>{part}</span>
+            )
+        );
+    };
     return (
         <div className="w-full h-screen p-4 lg:p-10 flex flex-col items-center relative">
             <h2 className="text-[24px] md:text-[32px] lg:text-[42px] text-[#1E1E1E] font-bold">About Us</h2>
-            <p className="text-[12px] xs:text-[13px] w-full md:text-[14px] lg:max-xl:text-[20px] font-light md:w-[85%] xl:w-full text-center" style={{ whiteSpace: "pre-wrap" }}>{aboutUsText}</p>
+            <p className="text-[12px] xs:text-[13px] w-full md:text-[14px] lg:max-xl:text-[20px] font-light md:w-[85%] xl:w-full text-center" style={{ whiteSpace: "pre-wrap" }}>{renderText(aboutUsText.text, aboutUsText.highlights)}</p>
 
             <div className="w-full md:w-auto flex flex-col md:flex-row items-center gap-4 mt-5 md:gap-8 md:mt-8 relative z-20">
 
