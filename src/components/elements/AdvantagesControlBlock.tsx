@@ -26,6 +26,8 @@ import {
     Star,
     ThumbsUp,
     Heart,
+    LampDesk,
+
 } from "lucide-react";
 
 const ICON_MAP: Record<AdvantageIcon, React.ElementType> = {
@@ -39,6 +41,7 @@ const ICON_MAP: Record<AdvantageIcon, React.ElementType> = {
     Star,
     ThumbsUp,
     Heart,
+    LampDesk,
 };
 
 type AdvantageType = "Companies" | "Individuals";
@@ -52,6 +55,7 @@ type AdvantageIcon =
     | "Check"
     | "Star"
     | "ThumbsUp"
+    | "LampDesk"
     | "Heart";
 
 type Advantage = {

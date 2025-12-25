@@ -1,7 +1,7 @@
 import * as Icons from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
-const iconNames = ["Building2", "CircleDollarSignIcon", "BedDouble", "BusFront", "Cctv", "ShoppingBasketIcon", "Check", "Star", "ThumbsUp", "Heart"] as const;
+const iconNames = ["Building2", "CircleDollarSignIcon", "BedDouble", "BusFront", "Cctv", "ShoppingBasketIcon", "Check", "Star", "ThumbsUp", "Heart", "LampDesk"] as const;
 type IconName = (typeof iconNames)[number];
 
 export const IconPicker = ({

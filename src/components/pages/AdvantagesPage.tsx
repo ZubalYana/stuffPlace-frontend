@@ -1,63 +1,43 @@
 import { AdvantagesCard } from "../elements/AdvantagesCard";
-import { Building2, CircleDollarSignIcon, BedDouble, BusFront, Cctv, ShoppingBasketIcon, LampDesk } from "lucide-react";
+import { Building2, CircleDollarSignIcon, BedDouble, BusFront, Cctv, ShoppingBasketIcon, LampDesk, Check, Star, ThumbsUp, Heart } from "lucide-react";
 import { useState, useEffect } from 'react';
+const ICON_MAP: Record<string, React.ElementType> = {
+    Building2,
+    CircleDollarSignIcon,
+    BedDouble,
+    BusFront,
+    Cctv,
+    ShoppingBasketIcon,
+    LampDesk,
+    Check,
+    Star,
+    ThumbsUp,
+    Heart,
+};
+
+type Advantage = {
+    _id: string;
+    text: {
+        en: string;
+        hu: string;
+    };
+    icon: string;
+    type: "Companies" | "Individuals";
+};
+
 export function AdvantagesPage() {
     const [advantagesText, setadvantagesText] = useState('');
+    const [companiesAdvantages, setCompaniesAdvantages] = useState<
+        { icon: React.ReactNode; text: string }[]
+    >([]);
+
+    const [individualsAdvantages, setIndividualsAdvantages] = useState<
+        { icon: React.ReactNode; text: string }[]
+    >([]);
+
     const iconsSize = 28;
     const iconsStrokeWidth = 2;
     const iconsColor = '#AE7461';
-    const companiesAdvantages = [
-        {
-            icon: <Building2 size={iconsSize} strokeWidth={iconsStrokeWidth} color={iconsColor} />,
-            text: "Reliable, well-managed accommodation for staff and corporate teams",
-        },
-        {
-            icon: <CircleDollarSignIcon size={iconsSize} strokeWidth={iconsStrokeWidth} color={iconsColor} />,
-            text: "Cost-effective housing compared to traditional rentals or hotels",
-        },
-        {
-            icon: <BedDouble size={iconsSize} strokeWidth={iconsStrokeWidth} color={iconsColor} />,
-            text: "Units for 2, 4, 6, or 8 people — ideal for team arrangements",
-        },
-        {
-            icon: <BusFront size={iconsSize} strokeWidth={iconsStrokeWidth} color={iconsColor} />,
-            text: "Central Budapest location with easy access to transport",
-        },
-        {
-            icon: <Cctv size={iconsSize} strokeWidth={iconsStrokeWidth} color={iconsColor} />,
-            text: "Secure and controlled environment for your employees",
-        },
-        {
-            icon: <ShoppingBasketIcon size={iconsSize} strokeWidth={iconsStrokeWidth} color={iconsColor} />,
-            text: "On-site facilities (shop, laundry, TV rooms, relax zones) reduce time spent on daily logistics",
-        },
-    ]
-    const individualsAdvantages = [
-        {
-            icon: <BedDouble size={iconsSize} strokeWidth={iconsStrokeWidth} color={iconsColor} />,
-            text: "Modern, comfortable living units with room options to fit your lifestyle",
-        },
-        {
-            icon: <Cctv size={iconsSize} strokeWidth={iconsStrokeWidth} color={iconsColor} />,
-            text: "Safe, secure environment with controlled access to the living zones",
-        },
-        {
-            icon: <ShoppingBasketIcon size={iconsSize} strokeWidth={iconsStrokeWidth} color={iconsColor} />,
-            text: "Convenient on-site amenities including laundry rooms, relax zones, TV rooms, and a shop",
-        },
-        {
-            icon: <LampDesk size={iconsSize} strokeWidth={iconsStrokeWidth} color={iconsColor} />,
-            text: "Study and training rooms available in the basement",
-        },
-        {
-            icon: <BusFront size={iconsSize} strokeWidth={iconsStrokeWidth} color={iconsColor} />,
-            text: "Great location close to public transport, shops, and city life",
-        },
-        {
-            icon: <CircleDollarSignIcon size={iconsSize} strokeWidth={iconsStrokeWidth} color={iconsColor} />,
-            text: "Affordable living compared to private rentals in Budapest",
-        },
-    ]
 
     const fetchText = async () => {
         try {
@@ -70,10 +50,58 @@ export function AdvantagesPage() {
             console.log('Error fetching text:', err)
         }
     }
+    const fetchAdvantages = async () => {
+        try {
+            const res = await fetch("http://localhost:5000/advantages");
+            if (!res.ok) throw new Error("Failed to fetch advantages");
+
+            const data: Advantage[] = await res.json();
+
+            const companies = data
+                .filter(a => a.type === "Companies")
+                .map(a => {
+                    const Icon = ICON_MAP[a.icon];
+                    return {
+                        text: a.text.en,
+                        icon: Icon ? (
+                            <Icon
+                                size={iconsSize}
+                                strokeWidth={iconsStrokeWidth}
+                                color={iconsColor}
+                            />
+                        ) : null,
+                    };
+                });
+
+            const individuals = data
+                .filter(a => a.type === "Individuals")
+                .map(a => {
+                    const Icon = ICON_MAP[a.icon];
+                    return {
+                        text: a.text.en,
+                        icon: Icon ? (
+                            <Icon
+                                size={iconsSize}
+                                strokeWidth={iconsStrokeWidth}
+                                color={iconsColor}
+                            />
+                        ) : null,
+                    };
+                });
+
+            setCompaniesAdvantages(companies);
+            setIndividualsAdvantages(individuals);
+        } catch (err) {
+            console.error("Error fetching advantages:", err);
+        }
+    };
+
 
     useEffect(() => {
         fetchText();
+        fetchAdvantages();
     }, []);
+
     return (
         <div className="w-full p-4 lg:p-10 flex flex-col items-center relative mt-6 lg:mt-0">
             <h2 className="text-[24px] md:text-[32px] lg:text-[42px] text-[#1E1E1E] font-bold text-center">Why Choose StaffPlace?</h2>
