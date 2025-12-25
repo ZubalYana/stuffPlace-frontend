@@ -27,6 +27,11 @@ import {
     ThumbsUp,
     Heart,
     LampDesk,
+    Sofa,
+    Bike,
+    Car,
+    WashingMachine,
+    Monitor
 
 } from "lucide-react";
 
@@ -42,6 +47,11 @@ const ICON_MAP: Record<AdvantageIcon, React.ElementType> = {
     ThumbsUp,
     Heart,
     LampDesk,
+    Sofa,
+    Bike,
+    Car,
+    WashingMachine,
+    Monitor
 };
 
 type AdvantageType = "Companies" | "Individuals";
@@ -56,6 +66,11 @@ type AdvantageIcon =
     | "Star"
     | "ThumbsUp"
     | "LampDesk"
+    | "Sofa"
+    | "Bike"
+    | "Car"
+    | "WashingMachine"
+    | "Monitor"
     | "Heart";
 
 type Advantage = {

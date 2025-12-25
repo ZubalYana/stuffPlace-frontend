@@ -3,6 +3,7 @@ import { Logo } from "../elements/Logo admin";
 import { UnitsControlBlock } from "../elements/UnitsControlBlock";
 import { TextControlBlock } from "../elements/TextControlBlock";
 import { AdvantagesControlBlock } from "../elements/AdvantagesControlBlock";
+import { FacilitiesControlBlock } from "../elements/FacilitiesControlBlock";
 export interface Unit {
     description: {
         en: string;
@@ -34,6 +35,7 @@ export const AdminPanel = () => {
             <UnitsControlBlock units={units} setUnits={setUnits} />
             <TextControlBlock />
             <AdvantagesControlBlock />
+            <FacilitiesControlBlock />
         </div>
     )
 }
