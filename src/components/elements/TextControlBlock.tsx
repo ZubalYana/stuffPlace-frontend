@@ -348,7 +348,6 @@ export const TextControlBlock = () => {
                             backgroundColor: "#AE7461",
                             fontWeight: "bold",
                             fontSize: "16px",
-                            textTransform: "none",
                             "&:hover": {
                                 backgroundColor: "#966554",
                             },
