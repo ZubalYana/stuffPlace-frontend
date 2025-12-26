@@ -300,7 +300,7 @@ export const AdvantagesControlBlock = () => {
 
                     <Button
                         variant="contained"
-                        disabled={!isFormValid || isLoading}
+                        disabled={!isFormValid || isLoading || isLimitReached}
                         onClick={handleCreate}
                         sx={{
                             mt: 3,
@@ -314,14 +314,15 @@ export const AdvantagesControlBlock = () => {
                             },
                         }}
                     >
-                        {isLoading ? <CircularProgress size={22} /> : "Create Advantage"}
+                        {isLimitReached ? (
+                            `Maximum 6 ${advType} advantages reached`
+                        ) : isLoading ? (
+                            <CircularProgress size={22} />
+                        ) : (
+                            "Create Advantage"
+                        )}
                     </Button>
 
-                    {isLimitReached && (
-                        <p className="text-sm text-red-600 mt-2">
-                            Maximum of 6 advantages reached for {advType}
-                        </p>
-                    )}
                 </div>
 
                 <div className="lg:w-[48%]">
