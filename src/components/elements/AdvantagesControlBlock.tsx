@@ -206,52 +206,88 @@ export const AdvantagesControlBlock = () => {
                 .map(a => (
                     <div
                         key={a._id}
-                        className="flex items-center gap-3 mt-2 p-2 rounded-md bg-gray-50 hover:bg-gray-200"
+                        className="flex items-start gap-3 mt-2 p-3 rounded-md bg-gray-50 hover:bg-gray-200"
                     >
                         <AdvantageIconRenderer icon={a.icon as AdvantageIcon} />
 
-                        {editingId === a._id ? (
-                            <>
-                                <TextField
-                                    size="small"
-                                    value={a.text.en}
-                                    onChange={e =>
-                                        setAdvantages(prev =>
-                                            prev.map(x =>
-                                                x._id === a._id
-                                                    ? { ...x, text: { ...x.text, en: e.target.value } }
-                                                    : x
+                        <div className="flex-1">
+                            {editingId === a._id ? (
+                                <div className="flex flex-col gap-2">
+                                    <TextField
+                                        size="small"
+                                        label="EN"
+                                        value={a.text.en}
+                                        onChange={e =>
+                                            setAdvantages(prev =>
+                                                prev.map(x =>
+                                                    x._id === a._id
+                                                        ? {
+                                                            ...x,
+                                                            text: {
+                                                                ...x.text,
+                                                                en: e.target.value,
+                                                            },
+                                                        }
+                                                        : x
+                                                )
                                             )
-                                        )
-                                    }
-                                    className="flex-1"
-                                />
+                                        }
+                                    />
 
-                                <IconButton onClick={() => handleUpdate(a)}>
-                                    <Check size={18} />
-                                </IconButton>
-                                <IconButton onClick={() => setEditingId(null)}>
-                                    <X size={18} />
-                                </IconButton>
-                            </>
-                        ) : (
-                            <>
-                                <span className="flex-1 text-sm">{a.text.en}</span>
+                                    <TextField
+                                        size="small"
+                                        label="HU"
+                                        value={a.text.hu}
+                                        onChange={e =>
+                                            setAdvantages(prev =>
+                                                prev.map(x =>
+                                                    x._id === a._id
+                                                        ? {
+                                                            ...x,
+                                                            text: {
+                                                                ...x.text,
+                                                                hu: e.target.value,
+                                                            },
+                                                        }
+                                                        : x
+                                                )
+                                            )
+                                        }
+                                    />
+                                </div>
+                            ) : (
+                                <div className="flex flex-col text-sm">
+                                    <span>{a.text.en}</span>
+                                    <span className="text-gray-500">{a.text.hu}</span>
+                                </div>
+                            )}
+                        </div>
 
-                                <IconButton onClick={() => setEditingId(a._id)}>
-                                    <Pencil size={18} />
-                                </IconButton>
-                                <IconButton onClick={() => handleDelete(a._id)}>
-                                    <Trash2 size={18} />
-                                </IconButton>
-                            </>
-                        )}
+                        <div className="flex items-center gap-1">
+                            {editingId === a._id ? (
+                                <>
+                                    <IconButton onClick={() => handleUpdate(a)}>
+                                        <Check size={18} />
+                                    </IconButton>
+                                    <IconButton onClick={() => setEditingId(null)}>
+                                        <X size={18} />
+                                    </IconButton>
+                                </>
+                            ) : (
+                                <>
+                                    <IconButton onClick={() => setEditingId(a._id)}>
+                                        <Pencil size={18} />
+                                    </IconButton>
+                                    <IconButton onClick={() => handleDelete(a._id)}>
+                                        <Trash2 size={18} />
+                                    </IconButton>
+                                </>
+                            )}
+                        </div>
                     </div>
                 ))}
         </>
     );
-
-
 
     return (
         <div className="w-full text-[#1E1E1E] mt-6 lg:mt-15 space-y-6">
