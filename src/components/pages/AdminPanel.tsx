@@ -4,6 +4,7 @@ import { UnitsControlBlock } from "../elements/UnitsControlBlock";
 import { TextControlBlock } from "../elements/TextControlBlock";
 import { AdvantagesControlBlock } from "../elements/AdvantagesControlBlock";
 import { FacilitiesControlBlock } from "../elements/FacilitiesControlBlock";
+import { ContactsControlBlock } from "../elements/ContactsControlBlock";
 export interface Unit {
     description: {
         en: string;
@@ -36,6 +37,7 @@ export const AdminPanel = () => {
             <TextControlBlock />
             <AdvantagesControlBlock />
             <FacilitiesControlBlock />
+            <ContactsControlBlock />
         </div>
     )
 }
