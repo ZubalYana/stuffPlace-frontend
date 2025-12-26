@@ -206,7 +206,7 @@ export const AdvantagesControlBlock = () => {
                 .map(a => (
                     <div
                         key={a._id}
-                        className="flex items-center gap-3 mt-2 p-2 rounded-md hover:bg-gray-50"
+                        className="flex items-center gap-3 mt-2 p-2 rounded-md bg-gray-50 hover:bg-gray-200"
                     >
                         <AdvantageIconRenderer icon={a.icon as AdvantageIcon} />
 
