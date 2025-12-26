@@ -31,6 +31,7 @@ import {
     WashingMachine,
     Monitor,
 } from "lucide-react";
+const MAX_FACILITIES = 5;
 
 type Lang = "en" | "hu";
 
@@ -51,6 +52,7 @@ export const FacilitiesControlBlock = () => {
     const [facilities, setFacilities] = useState<Facility[]>([]);
     const [editingId, setEditingId] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
+    const isLimitReached = facilities.length >= MAX_FACILITIES;
 
     const [feedback, setFeedback] = useState<{
         open: boolean;
@@ -137,7 +139,13 @@ export const FacilitiesControlBlock = () => {
     }, []);
 
     const handleCreate = async () => {
-        if (!canSubmit) return;
+        if (!canSubmit || isLimitReached) {
+            showFeedback(
+                "error",
+                `You can create up to ${MAX_FACILITIES} facilities only`
+            );
+            return;
+        }
 
         try {
             setIsLoading(true);
@@ -163,6 +171,7 @@ export const FacilitiesControlBlock = () => {
             setIsLoading(false);
         }
     };
+
 
     const handleUpdate = async (facility: Facility) => {
         try {
@@ -211,6 +220,8 @@ export const FacilitiesControlBlock = () => {
         title: f.title[activeLang],
         text: f.text[activeLang],
     });
+
+
 
     return (
         <div className="w-full text-[#1E1E1E] mt-6 space-y-6">
@@ -267,7 +278,7 @@ export const FacilitiesControlBlock = () => {
 
                     <Button
                         variant="contained"
-                        disabled={!canSubmit || isLoading}
+                        disabled={!canSubmit || isLoading || isLimitReached}
                         onClick={handleCreate}
                         sx={{
                             mt: 3,
@@ -279,12 +290,13 @@ export const FacilitiesControlBlock = () => {
                             "&:hover": { backgroundColor: "#966554" },
                         }}
                     >
-                        {isLoading ? (
-                            <CircularProgress size={22} />
-                        ) : (
-                            "Create Facility"
-                        )}
+                        {isLimitReached
+                            ? `Maximum ${MAX_FACILITIES} facilities reached`
+                            : isLoading
+                                ? <CircularProgress size={22} />
+                                : "Create Facility"}
                     </Button>
+
                 </div>
 
                 <div className="lg:w-[48%] space-y-3">
