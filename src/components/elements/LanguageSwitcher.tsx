@@ -6,8 +6,14 @@ import ReactCountryFlag from "react-country-flag";
 export function LanguageSwitcher() {
     const [language, setLanguage] = useState<string>("en");
 
+    if (localStorage.getItem("language") && language !== localStorage.getItem("language")) {
+        setLanguage(localStorage.getItem("language")!);
+    }
+
     const handleChange = (event: SelectChangeEvent) => {
         setLanguage(event.target.value);
+        localStorage.setItem("language", event.target.value);
+        window.location.reload();
     };
 
     return (

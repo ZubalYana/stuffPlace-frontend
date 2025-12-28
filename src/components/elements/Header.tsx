@@ -41,25 +41,25 @@ export function Header({ refs, toggleMenu }: HeaderProps) {
                         className="cursor-pointer transition duration-300 hover:text-[#AE7461] hover:scale-105"
                         onClick={() => scrollTo(refs.aboutRef)}
                     >
-                        About Us
+                        {localStorage.getItem("language") === "hu" ? "Rólunk" : "About Us"}
                     </p>
                     <p
                         className="cursor-pointer transition duration-300 hover:text-[#AE7461] hover:scale-105"
                         onClick={() => scrollTo(refs.unitsRef)}
                     >
-                        Our Units
+                        {localStorage.getItem("language") === "hu" ? "Apartmanjaink" : "Our Units"}
                     </p>
                     <p
                         className="cursor-pointer transition duration-300 hover:text-[#AE7461] hover:scale-105"
                         onClick={() => scrollTo(refs.facilitiesRef)}
                     >
-                        On-Site Facilities
+                        {localStorage.getItem("language") === "hu" ? "Helyszíni szolgáltatások" : "On-Site Facilities"}
                     </p>
                     <p
                         className="cursor-pointer transition duration-300 hover:text-[#AE7461] hover:scale-105"
                         onClick={() => scrollTo(refs.locationRef)}
                     >
-                        Location
+                        {localStorage.getItem("language") === "hu" ? "Helyszín" : "Location"}
                     </p>
                 </div>
 
@@ -72,7 +72,7 @@ export function Header({ refs, toggleMenu }: HeaderProps) {
                             className="text-[14px] md:text-[12px] lg:text-[14px] font-semibold text-[#1E1E1E] group-hover:text-[#F5F5F5] transition duration-300 relative z-10"
                             onClick={() => scrollTo(refs.locationRef)}
                         >
-                            Contact Us
+                            {localStorage.getItem("language") === "hu" ? "Kapcsolat" : "Contact Us"}
                         </p>
                     </div>
                     <LanguageSwitcher />
