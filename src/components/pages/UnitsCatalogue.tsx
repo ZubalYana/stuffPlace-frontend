@@ -87,7 +87,7 @@ export function UnitsCatalogue({ unitsRef }: UnitsCatalogueProps) {
     return (
         <div className="w-full h-screen p-4 lg:p-10 flex flex-col items-center relative">
             <h2 className="text-[24px] md:text-[32px] lg:text-[42px] font-bold">
-                Units Catalogue
+                {localStorage.getItem('language') === 'en' ? 'Units Catalogue' : 'Lakáskatalógus'}
             </h2>
 
 
@@ -106,7 +106,9 @@ export function UnitsCatalogue({ unitsRef }: UnitsCatalogueProps) {
                     flexWrap="wrap"
                 >
                     <FormControl variant="standard" size="small">
-                        <InputLabel shrink>Capacity</InputLabel>
+                        <InputLabel shrink>
+                            {localStorage.getItem('language') === 'en' ? 'Capacity' : 'Kapacitás'}
+                        </InputLabel>
                         <Select
                             value={capacity}
                             onChange={(e) =>
@@ -118,17 +120,21 @@ export function UnitsCatalogue({ unitsRef }: UnitsCatalogueProps) {
                                 disableScrollLock: true,
                             }}
                         >
-                            <MenuItem value="">Any</MenuItem>
+                            <MenuItem value="">
+                                {localStorage.getItem('language') === 'en' ? 'Any' : 'Bármely'}
+                            </MenuItem>
                             {[1, 2, 4, 6, 8].map((n) => (
                                 <MenuItem key={n} value={n}>
-                                    {n}+ people
+                                    {n}+ {localStorage.getItem('language') === 'en' ? 'people' : 'fős'}
                                 </MenuItem>
                             ))}
                         </Select>
                     </FormControl>
 
                     <FormControl variant="standard" size="small">
-                        <InputLabel shrink>Type</InputLabel>
+                        <InputLabel shrink>
+                            {localStorage.getItem('language') === 'en' ? 'Type' : 'Típus'}
+                        </InputLabel>
                         <Select
                             value={type}
                             onChange={(e) => setType(e.target.value)}
@@ -138,35 +144,50 @@ export function UnitsCatalogue({ unitsRef }: UnitsCatalogueProps) {
                                 disableScrollLock: true,
                             }}
                         >
-                            <MenuItem value="">Any</MenuItem>
-                            <MenuItem value="Single">Single</MenuItem>
-                            <MenuItem value="2-Person">2-Person</MenuItem>
-                            <MenuItem value="3-Person">3-Person</MenuItem>
-                            <MenuItem value="4-Person">4-Person</MenuItem>
-                            <MenuItem value="6-Person">6-Person</MenuItem>
-                            <MenuItem value="8-Person">8-Person</MenuItem>
-                            <MenuItem value="Suite">Suite</MenuItem>
+                            <MenuItem value="">
+                                {localStorage.getItem('language') === 'en' ? 'Any' : 'Bármely'}
+                            </MenuItem>
+                            <MenuItem value="Single">{localStorage.getItem('language') === 'en' ? 'Single' : '1 fős'}</MenuItem>
+                            <MenuItem value="2-Person">{localStorage.getItem('language') === 'en' ? '2-Person' : '2 fős'}</MenuItem>
+                            <MenuItem value="3-Person">{localStorage.getItem('language') === 'en' ? '3-Person' : '3 fős'}</MenuItem>
+                            <MenuItem value="4-Person">{localStorage.getItem('language') === 'en' ? '4-Person' : '4 fős'}</MenuItem>
+                            <MenuItem value="6-Person">{localStorage.getItem('language') === 'en' ? '6-Person' : '6 fős'}</MenuItem>
+                            <MenuItem value="8-Person">{localStorage.getItem('language') === 'en' ? '8-Person' : '8 fős'}</MenuItem>
+                            <MenuItem value="Suite">{localStorage.getItem('language') === 'en' ? 'Suite' : 'Lakosztály'}</MenuItem>
                         </Select>
                     </FormControl>
 
                     <FormControl variant="standard" size="small">
-                        <InputLabel shrink>Comfort</InputLabel>
+                        <InputLabel shrink>
+                            {localStorage.getItem('language') === 'en' ? 'Comfort' : 'Komfort'}
+                        </InputLabel>
+
                         <Select
                             value={comfort}
                             onChange={(e) => setComfort(e.target.value)}
                             disableUnderline
                             displayEmpty
-                            MenuProps={{
-                                disableScrollLock: true,
-                            }}
+                            MenuProps={{ disableScrollLock: true }}
                         >
-                            <MenuItem value="">Any</MenuItem>
-                            <MenuItem value="Economy">Economy</MenuItem>
-                            <MenuItem value="Standard">Standard</MenuItem>
-                            <MenuItem value="Comfort">Comfort</MenuItem>
-                            <MenuItem value="Luxury">Luxury</MenuItem>
+                            <MenuItem value="">
+                                {localStorage.getItem('language') === 'en' ? 'Any' : 'Bármely'}
+                            </MenuItem>
+
+                            <MenuItem value="Economy">
+                                {localStorage.getItem('language') === 'en' ? 'Economy' : 'Gazdaságos'}
+                            </MenuItem>
+                            <MenuItem value="Standard">
+                                {localStorage.getItem('language') === 'en' ? 'Standard' : 'Standard'}
+                            </MenuItem>
+                            <MenuItem value="Comfort">
+                                {localStorage.getItem('language') === 'en' ? 'Comfort' : 'Komfort'}
+                            </MenuItem>
+                            <MenuItem value="Luxury">
+                                {localStorage.getItem('language') === 'en' ? 'Luxury' : 'Luxus'}
+                            </MenuItem>
                         </Select>
                     </FormControl>
+
                 </Stack>
             </Box>
 
@@ -176,10 +197,22 @@ export function UnitsCatalogue({ unitsRef }: UnitsCatalogueProps) {
                         <UnitCard
                             key={index}
                             images={unit.images}
-                            description={unit.description.en}
+                            description={
+                                localStorage.getItem('language') === 'en' ?
+                                    unit.description.en :
+                                    unit.description.hu
+                            }
                             occupancy={unit.occupancy}
-                            type={unit.type.en}
-                            comfortLevel={unit.comfortLevel.en}
+                            type={
+                                localStorage.getItem('language') === 'en' ?
+                                    unit.type.en :
+                                    unit.type.hu
+                            }
+                            comfortLevel={
+                                localStorage.getItem('language') === 'en' ?
+                                    unit.comfortLevel.en :
+                                    unit.comfortLevel.hu
+                            }
                         />
                     ))
                 ) : (

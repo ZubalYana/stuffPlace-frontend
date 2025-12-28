@@ -64,32 +64,51 @@ export function UnitCard({
                             onClick={() => setExpanded(!expanded)}
                             className="ml-1 text-gray-500 font-semibold text-[12px] md:text-[14px] cursor-pointer"
                         >
-                            {expanded ? "Show Less" : "Show More"}
+                            {expanded
+                                ? localStorage.getItem('language') === 'en'
+                                    ? "Show Less"
+                                    : "Kevesebb"
+                                : localStorage.getItem('language') === 'en'
+                                    ? "Show More"
+                                    : "Továbbiak"}
                         </button>
+
                     )}
                 </p>
 
                 <div className="flex gap-1 mt-4">
                     <User2 size={20} />
                     <p className="font-light text-[14px] md:text-[16px]">
-                        Occupancy:{" "}
-                        <span className="font-semibold">
-                            {occupancy} {occupancy > 1 ? "people" : "person"}
-                        </span>
+                        {localStorage.getItem('language') === 'en' ?
+                            <span>
+                                Occupancy:{" "}
+                                <span className="font-semibold">
+                                    {occupancy} {occupancy > 1 ? "people" : "person"}
+                                </span>
+                            </span>
+                            :
+                            <span>
+                                Kapacitás:{" "}
+                                <span className="font-semibold">
+                                    {occupancy} fős
+                                </span>
+                            </span>
+                        }
+
                     </p>
                 </div>
 
                 <div className="flex gap-1 mt-2">
                     <Sofa size={20} />
                     <p className="font-light text-[14px] md:text-[16px]">
-                        Type: <span className="font-semibold">{type}</span>
+                        {localStorage.getItem('language') === 'en' ? 'Type:' : 'Típus:'} <span className="font-semibold">{type}</span>
                     </p>
                 </div>
 
                 <div className="flex gap-1 mt-2">
                     <Armchair size={20} />
                     <p className="font-light text-[14px] md:text-[16px]">
-                        Comfort Level:{" "}
+                        {localStorage.getItem('language') === 'en' ? 'Comfort Level:' : 'Komfortszint:'}{" "}
                         <span className="font-semibold">{comfortLevel}</span>
                     </p>
                 </div>
