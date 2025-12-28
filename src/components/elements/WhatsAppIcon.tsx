@@ -1,7 +1,25 @@
+import { useState, useEffect } from 'react';
 export function WhatsAppIcon() {
+    const [phone, setPhone] = useState<string>('');
+
+    const fetchContacts = async () => {
+        try {
+            const res = await fetch('http://localhost:5000/contacts')
+            if (!res.ok) throw new Error("Failed to fetch contacts");
+            const data = await res.json();
+
+            setPhone(data.phone);
+            console.log('Fetched contacts:', data);
+        } catch (err) {
+            console.log('Error fetching contacts:', err)
+        }
+    }
+    useEffect(() => {
+        fetchContacts();
+    }, []);
     return (
         <a
-            href="https://wa.me/36307428619"
+            href={`https://wa.me/${phone.replace(/\s+/g, '')}`}
             target="_blank"
             rel="noopener noreferrer"
             className="animate-bounce-slow z-9999 relative"
