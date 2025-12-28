@@ -16,6 +16,7 @@ export function Footer() {
     const [copied, setCopied] = useState<string | null>(null);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [footerSubtext, setFooterSubtext] = useState('');
+    const [footerSubtextHu, setFooterSubtextHu] = useState('');
     const [contacts, setContacts] = useState<Contacts>({
         phone: "",
         email: "",
@@ -44,6 +45,7 @@ export function Footer() {
             const data = await res.json();
 
             setFooterSubtext(data.footerSubtext.en);
+            setFooterSubtextHu(data.footerSubtext.hu);
         } catch (err) {
             console.log('Error fetching text:', err)
         }
@@ -72,7 +74,9 @@ export function Footer() {
             <div className="p-4 lg:p-10 relative z-20 text-[#F5F5F5] w-full flex flex-col md:flex-row md:justify-between">
                 <div className="md:w-[40%] md:h-full">
                     <h3 className="uppercase text-[24px] md:text-[28px] lg:text-[32px] font-bold">StuffPlace</h3>
-                    <p className="text-[12px] xs:text-[13px] md:text-[14px] lg:text-[16px] font-light">{footerSubtext}</p>
+                    <p className="text-[12px] xs:text-[13px] md:text-[14px] lg:text-[16px] font-light">
+                        {localStorage.getItem('language') === 'en' ? footerSubtext : footerSubtextHu}
+                    </p>
                     <div
                         onClick={() => handleCopy(contacts.phone, "phone")}
                         className="relative flex gap-2 items-center mt-4 group cursor-pointer w-fit select-none"
@@ -159,9 +163,16 @@ export function Footer() {
                         backdropFilter: "blur(6px)",
                     }}
                 >
-                    {copied === "phone" && "Phone number copied!"}
-                    {copied === "email" && "Email copied!"}
+                    {copied === "phone" &&
+                        (localStorage.getItem('language') === 'en'
+                            ? "Phone number copied!"
+                            : "Telefonszám másolva!")}
+                    {copied === "email" &&
+                        (localStorage.getItem('language') === 'en'
+                            ? "Email copied!"
+                            : "Email másolva!")}
                 </MuiAlert>
+
             </Snackbar>
 
         </div>
