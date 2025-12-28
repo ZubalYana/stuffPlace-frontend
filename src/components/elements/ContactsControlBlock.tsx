@@ -106,7 +106,7 @@ export const ContactsControlBlock = () => {
     };
 
     return (
-        <div className="w-full text-[#1E1E1E] mt-6 space-y-6">
+        <div className="w-full text-[#1E1E1E] mt-15 space-y-6">
             <h3 className="font-bold text-[24px]">Contacts Management</h3>
             <div className="w-full flex flex-col lg:flex-row gap-[4%] mt-2">
                 <div className="w-full lg:w-[48%]">
@@ -155,10 +155,11 @@ export const ContactsControlBlock = () => {
                     <Button
                         variant="contained"
                         disabled={!isDirty}
+                        className="hidden! lg:block!"
                         sx={{
                             mt: 3,
                             width: "100%",
-                            height: 48,
+                            minHeight: 48,
                             backgroundColor: "#AE7461",
                             fontWeight: "bold",
                             fontSize: "16px",
@@ -181,19 +182,36 @@ export const ContactsControlBlock = () => {
                         value={draft.location}
                         onChange={e => handleInputChange("location", e.target.value)}
                     />
+                    <Button
+                        variant="contained"
+                        disabled={!isDirty}
+                        className="block! lg:hidden!"
+                        sx={{
+                            mt: 3,
+                            width: "100%",
+                            minHeight: 48,
+                            backgroundColor: "#AE7461",
+                            fontWeight: "bold",
+                            fontSize: "16px",
+                            "&:hover": { backgroundColor: "#966554" },
+                        }}
+                        onClick={handleSave}
+                    >
+                        Update Contact Info
+                    </Button>
                     {draft.location && (
                         <iframe
                             src={extractMapUrl(draft.location)}
-                            className="w-full h-[250px] mt-3 rounded-md"
+                            className="w-full h-[250px] mt-6 md:mt-3 rounded-md"
                             loading="lazy"
                         />
                     )}
-                    <div className="rounded-md bg-gray-50 mt-3 w-full p-3">
-                        <h3 className="font-bold text-[22px]">How to get an iframe for location inserting?</h3>
-                        <p className="text-[16px] mt-3">1. Visit <a href="https://www.google.com/maps" target="_blank" rel="noopener noreferrer" className="text-[#1976DB]">Google Maps</a></p>
-                        <p className="flex text-[16px] mt-2">2. Find the location and click <span className="font-semibold flex items-center mx-1.5">"<Share2 size={16} className="mr-1" />Share"</span></p>
-                        <p className="flex text-[16px] mt-2">3. Choose "Insert Map" and copy the HTML code</p>
-                        <p className="flex text-[16px] mt-2">4. Paste it in the textfield above!</p>
+                    <div className="rounded-md bg-gray-50 mt-8 md:mt-3 w-full p-3">
+                        <h3 className="font-bold text-[18px] lg:text-[22px]">How to get an iframe for location inserting?</h3>
+                        <p className="text-[14px] lg:text-[16px] mt-3">1. Visit <a href="https://www.google.com/maps" target="_blank" rel="noopener noreferrer" className="text-[#1976DB]">Google Maps</a></p>
+                        <p className="text-[14px] flex lg:text-[16px] mt-2">2. Find the location and click <span className="font-semibold flex items-center mx-1.5">"<Share2 size={16} className="mr-1" />Share"</span></p>
+                        <p className="text-[14px] flex lg:text-[16px] mt-2">3. Choose "Insert Map" and copy the HTML code</p>
+                        <p className="text-[14px] flex lg:text-[16px] mt-2">4. Paste it in the textfield above!</p>
                     </div>
                 </div>
             </div>
