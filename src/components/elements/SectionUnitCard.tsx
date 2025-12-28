@@ -29,7 +29,7 @@ export function SectionUnitCard({ img, description, occupancy }: SectionUnitCard
                     />
 
                     <h3 className="relative z-10 uppercase font-bold text-[18px] md:text-[24px] transition duration-300 text-[#1E1E1E] group-hover/button:text-white">
-                        Show More
+                        {localStorage.getItem('language') === 'en' ? 'Show More' : 'Továbbiak'}
                     </h3>
                 </div>
             </div>
@@ -39,11 +39,15 @@ export function SectionUnitCard({ img, description, occupancy }: SectionUnitCard
             </div>
 
             <div className='w-full p-4 h-[43%] md:h-auto relative z-0'>
-                <p className="text-[12px] md:text-[14px] font-light">{description.length > 270 ? description.slice(0, 270) + "..." : description}</p>
+                <p className="text-[12px] md:text-[14px] font-light">{description.length > 245 ? description.slice(0, 245) + "..." : description}</p>
                 <div className='flex gap-1 mt-4'>
                     <User2 size={20} color="#AE7461" fill="#AE7461" />
                     <p className='font-light text-[14px] md:text-[16px]'>
-                        Occupancy: <span className='font-semibold'>{occupancy}{occupancy > 1 ? ' people' : ' person'}</span>
+                        {localStorage.getItem('language') === 'en' ?
+                            <span>Occupancy: <span className='font-semibold'>{occupancy}{occupancy > 1 ? ' people' : ' person'}</span></span>
+                            :
+                            <span>Kihasználtság: <span className='font-semibold'>{occupancy} fő</span></span>
+                        }
                     </p>
                 </div>
             </div>
