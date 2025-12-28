@@ -8,6 +8,13 @@ export function AboutUs() {
         text: "",
         highlights: [],
     });
+    const [aboutUsTextHu, setAboutTextHu] = useState<{
+        text: string;
+        highlights: string[];
+    }>({
+        text: "",
+        highlights: [],
+    });
 
     const fetchText = async () => {
         try {
@@ -18,6 +25,10 @@ export function AboutUs() {
             setAboutText({
                 text: data.aboutUsText.en.text,
                 highlights: data.aboutUsText.en.highlights,
+            });
+            setAboutTextHu({
+                text: data.aboutUsText.hu.text,
+                highlights: data.aboutUsText.hu.highlights,
             });
 
         } catch (err) {
@@ -50,8 +61,14 @@ export function AboutUs() {
     };
     return (
         <div className="w-full h-screen p-4 lg:p-10 flex flex-col items-center relative">
-            <h2 className="text-[24px] md:text-[32px] lg:text-[42px] text-[#1E1E1E] font-bold">About Us</h2>
-            <p className="text-[12px] xs:text-[13px] w-full md:text-[14px] lg:max-xl:text-[20px] font-light md:w-[85%] xl:w-full text-center" style={{ whiteSpace: "pre-wrap" }}>{renderText(aboutUsText.text, aboutUsText.highlights)}</p>
+            <h2 className="text-[24px] md:text-[32px] lg:text-[42px] text-[#1E1E1E] font-bold">{localStorage.getItem('language') === 'en' ? 'About Us' : 'Rólunk'}</h2>
+            <p className="text-[12px] xs:text-[13px] w-full md:text-[14px] lg:max-xl:text-[20px] font-light md:w-[85%] xl:w-full text-center" style={{ whiteSpace: "pre-wrap" }}>
+                {localStorage.getItem('language') === 'en' ?
+                    renderText(aboutUsText.text, aboutUsText.highlights) :
+                    renderText(aboutUsTextHu.text, aboutUsTextHu.highlights)
+                }
+
+            </p>
 
             <div className="w-full md:w-auto flex flex-col md:flex-row items-center gap-4 mt-5 md:gap-8 md:mt-8 relative z-20">
 
@@ -66,7 +83,7 @@ export function AboutUs() {
                     />
                     <h3 className="relative z-10 uppercase font-bold text-[16px] md:text-[22px]
         text-white transition duration-300 group-hover:text-[#AE7461]">
-                        Contact Us
+                        {localStorage.getItem('language') === 'en' ? 'Contact Us' : 'Kapcsolat'}
                     </h3>
                 </div>
 
@@ -81,7 +98,7 @@ export function AboutUs() {
                     />
                     <h3 className="relative z-10 uppercase font-bold text-[16px] md:text-[22px]
         text-[#1E1E1E] transition duration-300 group-hover:text-white">
-                        Learn More
+                        {localStorage.getItem('language') === 'en' ? 'Learn More' : 'Fedezd fel'}
                     </h3>
                 </div>
 

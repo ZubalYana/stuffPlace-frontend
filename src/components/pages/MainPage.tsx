@@ -19,6 +19,13 @@ export function MainPage({ refs, toggleMenu, isMenuOpen }: MainPageProps) {
         text: "",
         highlights: [],
     });
+    const [mainDescriptionHu, setMainDescriptionHu] = useState<{
+        text: string;
+        highlights: string[];
+    }>({
+        text: "",
+        highlights: [],
+    });
 
     const scrollToUnits = () => {
         refs.unitsRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -36,6 +43,11 @@ export function MainPage({ refs, toggleMenu, isMenuOpen }: MainPageProps) {
             setMainDescription({
                 text: data.mainDescription.en.text,
                 highlights: data.mainDescription.en.highlights,
+            });
+
+            setMainDescriptionHu({
+                text: data.mainDescription.hu.text,
+                highlights: data.mainDescription.hu.highlights,
             });
 
         } catch (err) {
@@ -82,7 +94,7 @@ export function MainPage({ refs, toggleMenu, isMenuOpen }: MainPageProps) {
                 <div className="w-full h-[425px] xs:max-sm:h-[415px] md:max-lg:h-[410px] lg:max-xl:h-[600px] xl:h-[450px] rounded-2xl flex flex-col items-center bg-[rgba(255, 255, 255, 0.5)] backdrop-blur-md p-4 md:p-6 mt-6">
                     <div className="absolute inset-0 bg-white/30 rounded-2xl pointer-events-none z-0"></div>
 
-                    <h1 className="w-full text-[24px] xs:text-[27px] md:text-[42px] lg:text-[64px] md:w-[90%] lg:max-xl:w-[70%] xl:w-[60%] xl:text-[64px] text-center font-bold text-[#1E1E1E] leading-[1.2] relative z-20">Strategic Location and Modern Living in <span className="text-[#AE7461]">Budapest</span></h1>
+                    <h1 className={`w-full xs:text-[27px] md:text-[42px] ${localStorage.getItem("language") === "en" ? 'text-[24px] lg:text-[64px] lg:max-xl:w-[70%] xl:w-[60%] xl:text-[64px]' : 'text-[20px] xl:text-[64px] xl:w-[70%]'} md:w-[90%] text-center font-bold text-[#1E1E1E] leading-[1.2] relative z-20`}>{localStorage.getItem("language") === "en" ? "Strategic Location and Modern Living in" : "Stratégiai elhelyezkedés és modern életstílus"}  <span className="text-[#AE7461]">{localStorage.getItem("language") === "en" ? 'Budapest' : 'Budapesten'}</span></h1>
                     <div className="w-full flex flex-col items-center mt-3 relative z-20">
                         <p
                             className="text-[12px] xs:text-[13px] w-full md:text-[14px]
@@ -90,10 +102,16 @@ export function MainPage({ refs, toggleMenu, isMenuOpen }: MainPageProps) {
                xl:w-[65%] text-center"
                             style={{ whiteSpace: "pre-wrap" }}
                         >
-                            {renderHighlightedText(
-                                mainDescription.text,
-                                mainDescription.highlights
-                            )}
+                            {localStorage.getItem("language") === 'en' ?
+                                renderHighlightedText(
+                                    mainDescription.text,
+                                    mainDescription.highlights
+                                ) :
+                                renderHighlightedText(
+                                    mainDescriptionHu.text,
+                                    mainDescriptionHu.highlights
+                                )
+                            }
                         </p>
 
                     </div>
@@ -111,7 +129,7 @@ export function MainPage({ refs, toggleMenu, isMenuOpen }: MainPageProps) {
                             />
                             <h3 className="relative z-10 uppercase text-white font-bold text-[18px] md:text-[24px]
         transition duration-300 group-hover:text-[#AE7461]">
-                                Partnership
+                                {localStorage.getItem('language') === 'en' ? 'Partnership' : 'Partnerség'}
                             </h3>
                         </div>
 
@@ -130,7 +148,7 @@ export function MainPage({ refs, toggleMenu, isMenuOpen }: MainPageProps) {
                             />
                             <h3 className="relative z-10 uppercase font-bold text-[18px] md:text-[24px]
         transition duration-300 text-[#1E1E1E] group-hover:text-white">
-                                Explore Units
+                                {localStorage.getItem('language') === 'en' ? 'Explore Units' : 'Lakásokhoz'}
                             </h3>
                         </div>
 
@@ -145,7 +163,7 @@ export function MainPage({ refs, toggleMenu, isMenuOpen }: MainPageProps) {
                 className="uppercase text-white text-[14px] md:text-[16px] font-normal relative z-20 w-full flex justify-center items-center mt-4 xs:max-sm:mt-6 md:mt-6 lg:mt-10 gap-1 md:gap-2 cursor-pointer animate-bounce"
                 onClick={scrollToAbout}
             >
-                <h4>Feel free to learn more</h4>
+                <h4>{localStorage.getItem('language') === 'en' ? 'Feel free to learn more' : 'Tudjon meg többet'}</h4>
                 <ArrowDown size={24} />
             </div>
 
