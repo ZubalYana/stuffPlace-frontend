@@ -27,11 +27,17 @@ type Advantage = {
 
 export function AdvantagesPage() {
     const [advantagesText, setadvantagesText] = useState('');
+    const [advantagesTextHu, setadvantagesTextHu] = useState('');
     const [companiesAdvantages, setCompaniesAdvantages] = useState<
         { icon: React.ReactNode; text: string }[]
     >([]);
-
     const [individualsAdvantages, setIndividualsAdvantages] = useState<
+        { icon: React.ReactNode; text: string }[]
+    >([]);
+    const [companiesAdvantagesHu, setCompaniesAdvantagesHu] = useState<
+        { icon: React.ReactNode; text: string }[]
+    >([]);
+    const [individualsAdvantagesHu, setIndividualsAdvantagesHu] = useState<
         { icon: React.ReactNode; text: string }[]
     >([]);
 
@@ -46,6 +52,7 @@ export function AdvantagesPage() {
             const data = await res.json();
 
             setadvantagesText(data.advantagesText.en);
+            setadvantagesTextHu(data.advantagesText.hu);
         } catch (err) {
             console.log('Error fetching text:', err)
         }
@@ -72,7 +79,21 @@ export function AdvantagesPage() {
                         ) : null,
                     };
                 });
-
+            const companiesHu = data
+                .filter(a => a.type === "Companies")
+                .map(a => {
+                    const Icon = ICON_MAP[a.icon];
+                    return {
+                        text: a.text.hu,
+                        icon: Icon ? (
+                            <Icon
+                                size={iconsSize}
+                                strokeWidth={iconsStrokeWidth}
+                                color={iconsColor}
+                            />
+                        ) : null,
+                    };
+                });
             const individuals = data
                 .filter(a => a.type === "Individuals")
                 .map(a => {
@@ -88,9 +109,27 @@ export function AdvantagesPage() {
                         ) : null,
                     };
                 });
+            const individualsHu = data
+                .filter(a => a.type === "Individuals")
+                .map(a => {
+                    const Icon = ICON_MAP[a.icon];
+                    return {
+                        text: a.text.hu,
+                        icon: Icon ? (
+                            <Icon
+                                size={iconsSize}
+                                strokeWidth={iconsStrokeWidth}
+                                color={iconsColor}
+                            />
+                        ) : null,
+                    };
+                });
 
             setCompaniesAdvantages(companies);
             setIndividualsAdvantages(individuals);
+
+            setCompaniesAdvantagesHu(companiesHu);
+            setIndividualsAdvantagesHu(individualsHu);
         } catch (err) {
             console.error("Error fetching advantages:", err);
         }
@@ -104,19 +143,23 @@ export function AdvantagesPage() {
 
     return (
         <div className="w-full p-4 lg:p-10 flex flex-col items-center relative mt-6 lg:mt-0">
-            <h2 className="text-[24px] md:text-[32px] lg:text-[42px] text-[#1E1E1E] font-bold text-center">Why Choose StaffPlace?</h2>
-            <p className="text-[12px] xs:text-[13px] w-full md:text-[16px] lg:max-xl:text-[20px] font-light md:w-[85%] xl:w-full text-center">{advantagesText}</p>
+            <h2 className="text-[24px] md:text-[32px] lg:text-[42px] text-[#1E1E1E] font-bold text-center">
+                {localStorage.getItem('language') === 'en' ? 'Why Choose StaffPlace?' : 'Miért a StaffPlace?'}
+            </h2>
+            <p className="text-[12px] xs:text-[13px] w-full md:text-[16px] lg:max-xl:text-[20px] font-light md:w-[85%] xl:w-full text-center">
+                {localStorage.getItem('language') === 'en' ? advantagesText : advantagesTextHu}
+            </p>
 
             <div className="flex flex-col mt-5 gap-6 lg:flex-row lg:gap-13 lg:mt-8">
                 <AdvantagesCard
                     bg="/advantages-bg-1.webp"
-                    title="Companies Get:"
-                    advantages={companiesAdvantages}
+                    title={localStorage.getItem('language') === 'en' ? 'Companies Get:' : 'Cégeknek'}
+                    advantages={localStorage.getItem('language') === 'en' ? companiesAdvantages : companiesAdvantagesHu}
                 />
                 <AdvantagesCard
                     bg="/advantages-bg-2.webp"
-                    title="Individuals Get:"
-                    advantages={individualsAdvantages}
+                    title={localStorage.getItem('language') === 'en' ? 'Individuals Get:' : 'Magánszemélyeknek'}
+                    advantages={localStorage.getItem('language') === 'en' ? individualsAdvantages : individualsAdvantagesHu}
                 />
             </div>
 
