@@ -3,6 +3,7 @@ import { X, Phone, MailIcon } from "lucide-react"
 import { LanguageSwitcher } from "./LanguageSwitcher"
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
+
 type ResponsiveNavigationProps = {
     refs: {
         aboutRef: React.RefObject<HTMLDivElement | null>
@@ -38,6 +39,9 @@ export function ResponsiveNavigation({ refs, closeMenu, isMenuOpen }: Responsive
         setSnackbarOpen(false);
         setCopied(null);
     };
+
+    const isHU = localStorage.getItem('language') === 'hu';
+
     return (
         <>
             <div
@@ -54,11 +58,20 @@ export function ResponsiveNavigation({ refs, closeMenu, isMenuOpen }: Responsive
                 >
                     <X />
                 </button>
+
                 <div className="w-full flex flex-col items-start gap-4">
-                    <p onClick={() => scrollTo(refs.aboutRef)} className="cursor-pointer text-[#1E1E1E] text-[16px] font-semibold">About Us</p>
-                    <p onClick={() => scrollTo(refs.unitsRef)} className="cursor-pointer text-[#1E1E1E] text-[16px] font-semibold">Our Units</p>
-                    <p onClick={() => scrollTo(refs.facilitiesRef)} className="cursor-pointer text-[#1E1E1E] text-[16px] font-semibold">On-Site Facilities</p>
-                    <p onClick={() => scrollTo(refs.locationRef)} className="cursor-pointer text-[#1E1E1E] text-[16px] font-semibold">Location</p>
+                    <p onClick={() => scrollTo(refs.aboutRef)} className="cursor-pointer text-[#1E1E1E] text-[16px] font-semibold">
+                        {isHU ? "Rólunk" : "About Us"}
+                    </p>
+                    <p onClick={() => scrollTo(refs.unitsRef)} className="cursor-pointer text-[#1E1E1E] text-[16px] font-semibold">
+                        {isHU ? "Apartmanjaink" : "Our Units"}
+                    </p>
+                    <p onClick={() => scrollTo(refs.facilitiesRef)} className="cursor-pointer text-[#1E1E1E] text-[16px] font-semibold">
+                        {isHU ? "Helyszíni szolgáltatások" : "On-Site Facilities"}
+                    </p>
+                    <p onClick={() => scrollTo(refs.locationRef)} className="cursor-pointer text-[#1E1E1E] text-[16px] font-semibold">
+                        {isHU ? "Helyszín" : "Location"}
+                    </p>
 
                     <LanguageSwitcher />
 
@@ -79,9 +92,8 @@ export function ResponsiveNavigation({ refs, closeMenu, isMenuOpen }: Responsive
                         </div>
                     </div>
                 </div>
-
-
             </div>
+
             <Snackbar
                 open={snackbarOpen}
                 autoHideDuration={2000}
@@ -99,8 +111,8 @@ export function ResponsiveNavigation({ refs, closeMenu, isMenuOpen }: Responsive
                         backdropFilter: "blur(6px)",
                     }}
                 >
-                    {copied === "phone" && "Phone number copied!"}
-                    {copied === "email" && "Email copied!"}
+                    {copied === "phone" && (isHU ? "Telefonszám másolva!" : "Phone number copied!")}
+                    {copied === "email" && (isHU ? "Email másolva!" : "Email copied!")}
                 </MuiAlert>
             </Snackbar>
         </>
