@@ -3,10 +3,27 @@ import { Phone, MailIcon } from "lucide-react";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 
+type Contacts = {
+    phone: string,
+    email: string,
+    facebook: string,
+    instagram: string,
+    telegram: string,
+    location: string
+};
+
 export function Footer() {
     const [copied, setCopied] = useState<string | null>(null);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [footerSubtext, setFooterSubtext] = useState('');
+    const [contacts, setContacts] = useState<Contacts>({
+        phone: "",
+        email: "",
+        facebook: "",
+        instagram: "",
+        telegram: "",
+        location: ""
+    });
     const handleCopy = (text: string, type: "phone" | "email") => {
         navigator.clipboard.writeText(text);
         setCopied(type);
@@ -32,8 +49,22 @@ export function Footer() {
         }
     }
 
+    const fetchContacts = async () => {
+        try {
+            const res = await fetch('http://localhost:5000/contacts')
+            if (!res.ok) throw new Error("Failed to fetch contacts");
+            const data = await res.json();
+
+            setContacts(data);
+            console.log('Fetched contacts:', data);
+        } catch (err) {
+            console.log('Error fetching contacts:', err)
+        }
+    }
+
     useEffect(() => {
         fetchText();
+        fetchContacts();
     }, []);
 
     return (
@@ -43,22 +74,22 @@ export function Footer() {
                     <h3 className="uppercase text-[24px] md:text-[28px] lg:text-[32px] font-bold">StuffPlace</h3>
                     <p className="text-[12px] xs:text-[13px] md:text-[14px] lg:text-[16px] font-light">{footerSubtext}</p>
                     <div
-                        onClick={() => handleCopy("+36 30 742 8619", "phone")}
+                        onClick={() => handleCopy(contacts.phone, "phone")}
                         className="relative flex gap-2 items-center mt-4 group cursor-pointer w-fit select-none"
                     >
                         <Phone size={20} strokeWidth={2.5} className="group-hover:scale-110 transition duration-300" />
-                        <p className="font-semibold text-[14px] md:text-[16px]">+36 30 742 8619</p>
+                        <p className="font-semibold text-[14px] md:text-[16px]">{contacts.phone}</p>
                     </div>
                     <div
                         onClick={() => handleCopy("staffPlace_official@gmail.com", "email")}
                         className="relative flex gap-2 items-center mt-2 group cursor-pointer w-fit select-none"
                     >
                         <MailIcon size={20} strokeWidth={2.5} className="group-hover:scale-110 transition duration-300" />
-                        <p className="font-semibold text-[14px] md:text-[16px]">staffPlace_official@gmail.com</p>
+                        <p className="font-semibold text-[14px] md:text-[16px]">{contacts.email}</p>
                     </div>
                     <div className="flex gap-4 mt-6">
                         <a
-                            href="https://facebook.com/stuffPlace"
+                            href={contacts.facebook}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="w-4 h-6 flex justify-center items-center cursor-pointer hover:scale-110 transition-transform duration-300"
@@ -66,7 +97,7 @@ export function Footer() {
                             <img src="./socials/facebook.svg" alt="facebook" className="w-auto h-full" />
                         </a>
                         <a
-                            href="https://instagram.com/stuffPlace"
+                            href={contacts.instagram}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="w-6 h-6 flex justify-center items-center cursor-pointer hover:scale-110 transition-transform duration-300"
@@ -74,7 +105,7 @@ export function Footer() {
                             <img src="./socials/instagram.svg" alt="instagram" className="w-auto h-full" />
                         </a>
                         <a
-                            href="https://t.me/stuffPlace"
+                            href={contacts.telegram}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="w-6 h-6 flex justify-center items-center cursor-pointer hover:scale-110 transition-transform duration-300"
@@ -82,7 +113,7 @@ export function Footer() {
                             <img src="./socials/telegram.svg" alt="telegram" className="w-auto h-full" />
                         </a>
                         <a
-                            href="viber://chat?number=%36307428619"
+                            href={`viber://chat?number=${contacts.phone.replace(/\s+/g, '')}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="w-6 h-6 flex justify-center items-center cursor-pointer hover:scale-110 transition-transform duration-300"
@@ -94,7 +125,7 @@ export function Footer() {
                 </div>
                 <div className="md:w-[50%] md:h-full md:flex md:justify-end md:items-center mt-8 md:mt-0">
                     <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2693.3767058046706!2d19.083405775881904!3d47.540996592506204!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4741dbb972d42c51%3A0x5b231660d387055c!2zQnVkYXBlc3QsIELDqWtlIHUuLCDQo9Cz0L7RgNGJ0LjQvdCw!5e0!3m2!1suk!2sua!4v1765110250576!5m2!1suk!2sua"
+                        src={`${contacts.location}`}
                         width={'100%'}
                         height={240}
                         style={{ border: 0, borderRadius: '10px' }}
