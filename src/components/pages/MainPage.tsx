@@ -91,10 +91,10 @@ export function MainPage({ refs, toggleMenu, isMenuOpen }: MainPageProps) {
         <div className="w-full h-screen p-4 lg:p-10">
             <div className="z-20 relative">
                 <Header refs={refs} toggleMenu={toggleMenu} isMenuOpen={isMenuOpen} />
-                <div className="w-full h-[425px] xs:max-sm:h-[415px] md:max-lg:h-[410px] lg:max-xl:h-[600px] xl:h-[450px] rounded-2xl flex flex-col items-center bg-[rgba(255, 255, 255, 0.5)] backdrop-blur-md p-4 md:p-6 mt-6">
+                <div className="w-full max-h-[430px] md:max-lg:h-[410px] lg:min-h-[600px] xl:min-h-[450px] rounded-2xl flex flex-col items-center bg-[rgba(255, 255, 255, 0.5)] backdrop-blur-md p-4 md:p-6 mt-6">
                     <div className="absolute inset-0 bg-white/30 rounded-2xl pointer-events-none z-0"></div>
 
-                    <h1 className={`w-full xs:text-[27px] md:text-[42px] ${localStorage.getItem("language") === "en" ? 'text-[24px] lg:text-[64px] lg:max-xl:w-[70%] xl:w-[60%] xl:text-[64px]' : 'text-[20px] xl:text-[64px] xl:w-[70%]'} md:w-[90%] text-center font-bold text-[#1E1E1E] leading-[1.2] relative z-20`}>{localStorage.getItem("language") === "en" ? "Strategic Location and Modern Living in" : "Stratégiai elhelyezkedés és modern életstílus"}  <span className="text-[#AE7461]">{localStorage.getItem("language") === "en" ? 'Budapest' : 'Budapesten'}</span></h1>
+                    <h1 className={`w-full xs:text-[26px] md:text-[42px] ${localStorage.getItem("language") === "en" ? 'text-[24px] lg:text-[64px] lg:max-xl:w-[70%] xl:w-[60%] xl:text-[64px]' : 'text-[20px] xl:text-[64px] xl:w-[70%]'} md:w-[90%] text-center font-bold text-[#1E1E1E] leading-[1.2] relative z-20`}>{localStorage.getItem("language") === "en" ? "Strategic Location and Modern Living in" : "Stratégiai elhelyezkedés és modern életstílus"}  <span className="text-[#AE7461]">{localStorage.getItem("language") === "en" ? 'Budapest' : 'Budapesten'}</span></h1>
                     <div className="w-full flex flex-col items-center mt-3 relative z-20">
                         <p
                             className="text-[12px] xs:text-[13px] w-full md:text-[14px]

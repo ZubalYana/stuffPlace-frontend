@@ -105,7 +105,7 @@ export function AboutUs() {
 
             </div>
 
-            <div className="absolute bottom-0 left-0 w-full h-[500px] lg:h-[470px] overflow-hidden flex items-end lg:items-start">
+            <div className="absolute z-[-1] bottom-0 left-0 w-full h-[500px] lg:h-[470px] overflow-hidden flex items-end lg:items-start">
                 <img
                     src="/about us bg.webp"
                     alt="about us background"

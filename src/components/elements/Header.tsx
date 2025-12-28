@@ -36,7 +36,7 @@ export function Header({ refs, toggleMenu }: HeaderProps) {
                     <div className="w-full h-0.5 bg-[#1E1E1E] rounded-2xl"></div>
                 </div>
 
-                <div className="md:w-[310px] lg:w-[430px] hidden md:flex justify-between items-center text-[14px] md:text-[12px] lg:text-[14px] font-semibold text-[#1E1E1E]">
+                <div className="md:w-[350px] lg:w-[430px] hidden md:flex justify-between items-center text-[14px] md:text-[12px] lg:text-[14px] font-semibold text-[#1E1E1E]">
                     <p
                         className="cursor-pointer transition duration-300 hover:text-[#AE7461] hover:scale-105"
                         onClick={() => scrollTo(refs.aboutRef)}
