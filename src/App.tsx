@@ -36,7 +36,7 @@ function App() {
                 toggleMenu={toggleMenu}
                 isMenuOpen={isMenuOpen}
               />
-              <div ref={aboutRef}><AboutUs /></div>
+              <div ref={aboutRef}><AboutUs refs={{ unitsRef, locationRef }} /></div>
               <AdvantagesPage />
               <div ref={unitsRef}><OurUnitsPage /></div>
               <div ref={facilitiesRef}><OnSiteFacilities /></div>

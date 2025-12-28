@@ -1,6 +1,12 @@
 import { Phone, Search } from "lucide-react";
 import { useState, useEffect } from 'react';
-export function AboutUs() {
+type AboutUsProps = {
+    refs: {
+        unitsRef: React.RefObject<HTMLDivElement | null>,
+        locationRef: React.RefObject<HTMLDivElement | null>,
+    },
+}
+export function AboutUs({ refs }: AboutUsProps) {
     const [aboutUsText, setAboutText] = useState<{
         text: string;
         highlights: string[];
@@ -15,6 +21,13 @@ export function AboutUs() {
         text: "",
         highlights: [],
     });
+
+    const scrollTo = (ref: React.RefObject<HTMLDivElement | null>) => {
+        if (!ref.current) return;
+        const yOffset = 0;
+        const y = ref.current.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        window.scrollTo({ top: y, behavior: "smooth" });
+    }
 
     const fetchText = async () => {
         try {
@@ -72,8 +85,10 @@ export function AboutUs() {
 
             <div className="w-full md:w-auto flex flex-col md:flex-row items-center gap-4 mt-5 md:gap-8 md:mt-8 relative z-20">
 
-                <div className="relative w-full h-12 md:w-[250px] md:h-17 flex justify-center items-center rounded-2xl bg-[#AE7461] gap-3 cursor-pointer overflow-hidden
-    group transition duration-300 border-2 border-transparent hover:border-[#AE7461]">
+                <div
+                    className="relative w-full h-12 md:w-[250px] md:h-17 flex justify-center items-center rounded-2xl bg-[#AE7461] gap-3 cursor-pointer overflow-hidden group transition duration-300 border-2 border-transparent hover:border-[#AE7461]"
+                    onClick={() => scrollTo(refs.locationRef)}
+                >
                     <span className="absolute inset-0 bg-white scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300"></span>
                     <Phone
                         strokeWidth={2.5}
@@ -87,8 +102,10 @@ export function AboutUs() {
                     </h3>
                 </div>
 
-                <div className="relative w-full h-12 md:w-[270px] md:h-17 flex justify-center items-center rounded-2xl border-2 border-[#1E1E1E] gap-3 cursor-pointer overflow-hidden
-    group transition duration-300 bg-transparent">
+                <div
+                    className="relative w-full h-12 md:w-[270px] md:h-17 flex justify-center items-center rounded-2xl border-2 border-[#1E1E1E] gap-3 cursor-pointer overflow-hidden group transition duration-300 bg-transparent"
+                    onClick={() => scrollTo(refs.unitsRef)}
+                >
                     <span className="absolute inset-0 bg-[#1E1E1E] scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300"></span>
                     <Search
                         strokeWidth={2.5}
