@@ -21,8 +21,8 @@ export function UnitCard({
     const [activeImage, setActiveImage] = useState(images[0])
     const [expanded, setExpanded] = useState(false)
 
-    const isLong = description.length > 250
-    const displayText = !expanded && isLong ? description.slice(0, 250) + "..." : description
+    const isLong = description.length > 240
+    const displayText = !expanded && isLong ? description.slice(0, 240) + "..." : description
     return (
         <div className="w-full h-fit md:min-h-[460px] lg:w-[460px] bg-white shadow-xl text-[#1E1E1E] rounded-xl overflow-hidden">
 
@@ -39,7 +39,7 @@ export function UnitCard({
                             <button
                                 key={index}
                                 onClick={() => setActiveImage(img)}
-                                className={`w-10 h-7 rounded-md overflow-hidden border transition
+                                className={`w-10 h-7 rounded-md overflow-hidden border transition cursor-pointer
                                     ${activeImage === img
                                         ? "border-[#1E1E1E] scale-105"
                                         : "border-transparent opacity-70 hover:opacity-100"
