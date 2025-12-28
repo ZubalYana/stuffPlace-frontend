@@ -109,7 +109,7 @@ export const AdvantagesControlBlock = () => {
 
     const AdvantageIconRenderer = ({ icon }: { icon: AdvantageIcon }) => {
         const Icon = ICON_MAP[icon];
-        return <Icon size={18} className="text-[#AE7461]" />;
+        return <Icon size={20} className="text-[#AE7461]" />;
     };
 
     const [isLoading, setIsLoading] = useState(false);
@@ -201,96 +201,104 @@ export const AdvantagesControlBlock = () => {
         <>
             <h4 className="font-bold text-lg mt-4">{type}</h4>
 
-            {advantages
-                .filter(a => a.type === type)
-                .map(a => (
-                    <div
-                        key={a._id}
-                        className="flex items-start gap-3 mt-2 p-3 rounded-md bg-gray-50 hover:bg-gray-200"
-                    >
-                        <AdvantageIconRenderer icon={a.icon as AdvantageIcon} />
-
-                        <div className="flex-1">
-                            {editingId === a._id ? (
-                                <div className="flex flex-col gap-2">
-                                    <TextField
-                                        size="small"
-                                        label="EN"
-                                        value={a.text.en}
-                                        onChange={e =>
-                                            setAdvantages(prev =>
-                                                prev.map(x =>
-                                                    x._id === a._id
-                                                        ? {
-                                                            ...x,
-                                                            text: {
-                                                                ...x.text,
-                                                                en: e.target.value,
-                                                            },
-                                                        }
-                                                        : x
-                                                )
-                                            )
-                                        }
-                                    />
-
-                                    <TextField
-                                        size="small"
-                                        label="HU"
-                                        value={a.text.hu}
-                                        onChange={e =>
-                                            setAdvantages(prev =>
-                                                prev.map(x =>
-                                                    x._id === a._id
-                                                        ? {
-                                                            ...x,
-                                                            text: {
-                                                                ...x.text,
-                                                                hu: e.target.value,
-                                                            },
-                                                        }
-                                                        : x
-                                                )
-                                            )
-                                        }
-                                    />
+            <div className="w-full md:max-h-[350px] overflow-y-auto custom-scroll">
+                {advantages
+                    .filter(a => a.type === type)
+                    .map(a => (
+                        <div
+                            key={a._id}
+                            className="flex flex-col gap-1 mt-2 p-3 rounded-md bg-gray-50 hover:bg-gray-200"
+                        >
+                            <div className="w-full flex justify-between">
+                                <AdvantageIconRenderer icon={a.icon as AdvantageIcon} />
+                                <div className="flex items-center gap-1">
+                                    {editingId === a._id ? (
+                                        <>
+                                            <IconButton onClick={() => handleUpdate(a)}>
+                                                <Check size={18} />
+                                            </IconButton>
+                                            <IconButton onClick={() => setEditingId(null)}>
+                                                <X size={18} />
+                                            </IconButton>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <IconButton onClick={() => setEditingId(a._id)}>
+                                                <Pencil size={18} />
+                                            </IconButton>
+                                            <IconButton onClick={() => handleDelete(a._id)}>
+                                                <Trash2 size={18} />
+                                            </IconButton>
+                                        </>
+                                    )}
                                 </div>
-                            ) : (
-                                <div className="flex flex-col text-sm">
-                                    <span>{a.text.en}</span>
-                                    <span className="text-gray-500">{a.text.hu}</span>
-                                </div>
-                            )}
-                        </div>
+                            </div>
+                            <div className="flex-1">
+                                {editingId === a._id ? (
+                                    <div className="flex flex-col gap-2">
+                                        <TextField
+                                            size="small"
+                                            label="EN"
+                                            value={a.text.en}
+                                            multiline
+                                            rows={2}
+                                            onChange={e =>
+                                                setAdvantages(prev =>
+                                                    prev.map(x =>
+                                                        x._id === a._id
+                                                            ? {
+                                                                ...x,
+                                                                text: {
+                                                                    ...x.text,
+                                                                    en: e.target.value,
+                                                                },
+                                                            }
+                                                            : x
+                                                    )
+                                                )
+                                            }
+                                        />
 
-                        <div className="flex items-center gap-1">
-                            {editingId === a._id ? (
-                                <>
-                                    <IconButton onClick={() => handleUpdate(a)}>
-                                        <Check size={18} />
-                                    </IconButton>
-                                    <IconButton onClick={() => setEditingId(null)}>
-                                        <X size={18} />
-                                    </IconButton>
-                                </>
-                            ) : (
-                                <>
-                                    <IconButton onClick={() => setEditingId(a._id)}>
-                                        <Pencil size={18} />
-                                    </IconButton>
-                                    <IconButton onClick={() => handleDelete(a._id)}>
-                                        <Trash2 size={18} />
-                                    </IconButton>
-                                </>
-                            )}
+                                        <TextField
+                                            size="small"
+                                            label="HU"
+                                            value={a.text.hu}
+                                            multiline
+                                            rows={2}
+                                            onChange={e =>
+                                                setAdvantages(prev =>
+                                                    prev.map(x =>
+                                                        x._id === a._id
+                                                            ? {
+                                                                ...x,
+                                                                text: {
+                                                                    ...x.text,
+                                                                    hu: e.target.value,
+                                                                },
+                                                            }
+                                                            : x
+                                                    )
+                                                )
+                                            }
+                                        />
+                                    </div>
+                                ) : (
+                                    <div className="flex flex-col text-sm">
+                                        <span>{a.text.en}</span>
+                                        <span className="text-gray-500">{a.text.hu}</span>
+                                    </div>
+                                )}
+                            </div>
+
+
                         </div>
-                    </div>
-                ))}
+                    ))}
+            </div>
         </>
     );
 
     return (
-        <div className="w-full text-[#1E1E1E] mt-6 lg:mt-15 space-y-6">
+        <div className="w-full text-[#1E1E1E] mt-15 space-y-6">
             <h3 className="font-bold text-[24px]">Advantages Management</h3>
 
             {feedback && (
@@ -305,7 +313,6 @@ export const AdvantagesControlBlock = () => {
             <div className="flex flex-col lg:flex-row gap-[4%]">
                 <div className="lg:w-[48%]">
                     <IconPicker value={advIcon} onChange={setAdvIcon} />
-
                     <Select
                         value={advType}
                         onChange={e => setAdvType(e.target.value as AdvantageType)}
@@ -315,7 +322,6 @@ export const AdvantagesControlBlock = () => {
                         <MenuItem value="Companies">Companies</MenuItem>
                         <MenuItem value="Individuals">Individuals</MenuItem>
                     </Select>
-
                     <TextField
                         label="Advantage Text EN"
                         inputProps={{ maxLength: 100 }}
@@ -324,7 +330,6 @@ export const AdvantagesControlBlock = () => {
                         value={advTextEn}
                         onChange={e => setAdvTextEn(e.target.value)}
                     />
-
                     <TextField
                         label="Advantage Text HU"
                         inputProps={{ maxLength: 100 }}
@@ -333,7 +338,6 @@ export const AdvantagesControlBlock = () => {
                         value={advTextHu}
                         onChange={e => setAdvTextHu(e.target.value)}
                     />
-
                     <Button
                         variant="contained"
                         disabled={!isFormValid || isLoading || isLimitReached}
@@ -341,7 +345,7 @@ export const AdvantagesControlBlock = () => {
                         sx={{
                             mt: 3,
                             width: "100%",
-                            height: 48,
+                            minHeight: 48,
                             backgroundColor: "#AE7461",
                             fontWeight: "bold",
                             fontSize: "16px",
@@ -358,10 +362,9 @@ export const AdvantagesControlBlock = () => {
                             "Create Advantage"
                         )}
                     </Button>
-
                 </div>
 
-                <div className="lg:w-[48%]">
+                <div className="lg:w-[48%] mt-12 lg:mt-0">
                     <Tabs
                         value={activeTab}
                         onChange={(_, value) => setActiveTab(value)}

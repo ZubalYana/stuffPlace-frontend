@@ -181,17 +181,19 @@ export const TextControlBlock = () => {
     }, [initialData, mainDescription, aboutText, advantagesText, unitsText, facilitiesText, footerSubtext]);
 
     return (
-        <div className="w-full text-[#1E1E1E] mt-15 space-y-6 md:mt-6">
+        <div className="w-full text-[#1E1E1E] mt-15 space-y-6 lg:mt-6">
             <h3 className="font-bold text-[24px] mb-3">Landing Texts Management</h3>
 
             <Tabs
                 value={lang}
                 onChange={(_, value) => setLang(value)}
                 sx={{ mb: 2 }}
+                variant="fullWidth"
             >
                 <Tab label="English" value="en" />
                 <Tab label="Hungarian" value="hu" />
             </Tabs>
+
 
             <div className="w-full flex flex-col md:flex-row mt-6 md:gap-[4%]">
                 <div className="w-full md:w-[48%]">
