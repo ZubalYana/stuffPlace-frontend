@@ -244,7 +244,7 @@ export const UnitsControlBlock = ({ units, setUnits }: { units: any[]; setUnits:
                         )}
 
 
-                        <div className="w-[450px] flex justify-between mt-4">
+                        <div className="w-full flex flex-col md:w-[450px] md:flex-row md:justify-between gap-4 md:gap-0 mt-4">
                             <FormControl fullWidth variant="standard" style={{ maxWidth: '120px' }}>
                                 <InputLabel id="occupancy-label">Occupancy</InputLabel>
                                 <Select

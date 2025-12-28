@@ -61,7 +61,6 @@ export const UnitDetailsDialog = ({
         Luxury: "Luxus",
     };
 
-
     const handleSave = async () => {
         setIsSaving(true);
         try {
@@ -137,8 +136,6 @@ export const UnitDetailsDialog = ({
         }
     };
 
-
-
     const handleDeleteImage = (url: string) => {
         setEditedUnit((prev: any) => ({
             ...prev,
@@ -154,25 +151,22 @@ export const UnitDetailsDialog = ({
         }));
     };
 
-
     return (
         <Dialog open onClose={onClose} maxWidth="md" fullWidth>
-            <div className="p-6 relative w-full">
+            <div className="relative w-full p-4 sm:p-6">
                 <IconButton
                     onClick={onClose}
-                    sx={{
-                        position: "absolute",
-                        top: "16px",
-                        right: "16px"
-                    }}
+                    className="absolute! top-3 right-3"
                 >
                     <CloseIcon />
                 </IconButton>
 
-                <h2 className="text-2xl font-bold mb-4">Unit Details</h2>
+                <h2 className="text-xl sm:text-2xl font-bold mb-4">
+                    Unit Details
+                </h2>
 
-                <div className="mt-3">
-                    <div className="flex justify-between items-center mb-3">
+                <section className="mt-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-3">
                         <h3 className="text-lg font-semibold">Images</h3>
 
                         <div className="flex gap-2">
@@ -201,7 +195,6 @@ export const UnitDetailsDialog = ({
                                 />
                             </Button>
 
-
                             {editedUnit.images.length > 0 && (
                                 <Button
                                     color="error"
@@ -215,7 +208,12 @@ export const UnitDetailsDialog = ({
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-3 gap-4">
+                    <div className="
+                    grid grid-cols-2
+                    sm:grid-cols-3
+                    md:grid-cols-4
+                    gap-3
+                ">
                         {editedUnit.images.map((img: string) => (
                             <div
                                 key={img}
@@ -224,126 +222,134 @@ export const UnitDetailsDialog = ({
                                 <img
                                     src={img}
                                     alt=""
-                                    className="w-full h-40 object-cover"
+                                    className="w-full h-32 sm:h-36 object-cover"
                                 />
 
                                 <button
                                     onClick={() => handleDeleteImage(img)}
                                     className="
-                        absolute top-2 right-2
-                        bg-black/60 text-white
-                        w-7 h-7 rounded-full
-                        flex items-center justify-center
-                        opacity-0 group-hover:opacity-100
-                        transition
-                    "
+                                    absolute top-2 right-2
+                                    bg-black/60 text-white
+                                    w-7 h-7 rounded-full
+                                    flex items-center justify-center
+                                    opacity-100 sm:opacity-0
+                                    sm:group-hover:opacity-100
+                                    transition
+                                "
                                 >
                                     ✕
                                 </button>
                             </div>
                         ))}
                     </div>
+                </section>
 
-                </div>
-
-                <div className="w-full flex gap-4 mb-4 mt-6">
-                    <TextField
-                        label="Occupancy"
-                        sx={{ width: '100px' }}
-                        value={editedUnit.occupancy}
-                        onChange={e =>
-                            setEditedUnit({ ...editedUnit, occupancy: e.target.value })
-                        }
-                    />
-                    <FormControl sx={{ width: '140px' }}>
-                        <InputLabel>Room type</InputLabel>
-                        <Select
-                            value={editedUnit.type.en}
-                            label="Room type"
-                            onChange={e => {
-                                const en = e.target.value;
-
+                <section className="mt-6">
+                    <div className="
+                    grid grid-cols-1
+                    sm:grid-cols-2
+                    md:grid-cols-3
+                    gap-4
+                ">
+                        <TextField
+                            label="Occupancy"
+                            value={editedUnit.occupancy}
+                            onChange={e =>
                                 setEditedUnit({
                                     ...editedUnit,
-                                    type: {
-                                        en,
-                                        hu: ROOM_TYPE_MAP[en],
-                                    },
-                                });
-                            }}
-                        >
-                            {ROOM_TYPE_OPTIONS.map(option => (
-                                <MenuItem key={option} value={option}>
-                                    {option}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
-                    <FormControl sx={{ width: '150px' }}>
-                        <InputLabel>Comfort level</InputLabel>
-                        <Select
-                            value={editedUnit.comfortLevel.en}
-                            label="Comfort level"
-                            onChange={e => {
-                                const en = e.target.value;
+                                    occupancy: e.target.value
+                                })
+                            }
+                        />
 
+                        <FormControl fullWidth>
+                            <InputLabel>Room type</InputLabel>
+                            <Select
+                                value={editedUnit.type.en}
+                                label="Room type"
+                                onChange={e => {
+                                    const en = e.target.value;
+                                    setEditedUnit({
+                                        ...editedUnit,
+                                        type: { en, hu: ROOM_TYPE_MAP[en] },
+                                    });
+                                }}
+                            >
+                                {ROOM_TYPE_OPTIONS.map(option => (
+                                    <MenuItem key={option} value={option}>
+                                        {option}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+
+                        <FormControl fullWidth>
+                            <InputLabel>Comfort level</InputLabel>
+                            <Select
+                                value={editedUnit.comfortLevel.en}
+                                label="Comfort level"
+                                onChange={e => {
+                                    const en = e.target.value;
+                                    setEditedUnit({
+                                        ...editedUnit,
+                                        comfortLevel: {
+                                            en,
+                                            hu: COMFORT_MAP[en],
+                                        },
+                                    });
+                                }}
+                            >
+                                {COMFORT_OPTIONS.map(option => (
+                                    <MenuItem key={option} value={option}>
+                                        {option}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                    </div>
+                </section>
+
+                <section className="mt-6">
+                    <div className="
+                    grid grid-cols-1
+                    md:grid-cols-2
+                    gap-4
+                ">
+                        <TextField
+                            label="Description (EN)"
+                            multiline
+                            minRows={4}
+                            value={editedUnit.description.en}
+                            onChange={e =>
                                 setEditedUnit({
                                     ...editedUnit,
-                                    comfortLevel: {
-                                        en,
-                                        hu: COMFORT_MAP[en],
+                                    description: {
+                                        ...editedUnit.description,
+                                        en: e.target.value,
                                     },
-                                });
-                            }}
-                        >
-                            {COMFORT_OPTIONS.map(option => (
-                                <MenuItem key={option} value={option}>
-                                    {option}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
+                                })
+                            }
+                        />
 
+                        <TextField
+                            label="Description (HU)"
+                            multiline
+                            minRows={4}
+                            value={editedUnit.description.hu}
+                            onChange={e =>
+                                setEditedUnit({
+                                    ...editedUnit,
+                                    description: {
+                                        ...editedUnit.description,
+                                        hu: e.target.value,
+                                    },
+                                })
+                            }
+                        />
+                    </div>
+                </section>
 
-                </div>
-
-                <div className="w-full flex gap-4">
-                    <TextField
-                        label="Description (EN)"
-                        fullWidth
-                        multiline
-                        rows={4}
-                        value={editedUnit.description.en}
-                        onChange={e =>
-                            setEditedUnit({
-                                ...editedUnit,
-                                description: {
-                                    ...editedUnit.description,
-                                    en: e.target.value,
-                                },
-                            })
-                        }
-                    />
-                    <TextField
-                        label="Description (HU)"
-                        fullWidth
-                        multiline
-                        rows={4}
-                        className="mt-4"
-                        value={editedUnit.description.hu}
-                        onChange={e =>
-                            setEditedUnit({
-                                ...editedUnit,
-                                description: {
-                                    ...editedUnit.description,
-                                    hu: e.target.value,
-                                },
-                            })
-                        }
-                    />
-                </div>
-
-                <div className="flex justify-between mt-6">
+                <section className="mt-6 flex flex-col sm:flex-row sm:justify-between gap-3">
                     <Button
                         color="error"
                         onClick={() => setConfirmDelete(true)}
@@ -355,15 +361,19 @@ export const UnitDetailsDialog = ({
                         variant="contained"
                         onClick={handleSave}
                         disabled={isSaving}
-                        startIcon={isSaving ? <CircularProgress size={18} color="inherit" /> : null}
+                        startIcon={
+                            isSaving ? (
+                                <CircularProgress size={18} color="inherit" />
+                            ) : null
+                        }
                     >
                         {isSaving ? "Saving..." : "Save changes"}
                     </Button>
-                </div>
+                </section>
 
                 {confirmDelete && (
                     <div className="mt-4 bg-red-50 p-4 rounded">
-                        <p className="mb-2">
+                        <p className="mb-3">
                             Are you sure you want to delete this unit?
                         </p>
                         <div className="flex gap-2">
@@ -388,7 +398,7 @@ export const UnitDetailsDialog = ({
                 severity={feedbackSeverity}
                 onClose={() => setFeedbackOpen(false)}
             />
-
         </Dialog>
     );
+
 };

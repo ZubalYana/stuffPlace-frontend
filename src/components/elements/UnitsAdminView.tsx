@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import { UnitDetailsDialog } from "./UnitDetailsDialog";
 import { Heart } from "lucide-react";
-import { Box, Stack, FormControl, InputLabel, Select, MenuItem, Checkbox, FormControlLabel } from "@mui/material";
+import { Box, FormControl, InputLabel, Select, MenuItem, Checkbox, FormControlLabel } from "@mui/material";
 
 
 export const UnitsAdminView = ({
@@ -47,12 +47,12 @@ export const UnitsAdminView = ({
     const comfortLevels = Array.from(new Set(units.map((u) => u.comfortLevel.en)));
 
     return (
-        <div className="w-full h-full flex flex-col">
+        <div className="w-full h-full flex flex-col mt-10 lg:mt-0">
 
             <h3 className="font-bold text-[24px] mb-3">Units View</h3>
 
-            <Box className="w-full flex justify-end">
-                <Stack direction="row" spacing={3} alignItems="center" flexWrap="wrap">
+            <Box className="w-full flex md:justify-end">
+                <div className="flex gap-3 items-center flex-wrap md:flex-row md:gap-6">
                     <FormControl variant="standard" size="small" sx={{ minWidth: 60 }}>
                         <InputLabel shrink>Occupancy</InputLabel>
                         <Select
@@ -117,10 +117,10 @@ export const UnitsAdminView = ({
                         }
                         label="Highlighted"
                     />
-                </Stack>
+                </div>
             </Box>
 
-            <div className="w-full h-full overflow-y-auto custom-scroll">
+            <div className="w-full h-screen md:h-full overflow-y-auto custom-scroll">
                 {sortedUnits.length === 0 ? (
                     <p className="text-gray-500 text-center mt-4">
                         No units match the current filters.
@@ -137,7 +137,11 @@ export const UnitsAdminView = ({
                             text-[#1E1E1E]
                             rounded-md
                             flex
-                            w-[98%]
+                            flex-col
+                            lg:max-xl:flex-col
+                            md:flex-row
+                            w-full
+                            md:w-[98%]
                             cursor-pointer
                             transition
                             hover:shadow-md
@@ -156,12 +160,12 @@ export const UnitsAdminView = ({
                                 <img
                                     src={unit.images?.length ? unit.images[0] : ""}
                                     alt={unit.description?.en}
-                                    className="w-[150px] h-[100px] object-cover rounded-md"
+                                    className="w-full md:w-[150px] md:h-[100px] object-cover rounded-md"
                                 />
                             </div>
 
-                            <div className="ml-4">
-                                <div className="flex gap-4 mb-2">
+                            <div className="mt-4 lg:max-xl:mt-4 md:mt-0 md:ml-4 lg:max-xl:ml-0">
+                                <div className="flex flex-col md:flex-row md:gap-4 gap-2 mb-2">
                                     <p className="font-light text-[14px]">
                                         Occupancy: <span className="font-semibold">{unit.occupancy}</span>
                                     </p>
@@ -173,7 +177,7 @@ export const UnitsAdminView = ({
                                     </p>
                                 </div>
 
-                                <div className="w-[380px]">
+                                <div className="w-full md:w-[500px] lg:max-xl:w-full xl:w-[380px]">
                                     <p className="font-light text-[14px]">
                                         {unit.description.en.slice(0, 170)}…
                                     </p>
