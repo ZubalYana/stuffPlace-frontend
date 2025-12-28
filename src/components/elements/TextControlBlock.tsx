@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import {
     TextField,
     Tabs,
@@ -27,8 +27,6 @@ type HighlightedLocalizedText = {
         highlightsInput: string;
     };
 };
-
-
 export const TextControlBlock = () => {
     const [lang, setLang] = useState<Lang>("en");
     const [isSaving, setIsSaving] = useState(false);
@@ -57,6 +55,32 @@ export const TextControlBlock = () => {
         useState<LocalizedText>({ en: "", hu: "" });
 
     // const isEmpty = (value: string) => value.trim().length === 0;
+    const normalizeForCompare = () => ({
+        mainDescription: {
+            en: {
+                text: mainDescription.en.text,
+                highlights: mainDescription.en.highlights,
+            },
+            hu: {
+                text: mainDescription.hu.text,
+                highlights: mainDescription.hu.highlights,
+            },
+        },
+        aboutText: {
+            en: {
+                text: aboutText.en.text,
+                highlights: aboutText.en.highlights,
+            },
+            hu: {
+                text: aboutText.hu.text,
+                highlights: aboutText.hu.highlights,
+            },
+        },
+        advantagesText,
+        unitsText,
+        facilitiesText,
+        footerSubtext,
+    });
 
     const handleSave = async () => {
         setIsSaving(true);
@@ -84,16 +108,8 @@ export const TextControlBlock = () => {
 
             console.log("Saved successfully:", data);
 
-            setInitialData(
-                JSON.stringify({
-                    mainDescription,
-                    aboutText,
-                    advantagesText,
-                    unitsText,
-                    facilitiesText,
-                    footerSubtext,
-                })
-            );
+            setInitialData(JSON.stringify(normalizeForCompare()));
+
             setFeedbackMessage('Text modified successfully!');
             setFeedbackSeverity("success");
             setFeedbackOpen(true);
@@ -160,16 +176,10 @@ export const TextControlBlock = () => {
         fetchText();
     }, []);
 
-    const hasChanges =
-        initialData !==
-        JSON.stringify({
-            mainDescription,
-            aboutText,
-            advantagesText,
-            unitsText,
-            facilitiesText,
-            footerSubtext,
-        });
+    const hasChanges = useMemo(() => {
+        if (!initialData) return false;
+        return initialData !== JSON.stringify(normalizeForCompare());
+    }, [initialData, mainDescription, aboutText, advantagesText, unitsText, facilitiesText, footerSubtext]);
 
 
     return (
@@ -213,15 +223,22 @@ export const TextControlBlock = () => {
                             placeholder="Comma-separated phrases"
                             sx={{ marginTop: '15px' }}
                             value={mainDescription[lang].highlightsInput}
-                            onChange={(e) =>
+                            onChange={(e) => {
+                                const input = e.target.value;
+                                const highlights = input
+                                    .split(",")
+                                    .map(h => h.trim())
+                                    .filter(Boolean);
+
                                 setMainDescription({
                                     ...mainDescription,
                                     [lang]: {
                                         ...mainDescription[lang],
-                                        highlightsInput: e.target.value,
+                                        highlightsInput: input,
+                                        highlights,
                                     },
-                                })
-                            }
+                                });
+                            }}
                             onBlur={() =>
                                 setMainDescription({
                                     ...mainDescription,
@@ -264,15 +281,21 @@ export const TextControlBlock = () => {
                             placeholder="Comma-separated phrases"
                             sx={{ marginTop: '15px' }}
                             value={aboutText[lang].highlightsInput}
-                            onChange={(e) =>
+                            onChange={(e) => {
+                                const input = e.target.value;
+                                const highlights = input
+                                    .split(",")
+                                    .map(h => h.trim())
+                                    .filter(Boolean);
                                 setAboutText({
                                     ...aboutText,
                                     [lang]: {
                                         ...aboutText[lang],
-                                        highlightsInput: e.target.value,
+                                        highlightsInput: input,
+                                        highlights,
                                     },
-                                })
-                            }
+                                });
+                            }}
                             onBlur={() =>
                                 setAboutText({
                                     ...aboutText,
