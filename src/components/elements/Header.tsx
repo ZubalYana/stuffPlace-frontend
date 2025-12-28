@@ -1,6 +1,8 @@
 import { Logo } from "./Logo";
 import { LanguageSwitcher } from "./LanguageSwitcher";
-
+if (!localStorage.getItem("language")) {
+    localStorage.setItem("language", "en");
+}
 type HeaderProps = {
     refs: {
         aboutRef: React.RefObject<HTMLDivElement | null>,
