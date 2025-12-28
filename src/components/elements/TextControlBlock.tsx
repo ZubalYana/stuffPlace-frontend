@@ -54,7 +54,6 @@ export const TextControlBlock = () => {
     const [footerSubtext, setFooterSubtext] =
         useState<LocalizedText>({ en: "", hu: "" });
 
-    // const isEmpty = (value: string) => value.trim().length === 0;
     const normalizeForCompare = () => ({
         mainDescription: {
             en: {
@@ -181,9 +180,8 @@ export const TextControlBlock = () => {
         return initialData !== JSON.stringify(normalizeForCompare());
     }, [initialData, mainDescription, aboutText, advantagesText, unitsText, facilitiesText, footerSubtext]);
 
-
     return (
-        <div className="w-full text-[#1E1E1E] mt-6 space-y-6">
+        <div className="w-full text-[#1E1E1E] mt-15 space-y-6 md:mt-6">
             <h3 className="font-bold text-[24px] mb-3">Landing Texts Management</h3>
 
             <Tabs
@@ -195,8 +193,8 @@ export const TextControlBlock = () => {
                 <Tab label="Hungarian" value="hu" />
             </Tabs>
 
-            <div className="w-full flex flex-col lg:flex-row mt-6 lg:gap-[4%]">
-                <div className="w-[48%] lg:w-full">
+            <div className="w-full flex flex-col md:flex-row mt-6 md:gap-[4%]">
+                <div className="w-full md:w-[48%]">
                     <div className="space-y-3">
                         <TextField
                             label={`Main Page Description (${lang.toUpperCase()})`}
@@ -317,7 +315,7 @@ export const TextControlBlock = () => {
                     </div>
                 </div>
 
-                <div className="w-[48%] lg:w-full">
+                <div className="w-full md:w-[48%] mt-4 md:mt-0">
                     {[
                         {
                             label: "Advantages Text",

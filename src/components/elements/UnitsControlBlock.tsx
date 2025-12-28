@@ -166,7 +166,7 @@ export const UnitsControlBlock = ({ units, setUnits }: { units: any[]; setUnits:
 
 
     return (
-        <div className="w-full h-[550px] text-[#1E1E1E] flex flex-col lg:flex-row lg:gap-8 mt-6 ">
+        <div className="w-full min-h-[550px] text-[#1E1E1E] flex flex-col lg:flex-row lg:gap-8 mt-6 ">
             <div className="w-full lg:w-[56%]">
                 <h3 className="font-bold text-[24px] mb-3">Units Creation</h3>
 

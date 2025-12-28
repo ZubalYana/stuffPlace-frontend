@@ -120,7 +120,7 @@ export const UnitsAdminView = ({
                 </div>
             </Box>
 
-            <div className="w-full h-screen md:h-full overflow-y-auto custom-scroll">
+            <div className="w-full h-screen md:h-[450px] overflow-y-auto custom-scroll">
                 {sortedUnits.length === 0 ? (
                     <p className="text-gray-500 text-center mt-4">
                         No units match the current filters.
