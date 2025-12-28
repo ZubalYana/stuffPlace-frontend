@@ -224,7 +224,7 @@ export const FacilitiesControlBlock = () => {
 
 
     return (
-        <div className="w-full text-[#1E1E1E] mt-6 space-y-6">
+        <div className="w-full text-[#1E1E1E] mt-15 space-y-6">
             <h3 className="font-bold text-[24px]">Facilities Management</h3>
 
             <div className="flex flex-col lg:flex-row gap-[4%]">
@@ -283,7 +283,7 @@ export const FacilitiesControlBlock = () => {
                         sx={{
                             mt: 3,
                             width: "100%",
-                            height: 48,
+                            minHeight: 48,
                             backgroundColor: "#AE7461",
                             fontWeight: "bold",
                             fontSize: "16px",
@@ -299,7 +299,7 @@ export const FacilitiesControlBlock = () => {
 
                 </div>
 
-                <div className="lg:w-[48%] space-y-3">
+                <div className="lg:w-[48%] space-y-3 mt-12 lg:mt-0">
                     {facilities.length === 0 && (
                         <p className="text-sm text-gray-500">
                             No facilities yet
@@ -310,6 +310,7 @@ export const FacilitiesControlBlock = () => {
                         onChange={(_, v) => setActiveLang(v)}
                         textColor="primary"
                         indicatorColor="primary"
+                        variant="fullWidth"
                     >
                         <Tab value="en" label="English" />
                         <Tab value="hu" label="Hungarian" />
@@ -320,52 +321,8 @@ export const FacilitiesControlBlock = () => {
                             className="flex items-center gap-3 mt-2 p-3 rounded-md bg-gray-50 hover:bg-gray-200"
                         >
                             {editingId === f._id ? (
-                                <>
-                                    <TextField
-                                        size="small"
-                                        label={`Title (${activeLang.toUpperCase()})`}
-                                        value={f.title[activeLang]}
-                                        onChange={(e) =>
-                                            setFacilities((prev) =>
-                                                prev.map((x) =>
-                                                    x._id === f._id
-                                                        ? {
-                                                            ...x,
-                                                            title: {
-                                                                ...x.title,
-                                                                [activeLang]: e.target.value,
-                                                            },
-                                                        }
-                                                        : x
-                                                )
-                                            )
-                                        }
-                                        sx={{ width: "20%" }}
-                                    />
-
-                                    <TextField
-                                        size="small"
-                                        label={`Text (${activeLang.toUpperCase()})`}
-                                        value={f.text[activeLang]}
-                                        onChange={(e) =>
-                                            setFacilities((prev) =>
-                                                prev.map((x) =>
-                                                    x._id === f._id
-                                                        ? {
-                                                            ...x,
-                                                            text: {
-                                                                ...x.text,
-                                                                [activeLang]: e.target.value,
-                                                            },
-                                                        }
-                                                        : x
-                                                )
-                                            )
-                                        }
-                                        sx={{ width: "65%" }}
-                                    />
-
-                                    <div className="flex gap-1">
+                                <div className="w-full">
+                                    <div className="flex gap-1 justify-end">
                                         <IconButton onClick={() => handleUpdate(f)}>
                                             <Check size={18} />
                                         </IconButton>
@@ -373,7 +330,53 @@ export const FacilitiesControlBlock = () => {
                                             <X size={18} />
                                         </IconButton>
                                     </div>
-                                </>
+                                    <div className="flex flex-col w-full mt-3">
+                                        <TextField
+                                            size="small"
+                                            label={`Title (${activeLang.toUpperCase()})`}
+                                            value={f.title[activeLang]}
+                                            onChange={(e) =>
+                                                setFacilities((prev) =>
+                                                    prev.map((x) =>
+                                                        x._id === f._id
+                                                            ? {
+                                                                ...x,
+                                                                title: {
+                                                                    ...x.title,
+                                                                    [activeLang]: e.target.value,
+                                                                },
+                                                            }
+                                                            : x
+                                                    )
+                                                )
+                                            }
+                                            sx={{ width: "100" }}
+                                        />
+                                        <TextField
+                                            size="small"
+                                            label={`Text (${activeLang.toUpperCase()})`}
+                                            value={f.text[activeLang]}
+                                            onChange={(e) =>
+                                                setFacilities((prev) =>
+                                                    prev.map((x) =>
+                                                        x._id === f._id
+                                                            ? {
+                                                                ...x,
+                                                                text: {
+                                                                    ...x.text,
+                                                                    [activeLang]: e.target.value,
+                                                                },
+                                                            }
+                                                            : x
+                                                    )
+                                                )
+                                            }
+                                            multiline
+                                            rows={2}
+                                            sx={{ width: "100", mt: 2 }}
+                                        />
+                                    </div>
+                                </div>
                             ) : (
                                 <div className="w-full space-y-1">
                                     <div className="flex justify-between">

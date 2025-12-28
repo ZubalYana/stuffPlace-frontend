@@ -183,6 +183,7 @@ export const AdvantagesControlBlock = () => {
 
             setEditingId(null);
             fetchAdvantages();
+            showFeedback("success", "Advantage updated");
         } catch {
             showFeedback("error", "Update failed");
         }
