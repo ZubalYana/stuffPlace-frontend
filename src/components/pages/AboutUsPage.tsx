@@ -1,135 +1,143 @@
-import { Phone, Search } from "lucide-react";
-import { useState, useEffect } from 'react';
+import { Phone, Search } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { API_URL } from '../../config'
 type AboutUsProps = {
-    refs: {
-        unitsRef: React.RefObject<HTMLDivElement | null>,
-        locationRef: React.RefObject<HTMLDivElement | null>,
-    },
+	refs: {
+		unitsRef: React.RefObject<HTMLDivElement | null>
+		locationRef: React.RefObject<HTMLDivElement | null>
+	}
 }
 export function AboutUs({ refs }: AboutUsProps) {
-    const [aboutUsText, setAboutText] = useState<{
-        text: string;
-        highlights: string[];
-    }>({
-        text: "",
-        highlights: [],
-    });
-    const [aboutUsTextHu, setAboutTextHu] = useState<{
-        text: string;
-        highlights: string[];
-    }>({
-        text: "",
-        highlights: [],
-    });
+	const [aboutUsText, setAboutText] = useState<{
+		text: string
+		highlights: string[]
+	}>({
+		text: '',
+		highlights: [],
+	})
+	const [aboutUsTextHu, setAboutTextHu] = useState<{
+		text: string
+		highlights: string[]
+	}>({
+		text: '',
+		highlights: [],
+	})
 
-    const scrollTo = (ref: React.RefObject<HTMLDivElement | null>) => {
-        if (!ref.current) return;
-        const yOffset = 0;
-        const y = ref.current.getBoundingClientRect().top + window.pageYOffset + yOffset;
-        window.scrollTo({ top: y, behavior: "smooth" });
-    }
+	const scrollTo = (ref: React.RefObject<HTMLDivElement | null>) => {
+		if (!ref.current) return
+		const yOffset = 0
+		const y =
+			ref.current.getBoundingClientRect().top + window.pageYOffset + yOffset
+		window.scrollTo({ top: y, behavior: 'smooth' })
+	}
 
-    const fetchText = async () => {
-        try {
-            const res = await fetch('http://localhost:5000/text')
-            if (!res.ok) throw new Error("Failed to fetch text");
-            const data = await res.json();
+	const fetchText = async () => {
+		try {
+			const res = await fetch(`${API_URL}/text`)
+			if (!res.ok) throw new Error('Failed to fetch text')
+			const data = await res.json()
 
-            setAboutText({
-                text: data.aboutUsText.en.text,
-                highlights: data.aboutUsText.en.highlights,
-            });
-            setAboutTextHu({
-                text: data.aboutUsText.hu.text,
-                highlights: data.aboutUsText.hu.highlights,
-            });
+			setAboutText({
+				text: data.aboutUsText.en.text,
+				highlights: data.aboutUsText.en.highlights,
+			})
+			setAboutTextHu({
+				text: data.aboutUsText.hu.text,
+				highlights: data.aboutUsText.hu.highlights,
+			})
+		} catch (err) {
+			console.log('Error fetching text:', err)
+		}
+	}
 
-        } catch (err) {
-            console.log('Error fetching text:', err)
-        }
-    }
+	useEffect(() => {
+		fetchText()
+	}, [])
 
-    useEffect(() => {
-        fetchText();
-    }, []);
+	const renderText = (text: string, highlights: string[]) => {
+		if (!highlights.length) return text
 
-    const renderText = (text: string, highlights: string[]) => {
-        if (!highlights.length) return text;
+		const escaped = highlights.map((h) =>
+			h.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+		)
 
-        const escaped = highlights.map(h =>
-            h.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
-        );
+		const regex = new RegExp(`(${escaped.join('|')})`, 'gi')
 
-        const regex = new RegExp(`(${escaped.join("|")})`, "gi");
+		return text.split(regex).map((part, i) =>
+			highlights.some((h) => h.toLowerCase() === part.toLowerCase()) ? (
+				<span key={i} className='text-black font-semibold'>
+					{part}
+				</span>
+			) : (
+				<span key={i}>{part}</span>
+			)
+		)
+	}
+	return (
+		<div className='w-full h-screen p-4 lg:p-10 flex flex-col items-center relative'>
+			<h2 className='text-[24px] md:text-[32px] lg:text-[42px] text-[#1E1E1E] font-bold'>
+				{localStorage.getItem('language') === 'en' ? 'About Us' : 'Rólunk'}
+			</h2>
+			<p
+				className='text-[12px] xs:text-[13px] w-full md:text-[14px] lg:max-xl:text-[20px] font-light md:w-[85%] xl:w-full text-center'
+				style={{ whiteSpace: 'pre-wrap' }}
+			>
+				{localStorage.getItem('language') === 'en'
+					? renderText(aboutUsText.text, aboutUsText.highlights)
+					: renderText(aboutUsTextHu.text, aboutUsTextHu.highlights)}
+			</p>
 
-        return text.split(regex).map((part, i) =>
-            highlights.some(h => h.toLowerCase() === part.toLowerCase()) ? (
-                <span key={i} className="text-black font-semibold">
-                    {part}
-                </span>
-            ) : (
-                <span key={i}>{part}</span>
-            )
-        );
-    };
-    return (
-        <div className="w-full h-screen p-4 lg:p-10 flex flex-col items-center relative">
-            <h2 className="text-[24px] md:text-[32px] lg:text-[42px] text-[#1E1E1E] font-bold">{localStorage.getItem('language') === 'en' ? 'About Us' : 'Rólunk'}</h2>
-            <p className="text-[12px] xs:text-[13px] w-full md:text-[14px] lg:max-xl:text-[20px] font-light md:w-[85%] xl:w-full text-center" style={{ whiteSpace: "pre-wrap" }}>
-                {localStorage.getItem('language') === 'en' ?
-                    renderText(aboutUsText.text, aboutUsText.highlights) :
-                    renderText(aboutUsTextHu.text, aboutUsTextHu.highlights)
-                }
+			<div className='w-full md:w-auto flex flex-col md:flex-row items-center gap-4 mt-5 md:gap-8 md:mt-8 relative z-20'>
+				<div
+					className='relative w-full h-12 md:w-[250px] md:h-17 flex justify-center items-center rounded-2xl bg-[#AE7461] gap-3 cursor-pointer overflow-hidden group transition duration-300 border-2 border-transparent hover:border-[#AE7461]'
+					onClick={() => scrollTo(refs.locationRef)}
+				>
+					<span className='absolute inset-0 bg-white scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300'></span>
+					<Phone
+						strokeWidth={2.5}
+						size={24}
+						stroke='currentColor'
+						className='relative z-10 transition duration-300 text-white group-hover:text-[#AE7461]'
+					/>
+					<h3
+						className='relative z-10 uppercase font-bold text-[16px] md:text-[22px]
+        text-white transition duration-300 group-hover:text-[#AE7461]'
+					>
+						{localStorage.getItem('language') === 'en'
+							? 'Contact Us'
+							: 'Kapcsolat'}
+					</h3>
+				</div>
 
-            </p>
+				<div
+					className='relative w-full h-12 md:w-[270px] md:h-17 flex justify-center items-center rounded-2xl border-2 border-[#1E1E1E] gap-3 cursor-pointer overflow-hidden group transition duration-300 bg-transparent'
+					onClick={() => scrollTo(refs.unitsRef)}
+				>
+					<span className='absolute inset-0 bg-[#1E1E1E] scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300'></span>
+					<Search
+						strokeWidth={2.5}
+						size={24}
+						stroke='currentColor'
+						className='relative z-10 transition duration-300 text-[#1E1E1E] group-hover:text-white'
+					/>
+					<h3
+						className='relative z-10 uppercase font-bold text-[16px] md:text-[22px]
+        text-[#1E1E1E] transition duration-300 group-hover:text-white'
+					>
+						{localStorage.getItem('language') === 'en'
+							? 'Learn More'
+							: 'Fedezd fel'}
+					</h3>
+				</div>
+			</div>
 
-            <div className="w-full md:w-auto flex flex-col md:flex-row items-center gap-4 mt-5 md:gap-8 md:mt-8 relative z-20">
-
-                <div
-                    className="relative w-full h-12 md:w-[250px] md:h-17 flex justify-center items-center rounded-2xl bg-[#AE7461] gap-3 cursor-pointer overflow-hidden group transition duration-300 border-2 border-transparent hover:border-[#AE7461]"
-                    onClick={() => scrollTo(refs.locationRef)}
-                >
-                    <span className="absolute inset-0 bg-white scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300"></span>
-                    <Phone
-                        strokeWidth={2.5}
-                        size={24}
-                        stroke="currentColor"
-                        className="relative z-10 transition duration-300 text-white group-hover:text-[#AE7461]"
-                    />
-                    <h3 className="relative z-10 uppercase font-bold text-[16px] md:text-[22px]
-        text-white transition duration-300 group-hover:text-[#AE7461]">
-                        {localStorage.getItem('language') === 'en' ? 'Contact Us' : 'Kapcsolat'}
-                    </h3>
-                </div>
-
-                <div
-                    className="relative w-full h-12 md:w-[270px] md:h-17 flex justify-center items-center rounded-2xl border-2 border-[#1E1E1E] gap-3 cursor-pointer overflow-hidden group transition duration-300 bg-transparent"
-                    onClick={() => scrollTo(refs.unitsRef)}
-                >
-                    <span className="absolute inset-0 bg-[#1E1E1E] scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300"></span>
-                    <Search
-                        strokeWidth={2.5}
-                        size={24}
-                        stroke="currentColor"
-                        className="relative z-10 transition duration-300 text-[#1E1E1E] group-hover:text-white"
-                    />
-                    <h3 className="relative z-10 uppercase font-bold text-[16px] md:text-[22px]
-        text-[#1E1E1E] transition duration-300 group-hover:text-white">
-                        {localStorage.getItem('language') === 'en' ? 'Learn More' : 'Fedezd fel'}
-                    </h3>
-                </div>
-
-
-            </div>
-
-            <div className="absolute z-[-1] bottom-0 left-0 w-full h-[500px] lg:h-[470px] overflow-hidden flex items-end lg:items-start">
-                <img
-                    src="/about us bg.webp"
-                    alt="about us background"
-                    className="w-full object-cover object-top"
-                />
-            </div>
-
-        </div>
-    );
+			<div className='absolute z-[-1] bottom-0 left-0 w-full h-[500px] lg:h-[470px] overflow-hidden flex items-end lg:items-start'>
+				<img
+					src='/about us bg.webp'
+					alt='about us background'
+					className='w-full object-cover object-top'
+				/>
+			</div>
+		</div>
+	)
 }

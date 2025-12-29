@@ -1,395 +1,391 @@
 import {
-    TextField,
-    Button,
-    Select,
-    MenuItem,
-    IconButton,
-    Tabs,
-    Tab
-} from "@mui/material";
-import { useEffect, useState } from "react";
-import { IconPicker } from "./IconPicker";
-import { FeedbackAlert } from "./FeedbackAlert";
-import type { FeedbackType } from "./FeedbackAlert";
-import { CircularProgress } from "@mui/material";
+	Button,
+	CircularProgress,
+	IconButton,
+	MenuItem,
+	Select,
+	Tab,
+	Tabs,
+	TextField,
+} from '@mui/material'
 import {
-    Trash2,
-    Pencil,
-    X,
-    Building2,
-    CircleDollarSign,
-    BedDouble,
-    BusFront,
-    Cctv,
-    ShoppingBasket,
-    Check,
-    Star,
-    ThumbsUp,
-    Heart,
-    LampDesk,
-    Sofa,
-    Bike,
-    Car,
-    WashingMachine,
-    Monitor
-
-} from "lucide-react";
+	BedDouble,
+	Bike,
+	Building2,
+	BusFront,
+	Car,
+	Cctv,
+	Check,
+	CircleDollarSign,
+	Heart,
+	LampDesk,
+	Monitor,
+	Pencil,
+	ShoppingBasket,
+	Sofa,
+	Star,
+	ThumbsUp,
+	Trash2,
+	WashingMachine,
+	X,
+} from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { API_URL } from '../../config'
+import type { FeedbackType } from './FeedbackAlert'
+import { FeedbackAlert } from './FeedbackAlert'
+import { IconPicker } from './IconPicker'
 
 const ICON_MAP: Record<AdvantageIcon, React.ElementType> = {
-    Building2,
-    CircleDollarSignIcon: CircleDollarSign,
-    BedDouble,
-    BusFront,
-    Cctv,
-    ShoppingBasketIcon: ShoppingBasket,
-    Check,
-    Star,
-    ThumbsUp,
-    Heart,
-    LampDesk,
-    Sofa,
-    Bike,
-    Car,
-    WashingMachine,
-    Monitor
-};
+	Building2,
+	CircleDollarSignIcon: CircleDollarSign,
+	BedDouble,
+	BusFront,
+	Cctv,
+	ShoppingBasketIcon: ShoppingBasket,
+	Check,
+	Star,
+	ThumbsUp,
+	Heart,
+	LampDesk,
+	Sofa,
+	Bike,
+	Car,
+	WashingMachine,
+	Monitor,
+}
 
-type AdvantageType = "Companies" | "Individuals";
+type AdvantageType = 'Companies' | 'Individuals'
 type AdvantageIcon =
-    | "Building2"
-    | "CircleDollarSignIcon"
-    | "BedDouble"
-    | "BusFront"
-    | "Cctv"
-    | "ShoppingBasketIcon"
-    | "Check"
-    | "Star"
-    | "ThumbsUp"
-    | "LampDesk"
-    | "Sofa"
-    | "Bike"
-    | "Car"
-    | "WashingMachine"
-    | "Monitor"
-    | "Heart";
+	| 'Building2'
+	| 'CircleDollarSignIcon'
+	| 'BedDouble'
+	| 'BusFront'
+	| 'Cctv'
+	| 'ShoppingBasketIcon'
+	| 'Check'
+	| 'Star'
+	| 'ThumbsUp'
+	| 'LampDesk'
+	| 'Sofa'
+	| 'Bike'
+	| 'Car'
+	| 'WashingMachine'
+	| 'Monitor'
+	| 'Heart'
 
 type Advantage = {
-    _id: string;
-    text: { en: string; hu: string };
-    icon: string;
-    type: string;
-};
+	_id: string
+	text: { en: string; hu: string }
+	icon: string
+	type: string
+}
 
 export const AdvantagesControlBlock = () => {
-    const [advIcon, setAdvIcon] = useState<AdvantageIcon | "">("");
-    const [advTextEn, setAdvTextEn] = useState("");
-    const [advTextHu, setAdvTextHu] = useState("");
-    const [advType, setAdvType] = useState<AdvantageType>("Companies");
-    const [activeTab, setActiveTab] = useState<AdvantageType>("Companies");
+	const [advIcon, setAdvIcon] = useState<AdvantageIcon | ''>('')
+	const [advTextEn, setAdvTextEn] = useState('')
+	const [advTextHu, setAdvTextHu] = useState('')
+	const [advType, setAdvType] = useState<AdvantageType>('Companies')
+	const [activeTab, setActiveTab] = useState<AdvantageType>('Companies')
 
-    const [advantages, setAdvantages] = useState<Advantage[]>([]);
-    const [editingId, setEditingId] = useState<string | null>(null);
+	const [advantages, setAdvantages] = useState<Advantage[]>([])
+	const [editingId, setEditingId] = useState<string | null>(null)
 
-    const [feedback, setFeedback] = useState<{
-        open: boolean;
-        message: string;
-        severity: FeedbackType;
-    }>({
-        open: false,
-        message: "",
-        severity: "success",
-    });
-    const showFeedback = (severity: FeedbackType, message: string) => {
-        setFeedback({
-            open: true,
-            severity,
-            message,
-        });
-    };
+	const [feedback, setFeedback] = useState<{
+		open: boolean
+		message: string
+		severity: FeedbackType
+	}>({
+		open: false,
+		message: '',
+		severity: 'success',
+	})
+	const showFeedback = (severity: FeedbackType, message: string) => {
+		setFeedback({
+			open: true,
+			severity,
+			message,
+		})
+	}
 
-    const AdvantageIconRenderer = ({ icon }: { icon: AdvantageIcon }) => {
-        const Icon = ICON_MAP[icon];
-        return <Icon size={20} className="text-[#AE7461]" />;
-    };
+	const AdvantageIconRenderer = ({ icon }: { icon: AdvantageIcon }) => {
+		const Icon = ICON_MAP[icon]
+		return <Icon size={20} className='text-[#AE7461]' />
+	}
 
-    const [isLoading, setIsLoading] = useState(false);
+	const [isLoading, setIsLoading] = useState(false)
 
-    const fetchAdvantages = async () => {
-        try {
-            const res = await fetch("http://localhost:5000/advantages");
-            const data = await res.json();
-            setAdvantages(data);
-        } catch {
-            showFeedback("error", "Failed to load advantages");
-        }
-    };
+	const fetchAdvantages = async () => {
+		try {
+			const res = await fetch(`${API_URL}/advantages`)
+			const data = await res.json()
+			setAdvantages(data)
+		} catch {
+			showFeedback('error', 'Failed to load advantages')
+		}
+	}
 
-    useEffect(() => {
-        fetchAdvantages();
-    }, []);
+	useEffect(() => {
+		fetchAdvantages()
+	}, [])
 
-    const companiesCount = advantages.filter(a => a.type === "Companies").length;
-    const individualsCount = advantages.filter(a => a.type === "Individuals").length;
+	const companiesCount = advantages.filter((a) => a.type === 'Companies').length
+	const individualsCount = advantages.filter(
+		(a) => a.type === 'Individuals'
+	).length
 
-    const isLimitReached =
-        (advType === "Companies" && companiesCount >= 6) ||
-        (advType === "Individuals" && individualsCount >= 6);
+	const isLimitReached =
+		(advType === 'Companies' && companiesCount >= 6) ||
+		(advType === 'Individuals' && individualsCount >= 6)
 
-    const isFormValid =
-        advIcon &&
-        advTextEn.trim() &&
-        advTextHu.trim() &&
-        advType &&
-        !isLimitReached;
+	const isFormValid =
+		advIcon &&
+		advTextEn.trim() &&
+		advTextHu.trim() &&
+		advType &&
+		!isLimitReached
 
-    const handleCreate = async () => {
-        if (!isFormValid) return;
+	const handleCreate = async () => {
+		if (!isFormValid) return
 
-        try {
-            setIsLoading(true);
+		try {
+			setIsLoading(true)
 
-            const res = await fetch("http://localhost:5000/advantages", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    icon: advIcon,
-                    type: advType,
-                    text: { en: advTextEn, hu: advTextHu },
-                }),
-            });
+			const res = await fetch(`${API_URL}/advantages`, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					icon: advIcon,
+					type: advType,
+					text: { en: advTextEn, hu: advTextHu },
+				}),
+			})
 
-            if (!res.ok) throw new Error();
+			if (!res.ok) throw new Error()
 
-            showFeedback("success", "Advantage created");
-            setAdvIcon("");
-            setAdvTextEn("");
-            setAdvTextHu("");
+			showFeedback('success', 'Advantage created')
+			setAdvIcon('')
+			setAdvTextEn('')
+			setAdvTextHu('')
 
-            fetchAdvantages();
-        } catch {
-            showFeedback("error", "Failed to create advantage");
-        } finally {
-            setIsLoading(false);
-        }
-    };
+			fetchAdvantages()
+		} catch {
+			showFeedback('error', 'Failed to create advantage')
+		} finally {
+			setIsLoading(false)
+		}
+	}
 
-    const handleUpdate = async (adv: Advantage) => {
-        try {
-            await fetch(`http://localhost:5000/advantages/${adv._id}`, {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(adv),
-            });
+	const handleUpdate = async (adv: Advantage) => {
+		try {
+			await fetch(`${API_URL}/advantages/${adv._id}`, {
+				method: 'PUT',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(adv),
+			})
 
-            setEditingId(null);
-            fetchAdvantages();
-            showFeedback("success", "Advantage updated");
-        } catch {
-            showFeedback("error", "Update failed");
-        }
-    };
+			setEditingId(null)
+			fetchAdvantages()
+			showFeedback('success', 'Advantage updated')
+		} catch {
+			showFeedback('error', 'Update failed')
+		}
+	}
 
-    const handleDelete = async (id: string) => {
-        try {
-            await fetch(`http://localhost:5000/advantages/${id}`, { method: "DELETE" });
-            setAdvantages(prev => prev.filter(a => a._id !== id));
-        } catch {
-            showFeedback("error", "Delete failed");
-        }
-    };
+	const handleDelete = async (id: string) => {
+		try {
+			await fetch(`${API_URL}/advantages/${id}`, { method: 'DELETE' })
+			setAdvantages((prev) => prev.filter((a) => a._id !== id))
+		} catch {
+			showFeedback('error', 'Delete failed')
+		}
+	}
 
-    const renderGroup = (type: AdvantageType) => (
-        <>
-            <h4 className="font-bold text-lg mt-4">{type}</h4>
+	const renderGroup = (type: AdvantageType) => (
+		<>
+			<h4 className='font-bold text-lg mt-4'>{type}</h4>
 
-            <div className="w-full md:max-h-[350px] overflow-y-auto custom-scroll">
-                {advantages
-                    .filter(a => a.type === type)
-                    .map(a => (
-                        <div
-                            key={a._id}
-                            className="flex flex-col gap-1 mt-2 p-3 rounded-md bg-gray-50 hover:bg-gray-200"
-                        >
-                            <div className="w-full flex justify-between">
-                                <AdvantageIconRenderer icon={a.icon as AdvantageIcon} />
-                                <div className="flex items-center gap-1">
-                                    {editingId === a._id ? (
-                                        <>
-                                            <IconButton onClick={() => handleUpdate(a)}>
-                                                <Check size={18} />
-                                            </IconButton>
-                                            <IconButton onClick={() => setEditingId(null)}>
-                                                <X size={18} />
-                                            </IconButton>
-                                        </>
-                                    ) : (
-                                        <>
-                                            <IconButton onClick={() => setEditingId(a._id)}>
-                                                <Pencil size={18} />
-                                            </IconButton>
-                                            <IconButton onClick={() => handleDelete(a._id)}>
-                                                <Trash2 size={18} />
-                                            </IconButton>
-                                        </>
-                                    )}
-                                </div>
-                            </div>
-                            <div className="flex-1">
-                                {editingId === a._id ? (
-                                    <div className="flex flex-col gap-2">
-                                        <TextField
-                                            size="small"
-                                            label="EN"
-                                            value={a.text.en}
-                                            multiline
-                                            rows={2}
-                                            onChange={e =>
-                                                setAdvantages(prev =>
-                                                    prev.map(x =>
-                                                        x._id === a._id
-                                                            ? {
-                                                                ...x,
-                                                                text: {
-                                                                    ...x.text,
-                                                                    en: e.target.value,
-                                                                },
-                                                            }
-                                                            : x
-                                                    )
-                                                )
-                                            }
-                                        />
+			<div className='w-full md:max-h-[350px] overflow-y-auto custom-scroll'>
+				{advantages
+					.filter((a) => a.type === type)
+					.map((a) => (
+						<div
+							key={a._id}
+							className='flex flex-col gap-1 mt-2 p-3 rounded-md bg-gray-50 hover:bg-gray-200'
+						>
+							<div className='w-full flex justify-between'>
+								<AdvantageIconRenderer icon={a.icon as AdvantageIcon} />
+								<div className='flex items-center gap-1'>
+									{editingId === a._id ? (
+										<>
+											<IconButton onClick={() => handleUpdate(a)}>
+												<Check size={18} />
+											</IconButton>
+											<IconButton onClick={() => setEditingId(null)}>
+												<X size={18} />
+											</IconButton>
+										</>
+									) : (
+										<>
+											<IconButton onClick={() => setEditingId(a._id)}>
+												<Pencil size={18} />
+											</IconButton>
+											<IconButton onClick={() => handleDelete(a._id)}>
+												<Trash2 size={18} />
+											</IconButton>
+										</>
+									)}
+								</div>
+							</div>
+							<div className='flex-1'>
+								{editingId === a._id ? (
+									<div className='flex flex-col gap-2'>
+										<TextField
+											size='small'
+											label='EN'
+											value={a.text.en}
+											multiline
+											rows={2}
+											onChange={(e) =>
+												setAdvantages((prev) =>
+													prev.map((x) =>
+														x._id === a._id
+															? {
+																	...x,
+																	text: {
+																		...x.text,
+																		en: e.target.value,
+																	},
+															  }
+															: x
+													)
+												)
+											}
+										/>
 
-                                        <TextField
-                                            size="small"
-                                            label="HU"
-                                            value={a.text.hu}
-                                            multiline
-                                            rows={2}
-                                            onChange={e =>
-                                                setAdvantages(prev =>
-                                                    prev.map(x =>
-                                                        x._id === a._id
-                                                            ? {
-                                                                ...x,
-                                                                text: {
-                                                                    ...x.text,
-                                                                    hu: e.target.value,
-                                                                },
-                                                            }
-                                                            : x
-                                                    )
-                                                )
-                                            }
-                                        />
-                                    </div>
-                                ) : (
-                                    <div className="flex flex-col text-sm">
-                                        <span>{a.text.en}</span>
-                                        <span className="text-gray-500">{a.text.hu}</span>
-                                    </div>
-                                )}
-                            </div>
+										<TextField
+											size='small'
+											label='HU'
+											value={a.text.hu}
+											multiline
+											rows={2}
+											onChange={(e) =>
+												setAdvantages((prev) =>
+													prev.map((x) =>
+														x._id === a._id
+															? {
+																	...x,
+																	text: {
+																		...x.text,
+																		hu: e.target.value,
+																	},
+															  }
+															: x
+													)
+												)
+											}
+										/>
+									</div>
+								) : (
+									<div className='flex flex-col text-sm'>
+										<span>{a.text.en}</span>
+										<span className='text-gray-500'>{a.text.hu}</span>
+									</div>
+								)}
+							</div>
+						</div>
+					))}
+			</div>
+		</>
+	)
 
+	return (
+		<div className='w-full text-[#1E1E1E] mt-15 space-y-6'>
+			<h3 className='font-bold text-[24px]'>Advantages Management</h3>
 
-                        </div>
-                    ))}
-            </div>
-        </>
-    );
+			{feedback && (
+				<FeedbackAlert
+					open={feedback.open}
+					message={feedback.message}
+					severity={feedback.severity}
+					onClose={() => setFeedback({ ...feedback, open: false })}
+				/>
+			)}
 
-    return (
-        <div className="w-full text-[#1E1E1E] mt-15 space-y-6">
-            <h3 className="font-bold text-[24px]">Advantages Management</h3>
+			<div className='flex flex-col lg:flex-row gap-[4%]'>
+				<div className='lg:w-[48%]'>
+					<IconPicker value={advIcon} onChange={setAdvIcon} />
+					<Select
+						value={advType}
+						onChange={(e) => setAdvType(e.target.value as AdvantageType)}
+						fullWidth
+						sx={{ mt: 2 }}
+					>
+						<MenuItem value='Companies'>Companies</MenuItem>
+						<MenuItem value='Individuals'>Individuals</MenuItem>
+					</Select>
+					<TextField
+						label='Advantage Text EN'
+						inputProps={{ maxLength: 100 }}
+						sx={{ mt: 2 }}
+						fullWidth
+						value={advTextEn}
+						onChange={(e) => setAdvTextEn(e.target.value)}
+					/>
+					<TextField
+						label='Advantage Text HU'
+						inputProps={{ maxLength: 100 }}
+						sx={{ mt: 2 }}
+						fullWidth
+						value={advTextHu}
+						onChange={(e) => setAdvTextHu(e.target.value)}
+					/>
+					<Button
+						variant='contained'
+						disabled={!isFormValid || isLoading || isLimitReached}
+						onClick={handleCreate}
+						sx={{
+							mt: 3,
+							width: '100%',
+							minHeight: 48,
+							backgroundColor: '#AE7461',
+							fontWeight: 'bold',
+							fontSize: '16px',
+							'&:hover': {
+								backgroundColor: '#966554',
+							},
+						}}
+					>
+						{isLimitReached ? (
+							`Maximum 6 ${advType} advantages reached`
+						) : isLoading ? (
+							<CircularProgress size={22} />
+						) : (
+							'Create Advantage'
+						)}
+					</Button>
+				</div>
 
-            {feedback && (
-                <FeedbackAlert
-                    open={feedback.open}
-                    message={feedback.message}
-                    severity={feedback.severity}
-                    onClose={() => setFeedback({ ...feedback, open: false })}
-                />
-            )}
+				<div className='lg:w-[48%] mt-12 lg:mt-0'>
+					<Tabs
+						value={activeTab}
+						onChange={(_, value) => setActiveTab(value)}
+						variant='fullWidth'
+						sx={{
+							borderBottom: 1,
+							borderColor: 'divider',
+							mb: 2,
+						}}
+					>
+						<Tab label={`Companies (${companiesCount}/6)`} value='Companies' />
+						<Tab
+							label={`Individuals (${individualsCount}/6)`}
+							value='Individuals'
+						/>
+					</Tabs>
 
-            <div className="flex flex-col lg:flex-row gap-[4%]">
-                <div className="lg:w-[48%]">
-                    <IconPicker value={advIcon} onChange={setAdvIcon} />
-                    <Select
-                        value={advType}
-                        onChange={e => setAdvType(e.target.value as AdvantageType)}
-                        fullWidth
-                        sx={{ mt: 2 }}
-                    >
-                        <MenuItem value="Companies">Companies</MenuItem>
-                        <MenuItem value="Individuals">Individuals</MenuItem>
-                    </Select>
-                    <TextField
-                        label="Advantage Text EN"
-                        inputProps={{ maxLength: 100 }}
-                        sx={{ mt: 2 }}
-                        fullWidth
-                        value={advTextEn}
-                        onChange={e => setAdvTextEn(e.target.value)}
-                    />
-                    <TextField
-                        label="Advantage Text HU"
-                        inputProps={{ maxLength: 100 }}
-                        sx={{ mt: 2 }}
-                        fullWidth
-                        value={advTextHu}
-                        onChange={e => setAdvTextHu(e.target.value)}
-                    />
-                    <Button
-                        variant="contained"
-                        disabled={!isFormValid || isLoading || isLimitReached}
-                        onClick={handleCreate}
-                        sx={{
-                            mt: 3,
-                            width: "100%",
-                            minHeight: 48,
-                            backgroundColor: "#AE7461",
-                            fontWeight: "bold",
-                            fontSize: "16px",
-                            "&:hover": {
-                                backgroundColor: "#966554",
-                            },
-                        }}
-                    >
-                        {isLimitReached ? (
-                            `Maximum 6 ${advType} advantages reached`
-                        ) : isLoading ? (
-                            <CircularProgress size={22} />
-                        ) : (
-                            "Create Advantage"
-                        )}
-                    </Button>
-                </div>
-
-                <div className="lg:w-[48%] mt-12 lg:mt-0">
-                    <Tabs
-                        value={activeTab}
-                        onChange={(_, value) => setActiveTab(value)}
-                        variant="fullWidth"
-                        sx={{
-                            borderBottom: 1,
-                            borderColor: "divider",
-                            mb: 2,
-                        }}
-                    >
-                        <Tab
-                            label={`Companies (${companiesCount}/6)`}
-                            value="Companies"
-                        />
-                        <Tab
-                            label={`Individuals (${individualsCount}/6)`}
-                            value="Individuals"
-                        />
-                    </Tabs>
-
-                    {renderGroup(activeTab)}
-                </div>
-
-            </div>
-        </div>
-    );
-};
+					{renderGroup(activeTab)}
+				</div>
+			</div>
+		</div>
+	)
+}
