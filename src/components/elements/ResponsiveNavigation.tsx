@@ -1,8 +1,6 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { X, Phone, MailIcon } from "lucide-react"
-import Snackbar from "@mui/material/Snackbar";
-import MuiAlert from "@mui/material/Alert";
-
+import { API_URL } from '../../config'
 type ResponsiveNavigationProps = {
     refs: {
         aboutRef: React.RefObject<HTMLDivElement | null>
@@ -14,7 +12,26 @@ type ResponsiveNavigationProps = {
     isMenuOpen: boolean
 }
 
+type Contacts = {
+    phone: string
+    email: string
+    facebook: string
+    instagram: string
+    telegram: string
+    location: string
+}
 export function ResponsiveNavigation({ refs, closeMenu, isMenuOpen }: ResponsiveNavigationProps) {
+    const [contacts, setContacts] = useState<Contacts>({
+        phone: '',
+        email: '',
+        facebook: '',
+        instagram: '',
+        telegram: '',
+        location: '',
+    })
+
+    const isHU = localStorage.getItem('language') === 'hu';
+
     const scrollTo = (ref: React.RefObject<HTMLDivElement | null>) => {
         if (!ref.current) return
         const y = ref.current.getBoundingClientRect().top + window.pageYOffset
@@ -22,24 +39,24 @@ export function ResponsiveNavigation({ refs, closeMenu, isMenuOpen }: Responsive
         closeMenu()
     }
 
+    useEffect(() => {
+        if (!isMenuOpen) return
+
+        const fetchContacts = async () => {
+            try {
+                const res = await fetch(`${API_URL}/contacts`)
+                if (!res.ok) throw new Error('Failed to fetch contacts')
+                const data = await res.json()
+                setContacts(data)
+            } catch (err) {
+                console.log('Error fetching contacts:', err)
+            }
+        }
+
+        fetchContacts()
+    }, [isMenuOpen])
+
     if (!isMenuOpen) return null
-    const [copied, setCopied] = useState<string | null>(null);
-    const [snackbarOpen, setSnackbarOpen] = useState(false);
-
-    const handleCopy = (text: string, type: "phone" | "email") => {
-        navigator.clipboard.writeText(text);
-        setCopied(type);
-        setSnackbarOpen(true);
-
-        if (navigator.vibrate) navigator.vibrate(50);
-    };
-
-    const handleClose = () => {
-        setSnackbarOpen(false);
-        setCopied(null);
-    };
-
-    const isHU = localStorage.getItem('language') === 'hu';
 
     return (
         <>
@@ -72,45 +89,23 @@ export function ResponsiveNavigation({ refs, closeMenu, isMenuOpen }: Responsive
                         {isHU ? "Helyszín" : "Location"}
                     </p>
                     <div className="w-full flex flex-col gap-2">
-                        <div
-                            onClick={() => handleCopy("+36 30 742 8619", "phone")}
+                        <a
                             className="relative flex gap-2 items-center mt-4 group cursor-pointer w-fit select-none"
+                            href={`tel:${contacts.phone}`}
                         >
                             <Phone size={20} strokeWidth={2.5} className="group-hover:scale-110 transition duration-300" />
-                            <p className="font-semibold text-[14px] md:text-[16px]">+36 30 742 8619</p>
-                        </div>
-                        <div
-                            onClick={() => handleCopy("staffPlace_official@gmail.com", "email")}
+                            <p className="font-semibold text-[14px] md:text-[16px]">{contacts.phone}</p>
+                        </a>
+                        <a
                             className="relative flex gap-2 items-center mt-2 group cursor-pointer w-fit select-none"
+                            href={`mailto:${contacts.email}`}
                         >
                             <MailIcon size={20} strokeWidth={2.5} className="group-hover:scale-110 transition duration-300" />
-                            <p className="font-semibold text-[14px] md:text-[16px]">staffPlace_official@gmail.com</p>
-                        </div>
+                            <p className="font-semibold text-[14px] md:text-[16px]">{contacts.email}</p>
+                        </a>
                     </div>
                 </div>
             </div>
-
-            <Snackbar
-                open={snackbarOpen}
-                autoHideDuration={2000}
-                onClose={handleClose}
-                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-            >
-                <MuiAlert
-                    onClose={handleClose}
-                    severity="success"
-                    elevation={6}
-                    variant="filled"
-                    sx={{
-                        backgroundColor: "rgba(110, 196, 114, 0.7)",
-                        color: "rgba(0, 0, 0, 0.8)",
-                        backdropFilter: "blur(6px)",
-                    }}
-                >
-                    {copied === "phone" && (isHU ? "Telefonszám másolva!" : "Phone number copied!")}
-                    {copied === "email" && (isHU ? "Email másolva!" : "Email copied!")}
-                </MuiAlert>
-            </Snackbar>
         </>
     )
 }
