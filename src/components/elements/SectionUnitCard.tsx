@@ -34,9 +34,14 @@ export function SectionUnitCard({ img, description, occupancy }: SectionUnitCard
                 </div>
             </div>
 
-            <div className="w-full h-[57%] md:h-[62%] relative z-0">
-                <img src={img} alt={img} className="w-full h-full object-cover object-center rounded-t-xl transition-transform duration-300 group-hover:scale-105" />
+            <div className="w-full h-[180px] sm:h-[220px] md:h-[62%] relative overflow-hidden rounded-t-xl">
+                <img
+                    src={img}
+                    alt={img}
+                    className="w-full h-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
+                />
             </div>
+
 
             <div className='w-full p-4 h-[43%] md:h-auto relative z-0'>
                 <p className="text-[12px] md:text-[14px] font-light">{description.length > 245 ? description.slice(0, 245) + "..." : description}</p>

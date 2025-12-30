@@ -20,18 +20,21 @@ export function UnitCard({
 
     const [activeImage, setActiveImage] = useState(images[0])
     const [expanded, setExpanded] = useState(false)
+    const [isLightboxOpen, setIsLightboxOpen] = useState(false)
 
     const isLong = description.length > 240
     const displayText = !expanded && isLong ? description.slice(0, 240) + "..." : description
     return (
         <div className="w-full h-fit md:min-h-[460px] lg:w-[460px] bg-white shadow-xl text-[#1E1E1E] rounded-xl overflow-hidden">
 
-            <div className="w-full h-[55%] md:h-[50%] relative">
+            <div className="w-full aspect-4/3 md:aspect-video relative overflow-hidden">
                 <img
                     src={activeImage}
                     alt="Unit image"
-                    className="w-full h-full object-cover object-center transition-all duration-300"
+                    className="w-full h-full object-cover object-center transition-transform duration-300 cursor-zoom-in"
+                    onClick={() => setIsLightboxOpen(true)}
                 />
+
 
                 {images.length > 1 && (
                     <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-2 bg-white/70 backdrop-blur-md px-3 py-1.5 rounded-full">
@@ -113,6 +116,19 @@ export function UnitCard({
                     </p>
                 </div>
             </div>
+            {isLightboxOpen && (
+                <div
+                    className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center"
+                    onClick={() => setIsLightboxOpen(false)}
+                >
+                    <img
+                        src={activeImage}
+                        alt="Fullscreen unit"
+                        className="max-w-[95vw] max-h-[95vh] object-contain"
+                    />
+                </div>
+            )}
+
         </div>
     )
 }
