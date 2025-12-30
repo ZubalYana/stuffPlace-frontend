@@ -21,7 +21,7 @@ export function LanguageSwitcher() {
             size="small"
             variant="standard"
             sx={{
-                minWidth: 80,
+                minWidth: 60,
                 bgcolor: "transparent",
                 marginTop: '5px !important'
             }}

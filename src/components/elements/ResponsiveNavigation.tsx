@@ -1,6 +1,5 @@
 import { useState } from "react"
 import { X, Phone, MailIcon } from "lucide-react"
-import { LanguageSwitcher } from "./LanguageSwitcher"
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 
@@ -72,9 +71,6 @@ export function ResponsiveNavigation({ refs, closeMenu, isMenuOpen }: Responsive
                     <p onClick={() => scrollTo(refs.locationRef)} className="cursor-pointer text-[#1E1E1E] text-[16px] font-semibold">
                         {isHU ? "Helyszín" : "Location"}
                     </p>
-
-                    <LanguageSwitcher />
-
                     <div className="w-full flex flex-col gap-2">
                         <div
                             onClick={() => handleCopy("+36 30 742 8619", "phone")}
