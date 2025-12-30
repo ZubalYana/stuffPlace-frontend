@@ -39,33 +39,33 @@ export function Header({ refs, toggleMenu }: HeaderProps) {
                         <div className="w-full h-0.5 bg-[#1E1E1E] rounded-2xl"></div>
                         <div className="w-full h-0.5 bg-[#1E1E1E] rounded-2xl"></div>
                     </div>
+                </div>
 
-                    <div className="md:w-[350px] lg:w-[430px] hidden md:flex justify-between items-center text-[14px] md:text-[12px] lg:text-[14px] font-semibold text-[#1E1E1E]">
-                        <p
-                            className="cursor-pointer transition duration-300 hover:text-[#AE7461] hover:scale-105"
-                            onClick={() => scrollTo(refs.aboutRef)}
-                        >
-                            {localStorage.getItem("language") === "hu" ? "Rólunk" : "About Us"}
-                        </p>
-                        <p
-                            className="cursor-pointer transition duration-300 hover:text-[#AE7461] hover:scale-105"
-                            onClick={() => scrollTo(refs.unitsRef)}
-                        >
-                            {localStorage.getItem("language") === "hu" ? "Apartmanjaink" : "Our Units"}
-                        </p>
-                        <p
-                            className="cursor-pointer transition duration-300 hover:text-[#AE7461] hover:scale-105"
-                            onClick={() => scrollTo(refs.facilitiesRef)}
-                        >
-                            {localStorage.getItem("language") === "hu" ? "Helyszíni szolgáltatások" : "On-Site Facilities"}
-                        </p>
-                        <p
-                            className="cursor-pointer transition duration-300 hover:text-[#AE7461] hover:scale-105"
-                            onClick={() => scrollTo(refs.locationRef)}
-                        >
-                            {localStorage.getItem("language") === "hu" ? "Helyszín" : "Location"}
-                        </p>
-                    </div>
+                <div className="md:w-[350px] lg:w-[430px] hidden md:flex justify-between items-center text-[14px] md:text-[12px] lg:text-[14px] font-semibold text-[#1E1E1E]">
+                    <p
+                        className="cursor-pointer transition duration-300 hover:text-[#AE7461] hover:scale-105"
+                        onClick={() => scrollTo(refs.aboutRef)}
+                    >
+                        {localStorage.getItem("language") === "hu" ? "Rólunk" : "About Us"}
+                    </p>
+                    <p
+                        className="cursor-pointer transition duration-300 hover:text-[#AE7461] hover:scale-105"
+                        onClick={() => scrollTo(refs.unitsRef)}
+                    >
+                        {localStorage.getItem("language") === "hu" ? "Apartmanjaink" : "Our Units"}
+                    </p>
+                    <p
+                        className="cursor-pointer transition duration-300 hover:text-[#AE7461] hover:scale-105"
+                        onClick={() => scrollTo(refs.facilitiesRef)}
+                    >
+                        {localStorage.getItem("language") === "hu" ? "Helyszíni szolgáltatások" : "On-Site Facilities"}
+                    </p>
+                    <p
+                        className="cursor-pointer transition duration-300 hover:text-[#AE7461] hover:scale-105"
+                        onClick={() => scrollTo(refs.locationRef)}
+                    >
+                        {localStorage.getItem("language") === "hu" ? "Helyszín" : "Location"}
+                    </p>
                 </div>
 
                 <div className="hidden md:flex md:w-[26%] lg:w-[25%] xl:w-[18%] justify-between items-center">

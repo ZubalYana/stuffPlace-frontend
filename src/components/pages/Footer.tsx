@@ -1,6 +1,4 @@
-import MuiAlert from '@mui/material/Alert'
-import Snackbar from '@mui/material/Snackbar'
-import { MailIcon, Phone } from 'lucide-react'
+import { MailIcon, Phone, MapPin } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { API_URL } from '../../config'
 
@@ -11,11 +9,13 @@ type Contacts = {
 	instagram: string
 	telegram: string
 	location: string
+	adress: {
+		en: string
+		hu: string
+	}
 }
 
 export function Footer() {
-	const [copied, setCopied] = useState<string | null>(null)
-	const [snackbarOpen, setSnackbarOpen] = useState(false)
 	const [footerSubtext, setFooterSubtext] = useState('')
 	const [footerSubtextHu, setFooterSubtextHu] = useState('')
 	const [contacts, setContacts] = useState<Contacts>({
@@ -25,19 +25,9 @@ export function Footer() {
 		instagram: '',
 		telegram: '',
 		location: '',
+		adress: { en: '', hu: '' },
 	})
-	const handleCopy = (text: string, type: 'phone' | 'email') => {
-		navigator.clipboard.writeText(text)
-		setCopied(type)
-		setSnackbarOpen(true)
 
-		if (navigator.vibrate) navigator.vibrate(50)
-	}
-
-	const handleClose = () => {
-		setSnackbarOpen(false)
-		setCopied(null)
-	}
 
 	const fetchText = async () => {
 		try {
@@ -82,8 +72,8 @@ export function Footer() {
 							? footerSubtext
 							: footerSubtextHu}
 					</p>
-					<div
-						onClick={() => handleCopy(contacts.phone, 'phone')}
+					<a
+						href={`tel:${contacts.phone}`}
 						className='relative flex gap-2 items-center mt-4 group cursor-pointer w-fit select-none'
 					>
 						<Phone
@@ -94,9 +84,9 @@ export function Footer() {
 						<p className='font-semibold text-[14px] md:text-[16px]'>
 							{contacts.phone}
 						</p>
-					</div>
-					<div
-						onClick={() => handleCopy('staffPlace_official@gmail.com', 'email')}
+					</a>
+					<a
+						href={`mailto:${contacts.email}`}
 						className='relative flex gap-2 items-center mt-2 group cursor-pointer w-fit select-none'
 					>
 						<MailIcon
@@ -106,6 +96,18 @@ export function Footer() {
 						/>
 						<p className='font-semibold text-[14px] md:text-[16px]'>
 							{contacts.email}
+						</p>
+					</a>
+					<div
+						className='relative flex gap-2 items-center mt-2 group cursor-pointer w-fit select-none'
+					>
+						<MapPin
+							size={20}
+							strokeWidth={2.5}
+							className='group-hover:scale-110 transition duration-300'
+						/>
+						<p className='font-semibold text-[14px] md:text-[16px]'>
+							{localStorage.getItem('language') === 'en' ? contacts.adress.en : contacts.adress.hu}
 						</p>
 					</div>
 					<div className='flex gap-4 mt-6'>
@@ -180,34 +182,6 @@ export function Footer() {
 					className='w-full h-full object-cover object-center'
 				/>
 			</div>
-
-			<Snackbar
-				open={snackbarOpen}
-				autoHideDuration={2000}
-				onClose={handleClose}
-				anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-			>
-				<MuiAlert
-					onClose={handleClose}
-					severity='success'
-					elevation={6}
-					variant='filled'
-					sx={{
-						backgroundColor: 'rgba(110, 196, 114, 0.7)',
-						color: 'rgba(0, 0, 0, 0.8)',
-						backdropFilter: 'blur(6px)',
-					}}
-				>
-					{copied === 'phone' &&
-						(localStorage.getItem('language') === 'en'
-							? 'Phone number copied!'
-							: 'Telefonszám másolva!')}
-					{copied === 'email' &&
-						(localStorage.getItem('language') === 'en'
-							? 'Email copied!'
-							: 'Email másolva!')}
-				</MuiAlert>
-			</Snackbar>
 		</div>
 	)
 }

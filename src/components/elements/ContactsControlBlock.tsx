@@ -12,6 +12,10 @@ type Contacts = {
 	instagram: string
 	telegram: string
 	location: string
+	adress: {
+		en: string
+		hu: string
+	}
 }
 
 export const ContactsControlBlock = () => {
@@ -22,6 +26,7 @@ export const ContactsControlBlock = () => {
 		instagram: '',
 		telegram: '',
 		location: '',
+		adress: { en: '', hu: '' },
 	})
 	const [draft, setDraft] = useState<Contacts>({ ...contacts })
 	const [feedback, setFeedback] = useState<{
@@ -88,6 +93,10 @@ export const ContactsControlBlock = () => {
 				instagram: normalizeSocial(draft.instagram, SOCIALS.instagram),
 				telegram: normalizeSocial(draft.telegram, SOCIALS.telegram),
 				location: extractMapUrl(draft.location),
+				adress: {
+					en: draft.adress.en,
+					hu: draft.adress.hu,
+				},
 			}
 
 			const res = await fetch(`${API_URL}/contacts`, {
@@ -152,6 +161,31 @@ export const ContactsControlBlock = () => {
 						value={draft.telegram}
 						onChange={(e) => handleInputChange('telegram', e.target.value)}
 					/>
+					<div className='flex clear-both mb-2 gap-4'>
+						<TextField
+							label='Adress ( EN )'
+							placeholder='Adress'
+							fullWidth
+							value={draft.adress.en || ''}
+							onChange={(e) =>
+								setDraft((prev) => ({
+									...prev,
+									adress: { ...prev.adress, en: e.target.value },
+								}))}
+						/>
+						<TextField
+							label='Adress ( HU )'
+							placeholder='Adress'
+							fullWidth
+							value={draft.adress.hu || ''}
+							onChange={(e) =>
+								setDraft((prev) => ({
+									...prev,
+									adress: { ...prev.adress, hu: e.target.value },
+								}))}
+						/>
+					</div>
+
 
 					<Button
 						variant='contained'
