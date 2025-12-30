@@ -1,233 +1,226 @@
-import { useState } from "react";
 import {
-    Dialog,
-    TextField,
-    Button,
-    IconButton,
-    FormControl,
-    InputLabel,
-    Select,
-    MenuItem,
-} from "@mui/material";
+	Button,
+	Dialog,
+	FormControl,
+	IconButton,
+	InputLabel,
+	MenuItem,
+	Select,
+	TextField,
+} from '@mui/material'
+import { useState } from 'react'
+import { API_URL } from '../../config'
 
-import CloseIcon from "@mui/icons-material/Close";
-import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { FeedbackAlert, type FeedbackType } from "./FeedbackAlert";
-import { CircularProgress } from "@mui/material";
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate'
+import CloseIcon from '@mui/icons-material/Close'
+import DeleteIcon from '@mui/icons-material/Delete'
+import { CircularProgress } from '@mui/material'
+import { FeedbackAlert, type FeedbackType } from './FeedbackAlert'
 export const UnitDetailsDialog = ({
-    unit,
-    onClose,
-    setUnits,
+	unit,
+	onClose,
+	setUnits,
 }: {
-    unit: any;
-    onClose: () => void;
-    setUnits: React.Dispatch<React.SetStateAction<any[]>>;
+	unit: any
+	onClose: () => void
+	setUnits: React.Dispatch<React.SetStateAction<any[]>>
 }) => {
-    const [editedUnit, setEditedUnit] = useState(unit);
-    const [confirmDelete, setConfirmDelete] = useState(false);
-    const [feedbackOpen, setFeedbackOpen] = useState(false);
-    const [feedbackMessage, setFeedbackMessage] = useState("");
-    const [feedbackSeverity, setFeedbackSeverity] = useState<FeedbackType>("success");
-    const [isUploadingImage, setIsUploadingImage] = useState(false);
-    const [isSaving, setIsSaving] = useState(false);
+	const [editedUnit, setEditedUnit] = useState(unit)
+	const [confirmDelete, setConfirmDelete] = useState(false)
+	const [feedbackOpen, setFeedbackOpen] = useState(false)
+	const [feedbackMessage, setFeedbackMessage] = useState('')
+	const [feedbackSeverity, setFeedbackSeverity] =
+		useState<FeedbackType>('success')
+	const [isUploadingImage, setIsUploadingImage] = useState(false)
+	const [isSaving, setIsSaving] = useState(false)
 
-    const ROOM_TYPE_OPTIONS = [
-        "Single",
-        "2-Person",
-        "3-Person",
-        "4-Person",
-        "6-Person",
-        "8-Person",
-        "Suite",
-    ] as const;
+	const ROOM_TYPE_OPTIONS = [
+		'Single',
+		'2-Person',
+		'3-Person',
+		'4-Person',
+		'6-Person',
+		'8-Person',
+		'Suite',
+	] as const
 
-    const ROOM_TYPE_MAP: Record<string, string> = {
-        "Single": "Egyszemélyes",
-        "2-Person": "Kétszemélyes",
-        "3-Person": "Háromágyas",
-        "4-Person": "Négyágyas",
-        "6-Person": "Hatágyas",
-        "8-Person": "Nyolcágyas",
-        "Suite": "Lakosztály",
-    };
+	const ROOM_TYPE_MAP: Record<string, string> = {
+		Single: 'Egyszemélyes',
+		'2-Person': 'Kétszemélyes',
+		'3-Person': 'Háromágyas',
+		'4-Person': 'Négyágyas',
+		'6-Person': 'Hatágyas',
+		'8-Person': 'Nyolcágyas',
+		Suite: 'Lakosztály',
+	}
 
-    const COMFORT_OPTIONS = ["Economy", "Standard", "Comfort", "Luxury"] as const;
+	const COMFORT_OPTIONS = ['Economy', 'Standard', 'Comfort', 'Luxury'] as const
 
-    const COMFORT_MAP: Record<string, string> = {
-        Economy: "Gazdaságos",
-        Standard: "Standard",
-        Comfort: "Kényelmi",
-        Luxury: "Luxus",
-    };
+	const COMFORT_MAP: Record<string, string> = {
+		Economy: 'Gazdaságos',
+		Standard: 'Standard',
+		Comfort: 'Kényelmi',
+		Luxury: 'Luxus',
+	}
 
-    const handleSave = async () => {
-        setIsSaving(true);
-        try {
-            const res = await fetch(`http://localhost:5000/units/${unit._id}`, {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(editedUnit),
-            });
-            if (!res.ok) throw new Error("Save failed");
-            const updated = await res.json();
-            setUnits(prev =>
-                prev.map(u => (u._id === updated._id ? updated : u))
-            );
-            setFeedbackMessage("Changes saved");
-            setFeedbackSeverity("success");
-            setFeedbackOpen(true);
+	const handleSave = async () => {
+		setIsSaving(true)
+		try {
+			const res = await fetch(`${API_URL}/units/${unit._id}`, {
+				method: 'PUT',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(editedUnit),
+			})
+			if (!res.ok) throw new Error('Save failed')
+			const updated = await res.json()
+			setUnits((prev) => prev.map((u) => (u._id === updated._id ? updated : u)))
+			setFeedbackMessage('Changes saved')
+			setFeedbackSeverity('success')
+			setFeedbackOpen(true)
 
-            setTimeout(onClose, 800);
-        } catch (err) {
-            setFeedbackMessage("Failed to save changes");
-            setFeedbackSeverity("error");
-            setFeedbackOpen(true);
-        } finally {
-            setIsSaving(false);
-        }
-    };
+			setTimeout(onClose, 800)
+		} catch (err) {
+			setFeedbackMessage('Failed to save changes')
+			setFeedbackSeverity('error')
+			setFeedbackOpen(true)
+		} finally {
+			setIsSaving(false)
+		}
+	}
 
-    const handleDelete = async () => {
-        try {
-            await fetch(`http://localhost:5000/units/${unit._id}`, {
-                method: "DELETE",
-            });
+	const handleDelete = async () => {
+		try {
+			await fetch(`${API_URL}/units/${unit._id}`, {
+				method: 'DELETE',
+			})
 
-            setUnits(prev => prev.filter(u => u._id !== unit._id));
-            setFeedbackMessage("Unit deleted successfully!");
-            setFeedbackSeverity("success");
-            setFeedbackOpen(true);
-            setTimeout(() => {
-                onClose();
-            }, 1500);
-        } catch (error) {
-            setFeedbackMessage("Failed to delete unit.");
-            setFeedbackSeverity("error");
-            setFeedbackOpen(true);
-        }
-    };
+			setUnits((prev) => prev.filter((u) => u._id !== unit._id))
+			setFeedbackMessage('Unit deleted successfully!')
+			setFeedbackSeverity('success')
+			setFeedbackOpen(true)
+			setTimeout(() => {
+				onClose()
+			}, 1500)
+		} catch (error) {
+			setFeedbackMessage('Failed to delete unit.')
+			setFeedbackSeverity('error')
+			setFeedbackOpen(true)
+		}
+	}
 
-    const handleImageUpload = async (file: File) => {
-        setIsUploadingImage(true);
-        try {
-            const formData = new FormData();
-            formData.append("image", file);
+	const handleImageUpload = async (file: File) => {
+		setIsUploadingImage(true)
+		try {
+			const formData = new FormData()
+			formData.append('image', file)
 
-            const res = await fetch("http://localhost:5000/upload", {
-                method: "POST",
-                body: formData,
-            });
+			const res = await fetch(`${API_URL}/upload`, {
+				method: 'POST',
+				body: formData,
+			})
 
-            if (!res.ok) throw new Error("Upload failed");
+			if (!res.ok) throw new Error('Upload failed')
 
-            const data = await res.json();
+			const data = await res.json()
 
-            setEditedUnit((prev: any) => ({
-                ...prev,
-                images: [...prev.images, data.url],
-            }));
-        } catch (err) {
-            setFeedbackMessage("Image upload failed");
-            setFeedbackSeverity("error");
-            setFeedbackOpen(true);
-        } finally {
-            setIsUploadingImage(false);
-        }
-    };
+			setEditedUnit((prev: any) => ({
+				...prev,
+				images: [...prev.images, data.url],
+			}))
+		} catch (err) {
+			setFeedbackMessage('Image upload failed')
+			setFeedbackSeverity('error')
+			setFeedbackOpen(true)
+		} finally {
+			setIsUploadingImage(false)
+		}
+	}
 
-    const handleDeleteImage = (url: string) => {
-        setEditedUnit((prev: any) => ({
-            ...prev,
-            images: prev.images.filter((img: string) => img !== url),
-        }));
+	const handleDeleteImage = (url: string) => {
+		setEditedUnit((prev: any) => ({
+			...prev,
+			images: prev.images.filter((img: string) => img !== url),
+		}))
+	}
 
-    };
+	const handleDeleteAllImages = () => {
+		setEditedUnit((prev: any) => ({
+			...prev,
+			images: [],
+		}))
+	}
 
-    const handleDeleteAllImages = () => {
-        setEditedUnit((prev: any) => ({
-            ...prev,
-            images: [],
-        }));
-    };
+	return (
+		<Dialog open onClose={onClose} maxWidth='md' fullWidth>
+			<div className='relative w-full p-4 sm:p-6'>
+				<IconButton onClick={onClose} className='absolute! top-3 right-3'>
+					<CloseIcon />
+				</IconButton>
 
-    return (
-        <Dialog open onClose={onClose} maxWidth="md" fullWidth>
-            <div className="relative w-full p-4 sm:p-6">
-                <IconButton
-                    onClick={onClose}
-                    className="absolute! top-3 right-3"
-                >
-                    <CloseIcon />
-                </IconButton>
+				<h2 className='text-xl sm:text-2xl font-bold mb-4'>Unit Details</h2>
 
-                <h2 className="text-xl sm:text-2xl font-bold mb-4">
-                    Unit Details
-                </h2>
+				<section className='mt-4'>
+					<div className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-3'>
+						<h3 className='text-lg font-semibold'>Images</h3>
 
-                <section className="mt-4">
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-3">
-                        <h3 className="text-lg font-semibold">Images</h3>
+						<div className='flex gap-2'>
+							<Button
+								startIcon={
+									isUploadingImage ? (
+										<CircularProgress size={18} color='inherit' />
+									) : (
+										<AddPhotoAlternateIcon />
+									)
+								}
+								component='label'
+								size='small'
+								disabled={isUploadingImage}
+							>
+								{isUploadingImage ? 'Uploading...' : 'Add'}
+								<input
+									hidden
+									type='file'
+									accept='image/*'
+									onChange={(e) => {
+										if (e.target.files?.[0]) {
+											handleImageUpload(e.target.files[0])
+										}
+									}}
+								/>
+							</Button>
 
-                        <div className="flex gap-2">
-                            <Button
-                                startIcon={
-                                    isUploadingImage ? (
-                                        <CircularProgress size={18} color="inherit" />
-                                    ) : (
-                                        <AddPhotoAlternateIcon />
-                                    )
-                                }
-                                component="label"
-                                size="small"
-                                disabled={isUploadingImage}
-                            >
-                                {isUploadingImage ? "Uploading..." : "Add"}
-                                <input
-                                    hidden
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={e => {
-                                        if (e.target.files?.[0]) {
-                                            handleImageUpload(e.target.files[0]);
-                                        }
-                                    }}
-                                />
-                            </Button>
+							{editedUnit.images.length > 0 && (
+								<Button
+									color='error'
+									size='small'
+									startIcon={<DeleteIcon />}
+									onClick={handleDeleteAllImages}
+								>
+									Delete all
+								</Button>
+							)}
+						</div>
+					</div>
 
-                            {editedUnit.images.length > 0 && (
-                                <Button
-                                    color="error"
-                                    size="small"
-                                    startIcon={<DeleteIcon />}
-                                    onClick={handleDeleteAllImages}
-                                >
-                                    Delete all
-                                </Button>
-                            )}
-                        </div>
-                    </div>
-
-                    <div className="
+					<div
+						className='
                     grid grid-cols-2
                     sm:grid-cols-3
                     md:grid-cols-4
                     gap-3
-                ">
-                        {editedUnit.images.map((img: string) => (
-                            <div
-                                key={img}
-                                className="relative group rounded overflow-hidden"
-                            >
-                                <img
-                                    src={img}
-                                    alt=""
-                                    className="w-full h-32 sm:h-36 object-cover"
-                                />
+                '
+					>
+						{editedUnit.images.map((img: string) => (
+							<div key={img} className='relative group rounded overflow-hidden'>
+								<img
+									src={img}
+									alt=''
+									className='w-full h-32 sm:h-36 object-cover'
+								/>
 
-                                <button
-                                    onClick={() => handleDeleteImage(img)}
-                                    className="
+								<button
+									onClick={() => handleDeleteImage(img)}
+									className='
                                     absolute top-2 right-2
                                     bg-black/60 text-white
                                     w-7 h-7 rounded-full
@@ -235,170 +228,160 @@ export const UnitDetailsDialog = ({
                                     opacity-100 sm:opacity-0
                                     sm:group-hover:opacity-100
                                     transition
-                                "
-                                >
-                                    ✕
-                                </button>
-                            </div>
-                        ))}
-                    </div>
-                </section>
+                                '
+								>
+									✕
+								</button>
+							</div>
+						))}
+					</div>
+				</section>
 
-                <section className="mt-6">
-                    <div className="
+				<section className='mt-6'>
+					<div
+						className='
                     grid grid-cols-1
                     sm:grid-cols-2
                     md:grid-cols-3
                     gap-4
-                ">
-                        <TextField
-                            label="Occupancy"
-                            value={editedUnit.occupancy}
-                            onChange={e =>
-                                setEditedUnit({
-                                    ...editedUnit,
-                                    occupancy: e.target.value
-                                })
-                            }
-                        />
+                '
+					>
+						<TextField
+							label='Occupancy'
+							value={editedUnit.occupancy}
+							onChange={(e) =>
+								setEditedUnit({
+									...editedUnit,
+									occupancy: e.target.value,
+								})
+							}
+						/>
 
-                        <FormControl fullWidth>
-                            <InputLabel>Room type</InputLabel>
-                            <Select
-                                value={editedUnit.type.en}
-                                label="Room type"
-                                onChange={e => {
-                                    const en = e.target.value;
-                                    setEditedUnit({
-                                        ...editedUnit,
-                                        type: { en, hu: ROOM_TYPE_MAP[en] },
-                                    });
-                                }}
-                            >
-                                {ROOM_TYPE_OPTIONS.map(option => (
-                                    <MenuItem key={option} value={option}>
-                                        {option}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
+						<FormControl fullWidth>
+							<InputLabel>Room type</InputLabel>
+							<Select
+								value={editedUnit.type.en}
+								label='Room type'
+								onChange={(e) => {
+									const en = e.target.value
+									setEditedUnit({
+										...editedUnit,
+										type: { en, hu: ROOM_TYPE_MAP[en] },
+									})
+								}}
+							>
+								{ROOM_TYPE_OPTIONS.map((option) => (
+									<MenuItem key={option} value={option}>
+										{option}
+									</MenuItem>
+								))}
+							</Select>
+						</FormControl>
 
-                        <FormControl fullWidth>
-                            <InputLabel>Comfort level</InputLabel>
-                            <Select
-                                value={editedUnit.comfortLevel.en}
-                                label="Comfort level"
-                                onChange={e => {
-                                    const en = e.target.value;
-                                    setEditedUnit({
-                                        ...editedUnit,
-                                        comfortLevel: {
-                                            en,
-                                            hu: COMFORT_MAP[en],
-                                        },
-                                    });
-                                }}
-                            >
-                                {COMFORT_OPTIONS.map(option => (
-                                    <MenuItem key={option} value={option}>
-                                        {option}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
-                    </div>
-                </section>
+						<FormControl fullWidth>
+							<InputLabel>Comfort level</InputLabel>
+							<Select
+								value={editedUnit.comfortLevel.en}
+								label='Comfort level'
+								onChange={(e) => {
+									const en = e.target.value
+									setEditedUnit({
+										...editedUnit,
+										comfortLevel: {
+											en,
+											hu: COMFORT_MAP[en],
+										},
+									})
+								}}
+							>
+								{COMFORT_OPTIONS.map((option) => (
+									<MenuItem key={option} value={option}>
+										{option}
+									</MenuItem>
+								))}
+							</Select>
+						</FormControl>
+					</div>
+				</section>
 
-                <section className="mt-6">
-                    <div className="
+				<section className='mt-6'>
+					<div
+						className='
                     grid grid-cols-1
                     md:grid-cols-2
                     gap-4
-                ">
-                        <TextField
-                            label="Description (EN)"
-                            multiline
-                            minRows={4}
-                            value={editedUnit.description.en}
-                            onChange={e =>
-                                setEditedUnit({
-                                    ...editedUnit,
-                                    description: {
-                                        ...editedUnit.description,
-                                        en: e.target.value,
-                                    },
-                                })
-                            }
-                        />
+                '
+					>
+						<TextField
+							label='Description (EN)'
+							multiline
+							minRows={4}
+							value={editedUnit.description.en}
+							onChange={(e) =>
+								setEditedUnit({
+									...editedUnit,
+									description: {
+										...editedUnit.description,
+										en: e.target.value,
+									},
+								})
+							}
+						/>
 
-                        <TextField
-                            label="Description (HU)"
-                            multiline
-                            minRows={4}
-                            value={editedUnit.description.hu}
-                            onChange={e =>
-                                setEditedUnit({
-                                    ...editedUnit,
-                                    description: {
-                                        ...editedUnit.description,
-                                        hu: e.target.value,
-                                    },
-                                })
-                            }
-                        />
-                    </div>
-                </section>
+						<TextField
+							label='Description (HU)'
+							multiline
+							minRows={4}
+							value={editedUnit.description.hu}
+							onChange={(e) =>
+								setEditedUnit({
+									...editedUnit,
+									description: {
+										...editedUnit.description,
+										hu: e.target.value,
+									},
+								})
+							}
+						/>
+					</div>
+				</section>
 
-                <section className="mt-6 flex flex-col sm:flex-row sm:justify-between gap-3">
-                    <Button
-                        color="error"
-                        onClick={() => setConfirmDelete(true)}
-                    >
-                        Delete
-                    </Button>
+				<section className='mt-6 flex flex-col sm:flex-row sm:justify-between gap-3'>
+					<Button color='error' onClick={() => setConfirmDelete(true)}>
+						Delete
+					</Button>
 
-                    <Button
-                        variant="contained"
-                        onClick={handleSave}
-                        disabled={isSaving}
-                        startIcon={
-                            isSaving ? (
-                                <CircularProgress size={18} color="inherit" />
-                            ) : null
-                        }
-                    >
-                        {isSaving ? "Saving..." : "Save changes"}
-                    </Button>
-                </section>
+					<Button
+						variant='contained'
+						onClick={handleSave}
+						disabled={isSaving}
+						startIcon={
+							isSaving ? <CircularProgress size={18} color='inherit' /> : null
+						}
+					>
+						{isSaving ? 'Saving...' : 'Save changes'}
+					</Button>
+				</section>
 
-                {confirmDelete && (
-                    <div className="mt-4 bg-red-50 p-4 rounded">
-                        <p className="mb-3">
-                            Are you sure you want to delete this unit?
-                        </p>
-                        <div className="flex gap-2">
-                            <Button
-                                color="error"
-                                variant="contained"
-                                onClick={handleDelete}
-                            >
-                                Yes, delete
-                            </Button>
-                            <Button onClick={() => setConfirmDelete(false)}>
-                                Cancel
-                            </Button>
-                        </div>
-                    </div>
-                )}
-            </div>
+				{confirmDelete && (
+					<div className='mt-4 bg-red-50 p-4 rounded'>
+						<p className='mb-3'>Are you sure you want to delete this unit?</p>
+						<div className='flex gap-2'>
+							<Button color='error' variant='contained' onClick={handleDelete}>
+								Yes, delete
+							</Button>
+							<Button onClick={() => setConfirmDelete(false)}>Cancel</Button>
+						</div>
+					</div>
+				)}
+			</div>
 
-            <FeedbackAlert
-                open={feedbackOpen}
-                message={feedbackMessage}
-                severity={feedbackSeverity}
-                onClose={() => setFeedbackOpen(false)}
-            />
-        </Dialog>
-    );
-
-};
+			<FeedbackAlert
+				open={feedbackOpen}
+				message={feedbackMessage}
+				severity={feedbackSeverity}
+				onClose={() => setFeedbackOpen(false)}
+			/>
+		</Dialog>
+	)
+}
