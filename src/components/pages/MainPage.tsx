@@ -137,7 +137,7 @@ export function MainPage({ refs, toggleMenu, isMenuOpen }: MainPageProps) {
 
 					<div className='w-full md:w-auto flex flex-col md:flex-row items-center gap-4 mt-5 md:gap-8 md:mt-12 relative z-20'>
 						<a
-							className='relative w-full h-13 md:w-[280px] md:h-18 flex justify-center items-center rounded-2xl bg-[#AE7461] gap-3 cursor-pointer overflow-hidden group transition duration-300'
+							className='relative w-full h-13 md:w-[260px] md:h-16 xl:w-[280px] xl:h-18 flex justify-center items-center rounded-2xl bg-[#AE7461] gap-3 cursor-pointer overflow-hidden group transition duration-300'
 							href={`mailto:${email}`}
 						>
 							<span className='absolute inset-0 bg-white scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300'></span>
@@ -148,7 +148,7 @@ export function MainPage({ refs, toggleMenu, isMenuOpen }: MainPageProps) {
 								className='relative z-10 transition duration-300 text-white group-hover:text-[#AE7461]'
 							/>
 							<h3
-								className='relative z-10 uppercase text-white font-bold text-[18px] md:text-[24px]
+								className='relative z-10 uppercase text-white font-bold text-[18px] md:text-[20px] xl:text-[24px]
         transition duration-300 group-hover:text-[#AE7461]'
 							>
 								{localStorage.getItem('language') === 'en'
@@ -158,7 +158,7 @@ export function MainPage({ refs, toggleMenu, isMenuOpen }: MainPageProps) {
 						</a>
 
 						<div
-							className='relative w-full h-13 md:w-[300px] md:h-18 flex justify-center items-center rounded-2xl border-2 border-[#1E1E1E] gap-3 cursor-pointer overflow-hidden
+							className='relative w-full h-13 md:w-[280px] md:h-16 xl:w-[300px] xl:h-18 flex justify-center items-center rounded-2xl border-2 border-[#1E1E1E] gap-3 cursor-pointer overflow-hidden
     group transition duration-300 bg-transparent'
 							onClick={scrollToUnits}
 						>
@@ -170,7 +170,7 @@ export function MainPage({ refs, toggleMenu, isMenuOpen }: MainPageProps) {
 								className='relative z-10 transition duration-300 text-[#1E1E1E] group-hover:text-white'
 							/>
 							<h3
-								className='relative z-10 uppercase font-bold text-[18px] md:text-[24px]
+								className='relative z-10 uppercase font-bold text-[18px] md:text-[20px] xl:text-[24px]
         transition duration-300 text-[#1E1E1E] group-hover:text-white'
 							>
 								{localStorage.getItem('language') === 'en'
