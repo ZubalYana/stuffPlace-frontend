@@ -66,7 +66,7 @@ export function Footer() {
 					<h3 className='uppercase text-[24px] md:text-[28px] lg:text-[32px] font-bold'>
 						StuffPlace
 					</h3>
-					<p className='text-[12px] xs:text-[13px] md:text-[14px] lg:text-[16px] font-light'>
+					<p className='text-[12px] xs:text-[13px] md:text-[14px] xl:text-[16px] font-light'>
 						{localStorage.getItem('language') === 'en'
 							? footerSubtext
 							: footerSubtextHu}

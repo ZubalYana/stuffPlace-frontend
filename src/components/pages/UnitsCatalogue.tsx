@@ -84,7 +84,7 @@ export function UnitsCatalogue({ unitsRef }: UnitsCatalogueProps) {
 
 	return (
 		<div className='w-full h-screen p-4 lg:p-10 flex flex-col items-center relative'>
-			<h2 className='text-[24px] md:text-[32px] lg:text-[42px] font-bold'>
+			<h2 className='text-[24px] md:text-[32px] lg:text-[36px] font-bold'>
 				{localStorage.getItem('language') === 'en'
 					? 'Units Catalogue'
 					: 'Lakáskatalógus'}

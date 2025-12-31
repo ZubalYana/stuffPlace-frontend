@@ -75,11 +75,11 @@ export function AboutUs({ refs }: AboutUsProps) {
 	}
 	return (
 		<div className='w-full h-screen p-4 lg:p-10 flex flex-col items-center relative'>
-			<h2 className='text-[24px] md:text-[32px] lg:text-[42px] text-[#1E1E1E] font-bold'>
+			<h2 className='text-[24px] md:text-[32px] lg:text-[36px] text-[#1E1E1E] font-bold'>
 				{localStorage.getItem('language') === 'en' ? 'About Us' : 'Rólunk'}
 			</h2>
 			<p
-				className='text-[12px] xs:text-[13px] w-full md:text-[14px] lg:max-xl:text-[20px] font-light md:w-[85%] xl:w-full text-center'
+				className='text-[12px] xs:text-[13px] w-full md:text-[14px] font-light md:w-[85%] xl:w-full text-center'
 				style={{ whiteSpace: 'pre-wrap' }}
 			>
 				{localStorage.getItem('language') === 'en'

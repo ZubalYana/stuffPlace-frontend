@@ -52,12 +52,12 @@ export function OnSiteFacilities() {
 
 	return (
 		<div className='w-full min-h-screen p-4 lg:p-10 flex flex-col items-center relative mt-6 lg:mt-0'>
-			<h2 className='text-[24px] md:text-[32px] lg:text-[42px] text-[#1E1E1E] font-bold text-center'>
+			<h2 className='text-[24px] md:text-[32px] lg:text-[36px] text-[#1E1E1E] font-bold text-center'>
 				{localStorage.getItem('language') === 'en'
 					? 'On-Site Facilities'
 					: 'Felszereltség'}
 			</h2>
-			<p className='text-[12px] xs:text-[13px] w-full md:text-[16px] lg:max-xl:text-[20px] font-light md:w-[85%] xl:w-full text-center'>
+			<p className='text-[12px] xs:text-[13px] w-full md:text-[16px] font-light md:w-[85%] xl:w-full text-center'>
 				{localStorage.getItem('language') === 'en'
 					? facilitiesText
 					: facilitiesTextHu}
