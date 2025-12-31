@@ -12,7 +12,7 @@ type AdvantagesCardProps = {
 export function AdvantagesCard({ bg, title, advantages }: AdvantagesCardProps) {
     return (
         <div className="w-full min-h-[480px] lg:w-[450px] lg:h-[450px] xl:w-[550px] xl:h-[450px] relative">
-            <div className="w-full h-[75%] xs:max-sm:h-[70%] md:max-lg:h-[65%] lg:w-[80%] lg:h-[101%] xl:w-[75%] rounded-[10px] absolute left-0 top-[-3px] bg-[rgba(255, 255, 255, 0.5)] backdrop-blur-md relative p-4 z-20">
+            <div className="w-full h-[75%] xs:max-sm:h-[70%] md:max-lg:h-[65%] lg:w-[82%] lg:h-[101%] xl:w-[75%] rounded-[10px] absolute left-0 top-[-3px] bg-[rgba(255, 255, 255, 0.5)] backdrop-blur-md relative p-4 z-20">
                 <div className="absolute inset-0 bg-white/70 rounded-[10px] pointer-events-none z-2"></div>
                 <div className="w-full h-full flex flex-col items-center relative z-50 lg:p-2">
                     <h3 className="text-[18px] lg:text-[24px] xl:text-[28px] text-[#1E1E1E] font-bold mb-4">{title}</h3>
