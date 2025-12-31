@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { X, Phone, MailIcon } from "lucide-react"
+import { X, Phone, MailIcon, MapPin } from "lucide-react"
 import { API_URL } from '../../config'
 type ResponsiveNavigationProps = {
     refs: {
@@ -19,6 +19,10 @@ type Contacts = {
     instagram: string
     telegram: string
     location: string
+    adress: {
+        en: string
+        hu: string
+    }
 }
 export function ResponsiveNavigation({ refs, closeMenu, isMenuOpen }: ResponsiveNavigationProps) {
     const [contacts, setContacts] = useState<Contacts>({
@@ -28,6 +32,7 @@ export function ResponsiveNavigation({ refs, closeMenu, isMenuOpen }: Responsive
         instagram: '',
         telegram: '',
         location: '',
+        adress: { en: '', hu: '' },
     })
 
     const isHU = localStorage.getItem('language') === 'hu';
@@ -103,6 +108,12 @@ export function ResponsiveNavigation({ refs, closeMenu, isMenuOpen }: Responsive
                             <MailIcon size={20} strokeWidth={2.5} className="group-hover:scale-110 transition duration-300" />
                             <p className="font-semibold text-[14px] md:text-[16px]">{contacts.email}</p>
                         </a>
+                        <div
+                            className="relative flex gap-2 items-center mt-2 group cursor-pointer w-fit select-none"
+                        >
+                            <MapPin size={20} strokeWidth={2.5} className="group-hover:scale-110 transition duration-300" />
+                            <p className="font-semibold text-[14px] md:text-[16px]">{contacts.adress[isHU ? 'hu' : 'en']}</p>
+                        </div>
                     </div>
                 </div>
             </div>

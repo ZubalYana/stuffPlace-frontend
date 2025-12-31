@@ -135,7 +135,7 @@ export function MainPage({ refs, toggleMenu, isMenuOpen }: MainPageProps) {
 						</p>
 					</div>
 
-					<div className='w-full md:w-auto flex flex-col md:flex-row items-center gap-4 mt-5 md:gap-8 md:mt-12 relative z-20'>
+					<div className='w-full md:w-auto flex flex-col md:flex-row items-center gap-4 mt-5 md:gap-8 md:mt-8 relative z-20'>
 						<a
 							className='relative w-full h-13 md:w-[260px] md:h-16 xl:w-[280px] xl:h-18 flex justify-center items-center rounded-2xl bg-[#AE7461] gap-3 cursor-pointer overflow-hidden group transition duration-300'
 							href={`mailto:${email}`}

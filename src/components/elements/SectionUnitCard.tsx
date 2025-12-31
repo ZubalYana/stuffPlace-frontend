@@ -44,7 +44,7 @@ export function SectionUnitCard({ img, description, occupancy }: SectionUnitCard
 
 
             <div className='w-full p-4 h-[43%] md:h-auto relative z-0'>
-                <p className="text-[12px] md:text-[14px] font-light">{description.length > 245 ? description.slice(0, 245) + "..." : description}</p>
+                <p className="text-[12px] xl:text-[14px] font-light">{description.length > 245 ? description.slice(0, 245) + "..." : description}</p>
                 <div className='flex gap-1 mt-4'>
                     <User2 size={20} color="#AE7461" fill="#AE7461" />
                     <p className='font-light text-[14px] md:text-[16px]'>
