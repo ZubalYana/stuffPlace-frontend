@@ -183,7 +183,7 @@ export function MainPage({ refs, toggleMenu, isMenuOpen }: MainPageProps) {
 			</div>
 
 			<div
-				className='uppercase text-white text-[14px] md:text-[16px] font-normal relative z-20 w-full flex justify-center items-center mt-4 xs:max-sm:mt-6 md:mt-6 lg:mt-10 gap-1 md:gap-2 cursor-pointer animate-bounce'
+				className='uppercase text-white text-[14px] md:text-[16px] font-normal relative z-20 w-full flex justify-center items-center mt-4 xs:max-sm:mt-6 md:mt-6 xl:mt-10 gap-1 md:gap-2 cursor-pointer animate-bounce'
 				onClick={scrollToAbout}
 			>
 				<h4>

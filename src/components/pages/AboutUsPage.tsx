@@ -79,7 +79,7 @@ export function AboutUs({ refs }: AboutUsProps) {
 				{localStorage.getItem('language') === 'en' ? 'About Us' : 'Rólunk'}
 			</h2>
 			<p
-				className='text-[12px] xs:text-[13px] w-full md:text-[14px] font-light md:w-[85%] xl:w-full text-center'
+				className='text-[12px] xs:text-[13px] w-full md:text-[14px] font-light md:w-[85%] xl:w-[85%] text-center'
 				style={{ whiteSpace: 'pre-wrap' }}
 			>
 				{localStorage.getItem('language') === 'en'

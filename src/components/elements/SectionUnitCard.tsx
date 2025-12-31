@@ -34,7 +34,7 @@ export function SectionUnitCard({ img, description, occupancy }: SectionUnitCard
                 </div>
             </div>
 
-            <div className="w-full h-[180px] sm:h-[220px] md:h-[62%] relative overflow-hidden rounded-t-xl">
+            <div className="w-full h-[180px] sm:h-[220px] md:h-[62%] lg:h-[50%] xl:h-[62%] relative overflow-hidden rounded-t-xl">
                 <img
                     src={img}
                     alt={img}
