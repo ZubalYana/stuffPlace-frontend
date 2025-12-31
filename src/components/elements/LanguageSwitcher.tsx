@@ -1,18 +1,42 @@
 import { FormControl, Select, MenuItem } from "@mui/material";
 import type { SelectChangeEvent } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ReactCountryFlag from "react-country-flag";
 
 export function LanguageSwitcher() {
     const [language, setLanguage] = useState<string>("en");
 
-    if (localStorage.getItem("language") && language !== localStorage.getItem("language")) {
-        setLanguage(localStorage.getItem("language")!);
-    }
+    useEffect(() => {
+        const savedLanguage = localStorage.getItem("language");
+
+        if (savedLanguage) {
+            setLanguage(savedLanguage);
+            return;
+        }
+
+        const detectLanguage = async () => {
+            try {
+                const res = await fetch("https://api.country.is/");
+                const data = await res.json();
+
+                const detectedLang = data.country === "HU" ? "hu" : "en";
+
+                setLanguage(detectedLang);
+                localStorage.setItem("language", detectedLang);
+            } catch (error) {
+                console.error("Language auto-detection failed:", error);
+                setLanguage("en");
+                localStorage.setItem("language", "en");
+            }
+        };
+
+        detectLanguage();
+    }, []);
 
     const handleChange = (event: SelectChangeEvent) => {
-        setLanguage(event.target.value);
-        localStorage.setItem("language", event.target.value);
+        const newLang = event.target.value;
+        setLanguage(newLang);
+        localStorage.setItem("language", newLang);
         window.location.reload();
     };
 
@@ -23,7 +47,7 @@ export function LanguageSwitcher() {
             sx={{
                 minWidth: 60,
                 bgcolor: "transparent",
-                marginTop: '5px !important'
+                marginTop: "5px !important",
             }}
         >
             <Select
@@ -41,14 +65,13 @@ export function LanguageSwitcher() {
                         top: "50%",
                         transform: "translateY(-60%)",
                     },
-
                 }}
-
             >
                 <MenuItem value="en">
                     <ReactCountryFlag countryCode="GB" svg style={{ width: 18, height: 18, marginRight: 6 }} />
                     <span className="text-[14px]">ENG</span>
                 </MenuItem>
+
                 <MenuItem value="hu">
                     <ReactCountryFlag countryCode="HU" svg style={{ width: 18, height: 18, marginRight: 6 }} />
                     <span className="text-[14px]">HU</span>
