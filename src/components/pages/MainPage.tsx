@@ -27,6 +27,7 @@ export function MainPage({ refs, toggleMenu, isMenuOpen }: MainPageProps) {
 		text: '',
 		highlights: [],
 	})
+	const [email, setEmail] = useState('');
 
 	const scrollToUnits = () => {
 		refs.unitsRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -55,8 +56,22 @@ export function MainPage({ refs, toggleMenu, isMenuOpen }: MainPageProps) {
 		}
 	}
 
+	const fetchContacts = async () => {
+		try {
+			const res = await fetch(`${API_URL}/contacts`)
+			if (!res.ok) throw new Error('Failed to fetch contacts')
+			const data = await res.json()
+
+			setEmail(data.email)
+			console.log('Fetched contacts:', data)
+		} catch (err) {
+			console.log('Error fetching contacts:', err)
+		}
+	}
+
 	useEffect(() => {
-		fetchText()
+		fetchText();
+		fetchContacts();
 	}, [])
 
 	function renderHighlightedText(text: string, highlights: string[]) {
@@ -87,11 +102,10 @@ export function MainPage({ refs, toggleMenu, isMenuOpen }: MainPageProps) {
 					<div className='absolute inset-0 bg-white/30 rounded-2xl pointer-events-none z-0'></div>
 
 					<h1
-						className={`w-full xs:text-[26px] md:text-[42px] ${
-							localStorage.getItem('language') === 'en'
-								? 'text-[24px] lg:text-[64px] lg:max-xl:w-[70%] xl:w-[60%] xl:text-[64px]'
-								: 'text-[20px] xl:text-[64px] xl:w-[70%]'
-						} md:w-[90%] text-center font-bold text-[#1E1E1E] leading-[1.2] relative z-20`}
+						className={`w-full xs:text-[26px] md:text-[42px] ${localStorage.getItem('language') === 'en'
+							? 'text-[24px] lg:text-[64px] lg:max-xl:w-[70%] xl:w-[60%] xl:text-[64px]'
+							: 'text-[20px] xl:text-[64px] xl:w-[70%]'
+							} md:w-[90%] text-center font-bold text-[#1E1E1E] leading-[1.2] relative z-20`}
 					>
 						{localStorage.getItem('language') === 'en'
 							? 'Strategic Location and Modern Living in'
@@ -111,20 +125,20 @@ export function MainPage({ refs, toggleMenu, isMenuOpen }: MainPageProps) {
 						>
 							{localStorage.getItem('language') === 'en'
 								? renderHighlightedText(
-										mainDescription.text,
-										mainDescription.highlights
-								  )
+									mainDescription.text,
+									mainDescription.highlights
+								)
 								: renderHighlightedText(
-										mainDescriptionHu.text,
-										mainDescriptionHu.highlights
-								  )}
+									mainDescriptionHu.text,
+									mainDescriptionHu.highlights
+								)}
 						</p>
 					</div>
 
 					<div className='w-full md:w-auto flex flex-col md:flex-row items-center gap-4 mt-5 md:gap-8 md:mt-12 relative z-20'>
-						<div
-							className='relative w-full h-13 md:w-[280px] md:h-18 flex justify-center items-center rounded-2xl bg-[#AE7461] gap-3 cursor-pointer overflow-hidden
-    group transition duration-300'
+						<a
+							className='relative w-full h-13 md:w-[280px] md:h-18 flex justify-center items-center rounded-2xl bg-[#AE7461] gap-3 cursor-pointer overflow-hidden group transition duration-300'
+							href={`mailto:${email}`}
 						>
 							<span className='absolute inset-0 bg-white scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300'></span>
 							<Handshake
@@ -141,7 +155,7 @@ export function MainPage({ refs, toggleMenu, isMenuOpen }: MainPageProps) {
 									? 'Partnership'
 									: 'Partnerség'}
 							</h3>
-						</div>
+						</a>
 
 						<div
 							className='relative w-full h-13 md:w-[300px] md:h-18 flex justify-center items-center rounded-2xl border-2 border-[#1E1E1E] gap-3 cursor-pointer overflow-hidden
