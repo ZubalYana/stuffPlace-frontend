@@ -10,7 +10,6 @@ export function WhatsAppIcon() {
 			const data = await res.json()
 
 			setPhone(data.phone)
-			console.log('Fetched contacts:', data)
 		} catch (err) {
 			console.log('Error fetching contacts:', err)
 		}

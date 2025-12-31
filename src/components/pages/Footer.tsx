@@ -49,7 +49,6 @@ export function Footer() {
 			const data = await res.json()
 
 			setContacts(data)
-			console.log('Fetched contacts:', data)
 		} catch (err) {
 			console.log('Error fetching contacts:', err)
 		}

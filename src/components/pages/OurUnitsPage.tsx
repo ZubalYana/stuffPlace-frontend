@@ -34,7 +34,6 @@ export function OurUnitsPage() {
 
 			const data = await res.json()
 			setUnits(data)
-			console.log(data)
 		} catch (err) {
 			console.error(err)
 		}

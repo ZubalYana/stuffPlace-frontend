@@ -63,7 +63,6 @@ export function MainPage({ refs, toggleMenu, isMenuOpen }: MainPageProps) {
 			const data = await res.json()
 
 			setEmail(data.email)
-			console.log('Fetched contacts:', data)
 		} catch (err) {
 			console.log('Error fetching contacts:', err)
 		}

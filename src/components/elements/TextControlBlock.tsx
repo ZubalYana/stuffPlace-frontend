@@ -106,8 +106,6 @@ export const TextControlBlock = () => {
 				throw new Error(data.message || 'Failed to save text')
 			}
 
-			console.log('Saved successfully:', data)
-
 			setInitialData(JSON.stringify(normalizeForCompare()))
 
 			setFeedbackMessage('Text modified successfully!')
