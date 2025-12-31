@@ -103,7 +103,7 @@ export function MainPage({ refs, toggleMenu, isMenuOpen }: MainPageProps) {
 
 					<h1
 						className={`w-full xs:text-[26px] md:text-[42px] ${localStorage.getItem('language') === 'en'
-							? 'text-[24px] lg:text-[64px] lg:max-xl:w-[70%] xl:w-[60%] xl:text-[64px]'
+							? 'text-[24px] lg:text-[54px] lg:max-xl:w-[80%] xl:w-[60%] xl:text-[64px]'
 							: 'text-[20px] xl:text-[64px] xl:w-[70%]'
 							} md:w-[90%] text-center font-bold text-[#1E1E1E] leading-[1.2] relative z-20`}
 					>
@@ -122,8 +122,7 @@ export function MainPage({ refs, toggleMenu, isMenuOpen }: MainPageProps) {
 					<div className='w-full flex flex-col items-center mt-3 relative z-20'>
 						<p
 							className='text-[12px] xs:text-[13px] w-full md:text-[14px]
-               lg:max-xl:text-[20px] font-light md:w-[85%]
-               xl:w-[65%] text-center'
+               lg:text-[16px] font-light md:w-[85%] xl:w-[68%] text-center'
 							style={{ whiteSpace: 'pre-wrap' }}
 						>
 							{localStorage.getItem('language') === 'en'

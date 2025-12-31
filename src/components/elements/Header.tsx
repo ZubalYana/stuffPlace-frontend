@@ -41,7 +41,7 @@ export function Header({ refs, toggleMenu }: HeaderProps) {
                     </div>
                 </div>
 
-                <div className="md:w-[350px] lg:w-[430px] hidden md:flex justify-between items-center text-[14px] md:text-[12px] lg:text-[14px] font-semibold text-[#1E1E1E]">
+                <div className="md:w-[350px] lg:w-[430px] hidden md:flex justify-between items-center text-[14px] md:text-[12px] xl:text-[14px] font-semibold text-[#1E1E1E]">
                     <p
                         className="cursor-pointer transition duration-300 hover:text-[#AE7461] hover:scale-105"
                         onClick={() => scrollTo(refs.aboutRef)}
@@ -68,7 +68,7 @@ export function Header({ refs, toggleMenu }: HeaderProps) {
                     </p>
                 </div>
 
-                <div className="hidden md:flex md:w-[26%] lg:w-[25%] xl:w-[18%] justify-between items-center">
+                <div className="hidden md:flex md:w-[26%] lg:w-[26%] xl:w-[18%] justify-between items-center">
                     <div className="relative md:w-[90px] md:h-[35px] lg:w-[140px] lg:h-[50px] rounded-2xl border border-[#1E1E1E] flex justify-center items-center cursor-pointer overflow-hidden 
     transition duration-300 group">
                         <span className="absolute inset-0 bg-[#1E1E1E] scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300"></span>
