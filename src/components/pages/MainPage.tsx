@@ -98,7 +98,7 @@ export function MainPage({ refs, toggleMenu, isMenuOpen }: MainPageProps) {
 		<div className='w-full h-screen p-4 lg:p-10'>
 			<div className='z-20 relative'>
 				<Header refs={refs} toggleMenu={toggleMenu} isMenuOpen={isMenuOpen} />
-				<div className='w-full max-h-[430px] md:max-lg:h-[410px] lg:min-h-[600px] xl:min-h-[450px] rounded-2xl flex flex-col items-center bg-[rgba(255, 255, 255, 0.5)] backdrop-blur-md p-4 md:p-6 mt-6'>
+				<div className='w-full max-h-[430px] md:max-lg:h-[410px] lg:min-h-[400px] lg:max-h-[600px] xl:min-h-[450px] rounded-2xl flex flex-col items-center bg-[rgba(255, 255, 255, 0.5)] backdrop-blur-md p-4 md:p-6 mt-6'>
 					<div className='absolute inset-0 bg-white/30 rounded-2xl pointer-events-none z-0'></div>
 
 					<h1
@@ -121,8 +121,7 @@ export function MainPage({ refs, toggleMenu, isMenuOpen }: MainPageProps) {
 					</h1>
 					<div className='w-full flex flex-col items-center mt-3 relative z-20'>
 						<p
-							className='text-[12px] xs:text-[13px] w-full md:text-[14px]
-               lg:text-[16px] font-light md:w-[85%] xl:w-[68%] text-center'
+							className='text-[12px] xs:text-[13px] w-full md:text-[14px] font-light md:w-[85%] xl:w-[68%] text-center'
 							style={{ whiteSpace: 'pre-wrap' }}
 						>
 							{localStorage.getItem('language') === 'en'
