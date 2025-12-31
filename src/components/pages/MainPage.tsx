@@ -108,13 +108,16 @@ export function MainPage({ refs, toggleMenu, isMenuOpen }: MainPageProps) {
 							} md:w-[90%] text-center font-bold text-[#1E1E1E] leading-[1.2] relative z-20`}
 					>
 						{localStorage.getItem('language') === 'en'
-							? 'Strategic Location and Modern Living in'
-							: 'Stratégiai elhelyezkedés és modern életstílus'}{' '}
+							? 'Comfortable Living in a Prime'
+							: 'Kényelmes élet'}{' '}
 						<span className='text-[#AE7461]'>
 							{localStorage.getItem('language') === 'en'
 								? 'Budapest'
-								: 'Budapesten'}
+								: 'Budapesten'}{' '}
 						</span>
+						{localStorage.getItem('language') === 'en'
+							? 'Location'
+							: 'egyik legjobb helyszínén'}
 					</h1>
 					<div className='w-full flex flex-col items-center mt-3 relative z-20'>
 						<p
